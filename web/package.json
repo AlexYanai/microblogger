@@ -14,19 +14,17 @@
   },
   "dependencies": {
     "aphrodite": "^0.6.0",
-    "dotenv": "^2.0.0",
     "lodash": "^4.16.4",
     "md5": "^2.2.1",
     "moment": "^2.15.1",
     "phoenix": "^1.2.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
-    "react-router": "4.0.0",
-    "react-scripts": "1.0.10",
+    "react-router": "4.0.0-alpha.5",
     "redux": "^3.6.0",
     "redux-form": "^6.1.1",
-    "redux-thunk": "^2.1.0",
+    "redux-thunk": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

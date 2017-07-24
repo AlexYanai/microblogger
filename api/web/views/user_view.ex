@@ -9,4 +9,3 @@ defmodule Cite.UserView do
     }
   end
 end
-view raw

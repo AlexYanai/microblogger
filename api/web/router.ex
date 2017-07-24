@@ -17,8 +17,6 @@ defmodule Cite.Router do
 
   scope "/", Cite do
     pipe_through :browser
-
-    get "/", PageController, :index
   end
 
   scope "/api", Cite do

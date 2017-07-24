@@ -36,5 +36,7 @@ defmodule Cite.Endpoint do
     key: "_cite_key",
     signing_salt: "mbwGfSdG"
 
+  plug Corsica, allow_headers: ~w(Accept Content-Type Authorization Origin)
+
   plug Cite.Router
 end
