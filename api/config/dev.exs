@@ -30,4 +30,7 @@ config :cite, Cite.Repo,
   hostname: "localhost",
   pool_size: 10
 
+config :guardian, Guardian,
+  secret_key: "oSRPnbXpJxNKs9mXgUNCgbFLgdtwyBu7zQQzqQZeRkBqOwgqIcYzQqEKQFdsain8"
+
 import_config "dev.secret.exs"
