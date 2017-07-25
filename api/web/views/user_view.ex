@@ -5,7 +5,7 @@ defmodule Cite.UserView do
     %{
       id: user.id,
       username: user.username,
-      email: user.email,
+      email: user.email
     }
   end
 end

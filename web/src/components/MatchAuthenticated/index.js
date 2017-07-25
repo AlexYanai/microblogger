@@ -8,7 +8,7 @@ type Props = {
   exactly?: boolean,
   isAuthenticated: boolean,
   willAuthenticate: boolean,
-}
+};
 
 const MatchAuthenticated = ({
   pattern,

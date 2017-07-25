@@ -17,7 +17,7 @@ type Props = {
   onSubmit: () => void,
   submitting: boolean,
   handleSubmit: () => void,
-}
+};
 
 class SignupForm extends Component {
   props: Props
@@ -72,17 +72,21 @@ class SignupForm extends Component {
 
 const validate = (values) => {
   const errors = {};
+  
   if (!values.username) {
     errors.username = 'Required';
   }
+
   if (!values.email) {
     errors.email = 'Required';
   }
+
   if (!values.password) {
     errors.password = 'Required';
   } else if (values.password.length < 6) {
     errors.password = 'Minimum of 6 characters';
   }
+
   return errors;
 };
 

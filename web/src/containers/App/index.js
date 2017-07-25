@@ -15,7 +15,7 @@ type Props = {
   unauthenticate: () => void,
   isAuthenticated: boolean,
   willAuthenticate: boolean,
-}
+};
 
 class App extends Component {
   componentDidMount() {

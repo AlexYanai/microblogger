@@ -9,7 +9,7 @@ type Props = {
   logout: () => void,
   currentUser: Object,
   isAuthenticated: boolean,
-}
+};
 
 class Home extends Component {
   static contextTypes = {
@@ -26,10 +26,12 @@ class Home extends Component {
     return (
       <div style={{ flex: '1' }}>
         <Navbar />
-        <ul>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/signup">Signup</Link></li>
-        </ul>
+        {isAuthenticated &&
+          <ul>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/signup">Signup</Link></li>
+          </ul>
+        }
         {isAuthenticated &&
           <div>
             <span>{currentUser.username}</span>

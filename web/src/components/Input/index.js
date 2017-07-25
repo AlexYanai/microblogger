@@ -8,7 +8,7 @@ type Props = {
   placeholder?: string,
   style?: Object,
   meta: Object,
-}
+};
 
 const Input = ({ input, label, type, placeholder, style, meta }: Props) =>
   <div style={{ marginBottom: '1rem' }}>

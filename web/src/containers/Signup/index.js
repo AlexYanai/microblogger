@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 
 type Props = {
   signup: () => void,
-}
+};
 
 class Signup extends Component {
   static contextTypes = {
