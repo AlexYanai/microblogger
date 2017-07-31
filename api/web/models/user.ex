@@ -27,7 +27,7 @@ defmodule Cite.User do
     |> put_password_hash()
   end
 
-  def create_comment(citation, user) do
+  def create_citation(citation, user) do
     Ecto.build_assoc(user, :citations, citation)
   end
 

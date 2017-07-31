@@ -17,4 +17,8 @@ defmodule Cite.Category do
     |> cast(params, [:name, :description])
     |> validate_required([:name, :description])
   end
+
+  def add_citationss(citation, user) do
+    Ecto.build_assoc(user, :citations, citation)
+  end
 end

@@ -13,7 +13,13 @@ defmodule Cite.CitationCategory do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:citation_id, :category_id])
+    |> validate_required([:citation_id, :category_id])
+    |> unique_constraint(:citation_id_category_id)
+  end
+
+  def assoc_citation_with_category(cite, cat) do
+    cite_cat = %{citation_id: cite.id, category_id: cat.id}
+    Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
   end
 end
