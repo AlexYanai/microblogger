@@ -6,6 +6,8 @@ defmodule Cite.Citation do
     field :source, :string
     field :quote, :string
     belongs_to :user, Cite.User
+    many_to_many :categories, Cite.Category, join_through: "citation_categories"
+
 
     timestamps()
   end

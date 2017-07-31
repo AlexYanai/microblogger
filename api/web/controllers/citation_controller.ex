@@ -14,13 +14,13 @@ defmodule Cite.CitationController do
     case Repo.insert(changeset) do
       {:ok, citation} ->
         conn
-        |> put_status(:created)
-        |> put_resp_header("location", user_citation_path(conn, :show, citation))
-        |> render("show.json", citation: citation)
+          |> put_status(:created)
+          |> put_resp_header("location", user_citation_path(conn, :show, citation))
+          |> render("show.json", citation: citation)
       {:error, changeset} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> put_status(:unprocessable_entity)
+          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -38,8 +38,8 @@ defmodule Cite.CitationController do
         render(conn, "show.json", citation: citation)
       {:error, changeset} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> put_status(:unprocessable_entity)
+          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
     end
   end
 

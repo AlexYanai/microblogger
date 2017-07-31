@@ -29,5 +29,9 @@ defmodule Cite.Router do
     resources "/users", UserController do
       resources "/citations", CitationController
     end
+
+    resources "/users", CategoryController do
+      resources "/citations", CitationController
+    end
   end
 end

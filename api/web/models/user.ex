@@ -29,7 +29,6 @@ defmodule Cite.User do
 
   def create_comment(citation, user) do
     Ecto.build_assoc(user, :citations, citation)
-    # Repo.insert!(cite)
   end
 
   defp put_password_hash(changeset) do
