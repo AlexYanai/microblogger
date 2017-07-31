@@ -6,6 +6,7 @@ defmodule Cite.User do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
+    has_many :citations, Cite.Citation
 
     timestamps()
   end
@@ -24,6 +25,11 @@ defmodule Cite.User do
     |> cast(params, [:password])
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()
+  end
+
+  def create_comment(citation, user) do
+    Ecto.build_assoc(user, :citations, citation)
+    # Repo.insert!(cite)
   end
 
   defp put_password_hash(changeset) do

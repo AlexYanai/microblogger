@@ -25,6 +25,9 @@ defmodule Cite.Router do
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
-    resources "/users", UserController, only: [:create]
+
+    resources "/users", UserController do
+      resources "/citations", CitationController
+    end
   end
 end
