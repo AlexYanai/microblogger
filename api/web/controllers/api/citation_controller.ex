@@ -3,6 +3,8 @@ defmodule Cite.CitationController do
 
   alias Cite.Citation
 
+  plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
+
   def index(conn, _params) do
     citations = Repo.all(Citation)
     render(conn, "index.json", citations: citations)

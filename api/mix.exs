@@ -24,6 +24,7 @@ defmodule Cite.Mixfile do
 
   defp deps do
     [{:phoenix, "~> 1.2.4"},
+     {:plug, "~>1.3.5", override: true},
      {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_ecto, "~> 3.0"},
      {:postgrex, ">= 0.0.0"},

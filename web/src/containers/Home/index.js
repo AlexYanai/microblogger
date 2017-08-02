@@ -5,9 +5,18 @@ import { Link } from 'react-router';
 import { logout } from '../../actions/session';
 import Navbar from '../../components/Navbar';
 
+type Citation = {
+  id: number,
+  title: string,
+  source: string,
+  quote: string,
+  user_id: number
+};
+
 type Props = {
   logout: () => void,
   currentUser: Object,
+  currentUserCitations: Array<Citation>,
   isAuthenticated: boolean,
 };
 
@@ -18,22 +27,18 @@ class Home extends Component {
 
   props: Props
 
-  handleLogout = () => this.props.logout(this.context.router);
-
   render() {
-    const { currentUser, isAuthenticated } = this.props;
-
+    const { currentUser, isAuthenticated, currentUserCitations } = this.props;
+    
     return (
       <div style={{ flex: '1' }}>
         <Navbar />
         {isAuthenticated &&
-          <ul>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/signup">Signup</Link></li>
-          </ul>
-        }
-        {isAuthenticated &&
           <div>
+            <ul>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/signup">Signup</Link></li>
+            </ul>
             <span>{currentUser.username}</span>
             <button type="button" onClick={this.handleLogout}>Logout</button>
           </div>
@@ -47,6 +52,7 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
+    currentUserCitations: state.citations.currentUserCitations,
   }),
   { logout }
 )(Home);
