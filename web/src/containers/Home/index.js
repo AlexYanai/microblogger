@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { logout } from '../../actions/session';
 import Navbar from '../../components/Navbar';
 
 type Citation = {
@@ -14,7 +13,6 @@ type Citation = {
 };
 
 type Props = {
-  logout: () => void,
   currentUser: Object,
   currentUserCitations: Array<Citation>,
   isAuthenticated: boolean,
@@ -35,12 +33,7 @@ class Home extends Component {
         <Navbar />
         {isAuthenticated &&
           <div>
-            <ul>
-              <li><Link to="/login">Login</Link></li>
-              <li><Link to="/signup">Signup</Link></li>
-            </ul>
-            <span>{currentUser.username}</span>
-            <button type="button" onClick={this.handleLogout}>Logout</button>
+            <span>Welcome, {currentUser.username}!</span>
           </div>
         }
       </div>
@@ -54,5 +47,5 @@ export default connect(
     currentUser: state.session.currentUser,
     currentUserCitations: state.citations.currentUserCitations,
   }),
-  { logout }
+  {}
 )(Home);

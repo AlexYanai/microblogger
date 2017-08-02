@@ -10,6 +10,17 @@ body {
 #root {
   display: flex;
   height: 100%;
+  --light-gray: #a2a2a2;
+  --white: #ffffff;
+  --palette-soft-white: #f2f2f2;
+  --palette-white: #fafafa;
+  --palette-bright-blue: #a5def1;
+  --palette-brighter-blue: #48b5e9;
+  --palette-pale-blue: #e8f1f5;
+  --palette-gray-blue: #dbe2ef;
+  --palette-med-blue: #005691;
+  --palette-dark-blue: #004a7c;
+  --palette-darker-blue: #112d4e;
 }
 
 .card {

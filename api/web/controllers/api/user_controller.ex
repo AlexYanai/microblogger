@@ -26,7 +26,6 @@ defmodule Cite.UserController do
   def citations(conn, %{"id" => user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     citations    = Repo.all(assoc(current_user, :citations))
-    IO.inspect citations
     
     render(conn, Cite.CitationView, "index.json", %{citations: citations})
   end
