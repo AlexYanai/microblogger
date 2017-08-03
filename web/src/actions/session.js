@@ -1,20 +1,11 @@
 import { reset } from 'redux-form';
 import api from '../api';
-import { fetchUserCitations } from './citations';
+import { fetchCitations } from './citations';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.meta.token));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
-  dispatch(fetchUserCitations(response.data.id));
-}
-
-export function login(data, router) {
-  return dispatch => api.post('/sessions', data)
-    .then((response) => {
-      setCurrentUser(dispatch, response);
-      dispatch(reset('login'));
-      router.transitionTo('/');
-    });
+  dispatch(fetchCitations(response.data.id));
 }
 
 export function signup(data, router) {
@@ -22,6 +13,15 @@ export function signup(data, router) {
     .then((response) => {
       setCurrentUser(dispatch, response);
       dispatch(reset('signup'));
+      router.transitionTo('/');
+    });
+}
+
+export function login(data, router) {
+  return dispatch => api.post('/sessions', data)
+    .then((response) => {
+      setCurrentUser(dispatch, response);
+      dispatch(reset('login'));
       router.transitionTo('/');
     });
 }

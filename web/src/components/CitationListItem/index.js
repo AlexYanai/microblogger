@@ -1,4 +1,16 @@
 import React from 'react';
+import { css, StyleSheet } from 'aphrodite';
+
+const styles = StyleSheet.create({
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '1500px',
+    marginLeft: '2rem',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});
 
 type Props = {
   citation: {
@@ -14,8 +26,10 @@ type Props = {
 
 const CitationListItem = ({ citation, currentUserCitationIds, onCitationJoin }: Props) => {
   return (
-    <div key={citation.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-      <span style={{ marginRight: '8px' }}>{citation.title}</span>
+    <div key={citation.id} className={`card ${css(styles.card)}`}>
+      <h2>{citation.title}</h2>
+      <span>{citation.source}</span>
+      <span>{citation.quote}</span>
     </div>
   );
 };

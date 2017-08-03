@@ -6,6 +6,7 @@ import { css, StyleSheet } from 'aphrodite';
 const styles = StyleSheet.create({
   navbar: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     padding: '0 1rem',
     height: '70px',
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
     ':hover': {
       textDecoration: 'none',
     },
+
     ':focus': {
       textDecoration: 'none',
     },
