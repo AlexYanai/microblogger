@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Match, Redirect } from 'react-router';
+import { Redirect, Route } from 'react-router-dom';
 
 type Props = {
   component: any,
@@ -17,9 +17,9 @@ const RedirectAuthenticated = ({
   willAuthenticate,
   component: Component,
 }: Props) =>
-  <Match
-    exactly={exactly}
-    pattern={pattern}
+  <Route 
+    exact path={exactly}
+    component={Home }
     render={(props) => {
       if (isAuthenticated) { return <Redirect to={{ pathname: '/' }} />; }
       if (willAuthenticate) { return null; }

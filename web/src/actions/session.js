@@ -13,7 +13,7 @@ export function signup(data, router) {
     .then((response) => {
       setCurrentUser(dispatch, response);
       dispatch(reset('signup'));
-      router.transitionTo('/');
+      router.history.push('/');
     });
 }
 
@@ -22,7 +22,7 @@ export function login(data, router) {
     .then((response) => {
       setCurrentUser(dispatch, response);
       dispatch(reset('login'));
-      router.transitionTo('/');
+      router.history.push('/');
     });
 }
 
@@ -31,7 +31,7 @@ export function logout(router) {
     .then(() => {
       localStorage.removeItem('token');
       dispatch({ type: 'LOGOUT' });
-      router.transitionTo('/login');
+      router.history.push('/login');
     });
 }
 

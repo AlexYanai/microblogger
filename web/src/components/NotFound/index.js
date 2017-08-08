@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const NotFound = () =>
   <div style={{ margin: '2rem auto', textAlign: 'center' }}>
