@@ -11,13 +11,14 @@ defmodule Cite.CitationController do
   end
 
   def create(conn, %{"citation" => citation_params}) do
-    changeset = Citation.changeset(%Citation{}, citation_params)
+    changeset = Guardian.Plug.current_resource(conn)
+      |> build_assoc(:citations)
+      |> Citation.changeset(citation_params)
 
     case Repo.insert(changeset) do
       {:ok, citation} ->
         conn
           |> put_status(:created)
-          |> put_resp_header("location", user_citation_path(conn, :show, citation))
           |> render("show.json", citation: citation)
       {:error, changeset} ->
         conn
@@ -47,9 +48,6 @@ defmodule Cite.CitationController do
 
   def delete(conn, %{"id" => id}) do
     citation = Repo.get!(Citation, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(citation)
 
     send_resp(conn, :no_content, "")

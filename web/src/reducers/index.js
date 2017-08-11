@@ -6,7 +6,7 @@ import citations from './citations';
 const appReducer = combineReducers({
   form,
   session,
-  citations,
+  citations
 });
 
 export default function (state, action) {

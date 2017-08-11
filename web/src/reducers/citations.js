@@ -8,7 +8,7 @@ export default function (state = initialState, action) {
     case 'FETCH_CITATIONS_SUCCESS':
       return {
         ...state,
-        all: action.response.data,
+        citation: action.response.data,
       };
     case 'FETCH_USER_CITATIONS_SUCCESS':
       return {

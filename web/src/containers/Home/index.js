@@ -1,12 +1,13 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
-import Navbar from '../../components/Navbar';
-import { Link } from 'react-router-dom';
+import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
-import { fetchCitations } from '../../actions/citations';
+import { fetchCitation, createCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
+import NewCitationForm from '../../components/NewCitationForm';
 
 const styles = StyleSheet.create({
   citationListContainer: {
@@ -30,52 +31,9 @@ type Props = {
   currentUser: Object,
   currentUserCitations: Array<Citation>,
   isAuthenticated: boolean,
+  createCitation: () => void,
+  cit: Citation
 };
-
-// class Home extends Component {
-//   static contextTypes = {
-//     router: PropTypes.object,
-//   }
-
-//   props: Props
-
-  // renderCitations() {
-  //   const currentUserCitationIds = [];
-  //   this.props.currentUserCitations.map(citation => currentUserCitationIds.push(citation.id));
-
-  //   return this.props.currentUserCitations.map(citation =>
-  //     <CitationListItem
-  //       key={citation.id}
-  //       citation={citation}
-  //       currentUserCitationIds={currentUserCitationIds}
-  //     />
-  //   );
-  // }
-
-//   render() {
-//     // const { currentUser, isAuthenticated, currentUserCitations } = this.props;
-//     console.log(this.props.currentUserCitations);
-
-//     return (
-//       <div style={{ flex: '1', overflow: 'scroll' }}>
-//         <Navbar />
-//         <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-//           <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Citation</h3>
-//           {this.renderCitations()}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default connect(
-//   state => ({
-//     isAuthenticated: state.session.isAuthenticated,
-//     currentUser: state.session.currentUser,
-//     currentUserCitations: state.citations.currentUserCitations,
-//   }),
-//   { fetchCitations }
-// )(Home);
 
 class Home extends Component {
   static contextTypes = {
@@ -83,6 +41,10 @@ class Home extends Component {
   }
 
   props: Props
+
+  handleLogout = () => this.props.logout(this.context.router);
+
+  handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
 
   renderCitations() {
     const currentUserCitationIds = [];
@@ -97,31 +59,25 @@ class Home extends Component {
     );
   }
 
-  handleLogout = () => this.props.logout(this.context.router);
-
-
   render() {
-    const { currentUser, isAuthenticated } = this.props;
+    const { isAuthenticated } = this.props;
+    const authProps = { isAuthenticated };
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
-        <Navbar />
-        <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
-          {this.renderCitations()}
+          <Navbar />
+          <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
+            <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
+            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...authProps}  />
+            {this.renderCitations()}
 
-          <ul>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/signup">Signup</Link></li>
-          </ul>
-
-          {isAuthenticated &&
-            <div>
-              <span>{currentUser.username}</span>
-              <button type="button" onClick={this.handleLogout}>Logout</button>
-            </div>
-          }
-        </div>
+            {!isAuthenticated && 
+              <ul>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/signup">Signup</Link></li>
+              </ul>
+            }
+          </div>
       </div>
     );
   }
@@ -133,5 +89,5 @@ export default connect(
     currentUser: state.session.currentUser,
     currentUserCitations: state.citations.currentUserCitations,
   }),
-  { logout }
+  { logout, fetchCitation, createCitation }
 )(Home);

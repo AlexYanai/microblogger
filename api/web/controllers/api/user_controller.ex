@@ -3,7 +3,7 @@ defmodule Cite.UserController do
 
   alias Cite.User
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Sling.SessionController] when action in [:citations]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Cite.SessionController] when action in [:citations]
 
   def create(conn, params) do
     changeset = User.registration_changeset(%User{}, params)

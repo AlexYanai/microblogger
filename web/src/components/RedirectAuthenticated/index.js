@@ -17,9 +17,9 @@ const RedirectAuthenticated = ({
   willAuthenticate,
   component: Component,
 }: Props) =>
-  <Route 
-    exact path={exactly}
-    component={Home }
+  <Route
+    exactly={exactly}
+    pattern={pattern}
     render={(props) => {
       if (isAuthenticated) { return <Redirect to={{ pathname: '/' }} />; }
       if (willAuthenticate) { return null; }

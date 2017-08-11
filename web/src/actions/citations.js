@@ -1,11 +1,11 @@
 import api from '../api';
 
-// export function fetchCitation() {
-//   return dispatch => api.fetch('/citations')
-//     .then((response) => {
-//       dispatch({ type: 'FETCH_CITATIONS_SUCCESS', response });
-//     });
-// }
+export function fetchCitation(userId, citationId) {
+  return dispatch => api.fetch(`/users/${userId}/citations/${citationId}`)
+    .then((response) => {
+      dispatch({ type: 'FETCH_CITATIONS_SUCCESS', response });
+    });
+}
 
 export function fetchCitations(userId) {
   return dispatch => api.fetch(`/users/${userId}/citations`)
@@ -14,10 +14,11 @@ export function fetchCitations(userId) {
     });
 }
 
-// export function createCitation(data, router) {
-//   return dispatch => api.post('/citations', data)
-//     .then((response) => {
-//       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
-//       router.transitionTo(`/r/${response.data.id}`);
-//     });
-// }
+export function createCitation(data, router, currentUser) {
+  data["user_id"] = currentUser.id;
+  console.log(data);
+  return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
+    .then((response) => {
+      dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
+    });
+}

@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/session';
 import SignupForm from '../../components/SignupForm';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../containers/Navbar';
 
 type Props = {
   signup: () => void,
