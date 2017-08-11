@@ -27,13 +27,10 @@ export default function (state = initialState, action) {
           action.response.data,
         ],
       };
-    case 'CITATION_JOINED':
+    case 'CREATE_CITATION_FAILURE':
       return {
         ...state,
-        currentUserCitations: [
-          ...state.currentUserCitations,
-          action.response.data,
-        ],
+        newCitationErrors: action.error.errors,
       };
     default:
       return state;

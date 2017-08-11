@@ -2,11 +2,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Input from '../Input';
-import { connect } from 'react-redux';
 
 type Props = {
   handleSubmit: () => void,
-  isAuthenticated: boolean,
   onSubmit: () => void,
   submitting: boolean,
   errors: any,
@@ -16,11 +14,9 @@ class NewCitationForm extends Component {
   props: Props
 
   handleSubmit = (data) => this.props.onSubmit(data);
+
   render() {
-    const { handleSubmit, submitting, errors, isAuthenticated } = this.props;
-    
-    console.log("this.props.isAuthenticated");
-    console.log(this.props.isAuthenticated);
+    const { handleSubmit, submitting, errors } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -46,6 +42,7 @@ class NewCitationForm extends Component {
             component={Input}
             className="form-control"
           />
+
           <div className="input-group-btn">
             <button type="submit" className="btn btn-primary" disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}
@@ -60,9 +57,17 @@ class NewCitationForm extends Component {
 const validate = (values) => {
   const errors = {};
   
-  // if (!values.name) {
-  //   errors.name = 'Required';
-  // }
+  if (!values.title) {
+    errors.title = 'Required';
+  }
+  
+  if (!values.source) {
+    errors.source = 'Required';
+  }
+  
+  if (!values.quote) {
+    errors.quote = 'Required';
+  }
 
   return errors;
 };
