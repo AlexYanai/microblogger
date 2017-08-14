@@ -33,9 +33,10 @@ class Citation extends Component {
   props: Props;
 
   render() {
-    const { currentUser, isAuthenticated, id, citation_id } = this.props;
-    const userId     = this.props.citation.user_id;
-    const citationId = this.props.citation.id;
+    const { currentUser, isAuthenticated } = this.props;
+    const userId     = this.props.match.params.id;
+    const citationId = this.props.match.params.citation_id;
+    console.log(this);
 
     return (
       <div style={{ flex: '1' }}>
