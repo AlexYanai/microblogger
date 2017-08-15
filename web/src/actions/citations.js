@@ -1,4 +1,5 @@
 import api from '../api';
+import { hideModal } from './modal';
 
 export function fetchCitation(userId, citationId) {
   return dispatch => api.fetch(`/users/${userId}/citations/${citationId}`)
@@ -21,6 +22,8 @@ export function createCitation(data, router, currentUser) {
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
       dispatch(fetchCitations(response.data.id));
+      dispatch(hideModal());
+
       router.history.push('/');
     })
     .catch((error) => {

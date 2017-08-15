@@ -11,9 +11,10 @@ export function showModal(router, modalOpen) {
 }
 
 export function hideModal() {
-  return (dispatch, router) => {
+  return (dispatch) => {
     dispatch({ 
-      type: 'HIDE_MODAL'
+      type: 'HIDE_MODAL',
+      isModalOpen: false
     });
   };
 }

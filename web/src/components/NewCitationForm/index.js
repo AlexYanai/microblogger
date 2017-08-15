@@ -1,14 +1,17 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Input from '../Input';
 import { css, StyleSheet } from 'aphrodite';
+import { connect } from 'react-redux';
+import { showModal } from '../../actions/modal';
 
 type Props = {
   handleSubmit: () => void,
   onSubmit: () => void,
   submitting: boolean,
   errors: any,
+  showModal: () => void,
 };
 
 const styles = StyleSheet.create({
@@ -19,49 +22,64 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    background: 'rgba(0, 0, 0, 0.15)'
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0, 0, 0, 0.3)'
   },
+
+  card: {
+    zIndex: '9998',
+    padding: '3rem 4rem',
+    margin: '2rem auto',
+    width: '40%'
+  }
 });
 
 class NewCitationForm extends Component {
+  static contextTypes = {
+    router: PropTypes.object,
+  }
+
   props: Props
 
   handleSubmit = (data) => this.props.onSubmit(data);
+
+  showCitationModal = () => this.props.showModal(this.context.router, this.props.isModalOpen);
+
+  dontClose(e) {
+    e.stopPropagation();
+  }
 
   render() {
     const { handleSubmit, submitting, errors } = this.props;
 
     return (
-      <div className={`modal ${css(styles.modal)}`}>
-        <form onSubmit={handleSubmit(this.handleSubmit)}>
+      <div className={`modal ${css(styles.modal)}`} onClick={this.showCitationModal.bind(this)}>
+        <form className={`card ${css(styles.card)}`} onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>
           <div className="input-group">
             <Field
               name="title"
               type="string"
               placeholder="Title"
               component={Input}
-              className="form-control"
             />
             <Field
               name="source"
               type="text"
               placeholder="Source"
               component={Input}
-              className="form-control"
             />
             <Field
               name="quote"
-              type="text"
+              type="textarea"
               placeholder="Quote"
-              component={Input}
+              component="textarea"
               className="form-control"
             />
 
-            <div className="input-group-btn">
-              <button type="submit" className="btn btn-primary" disabled={submitting}>
-                {submitting ? 'Saving...' : 'Submit'}
-              </button>
-            </div>
+            <button type="submit" className="btn btn-block btn-primary" disabled={submitting}>
+              {submitting ? 'Saving...' : 'Submit'}
+            </button>
           </div>
         </form>
       </div>
@@ -87,7 +105,16 @@ const validate = (values) => {
   return errors;
 };
 
-export default reduxForm({
+NewCitationForm = reduxForm({
   form: 'newCitation',
   validate,
 })(NewCitationForm);
+
+NewCitationForm = connect(
+  state => ({
+    isModalOpen: state.modal.isModalOpen
+  }),
+  { showModal }
+)(NewCitationForm);
+
+export default NewCitationForm;

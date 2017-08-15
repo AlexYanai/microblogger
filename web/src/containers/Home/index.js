@@ -43,11 +43,6 @@ class Home extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
-
-  componentDidMount() {
-    // this.props = { isModalOpen: false };
-  }
-
   props: Props
 
   handleLogout = () => this.props.logout(this.context.router);
