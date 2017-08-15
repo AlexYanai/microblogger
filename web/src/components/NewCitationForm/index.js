@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Input from '../Input';
+import { css, StyleSheet } from 'aphrodite';
 
 type Props = {
   handleSubmit: () => void,
@@ -9,6 +10,18 @@ type Props = {
   submitting: boolean,
   errors: any,
 };
+
+const styles = StyleSheet.create({
+  modal: {
+    display: 'flex',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    background: 'rgba(0, 0, 0, 0.15)'
+  },
+});
 
 class NewCitationForm extends Component {
   props: Props
@@ -19,37 +32,39 @@ class NewCitationForm extends Component {
     const { handleSubmit, submitting, errors } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.handleSubmit)}>
-        <div className="input-group">
-          <Field
-            name="title"
-            type="string"
-            placeholder="Title"
-            component={Input}
-            className="form-control"
-          />
-          <Field
-            name="source"
-            type="text"
-            placeholder="Source"
-            component={Input}
-            className="form-control"
-          />
-          <Field
-            name="quote"
-            type="text"
-            placeholder="Quote"
-            component={Input}
-            className="form-control"
-          />
+      <div className={`modal ${css(styles.modal)}`}>
+        <form onSubmit={handleSubmit(this.handleSubmit)}>
+          <div className="input-group">
+            <Field
+              name="title"
+              type="string"
+              placeholder="Title"
+              component={Input}
+              className="form-control"
+            />
+            <Field
+              name="source"
+              type="text"
+              placeholder="Source"
+              component={Input}
+              className="form-control"
+            />
+            <Field
+              name="quote"
+              type="text"
+              placeholder="Quote"
+              component={Input}
+              className="form-control"
+            />
 
-          <div className="input-group-btn">
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
-              {submitting ? 'Saving...' : 'Submit'}
-            </button>
+            <div className="input-group-btn">
+              <button type="submit" className="btn btn-primary" disabled={submitting}>
+                {submitting ? 'Saving...' : 'Submit'}
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     );
   }
 }

@@ -15,8 +15,6 @@ export default function (state = initialState, action) {
         isModalOpen: action.isModalOpen,
         modalProps: action.modalProps
       }
-    case 'HIDE_MODAL':
-      return initialState
     default:
       return state
   }

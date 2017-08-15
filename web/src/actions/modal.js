@@ -6,10 +6,6 @@ export function showModal(router, modalOpen) {
       type: 'SHOW_MODAL',
       isModalOpen: open
     });
-    
-    // console.log("ROUTER");
-    // console.log(router);
-    // router.history.push('/modal');
   };
 
 }
@@ -20,6 +16,4 @@ export function hideModal() {
       type: 'HIDE_MODAL'
     });
   };
-
-  // router.history.push('/');
 }
