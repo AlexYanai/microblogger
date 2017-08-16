@@ -1,7 +1,7 @@
 defmodule Cite.UserController do
   use Cite.Web, :controller
 
-  alias Cite.User
+  alias Cite.{User, Citation, Repo}
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Cite.SessionController] when action in [:citations]
 
@@ -25,7 +25,10 @@ defmodule Cite.UserController do
 
   def citations(conn, %{"id" => user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    citations    = Repo.all(assoc(current_user, :citations))
+    citations    = Citation
+      |> where([m], m.user_id == ^current_user.id)
+      |> order_by([desc: :inserted_at, desc: :id])
+      |> Repo.all
     
     render(conn, Cite.CitationView, "index.json", %{citations: citations})
   end
