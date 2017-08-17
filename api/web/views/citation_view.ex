@@ -16,4 +16,8 @@ defmodule Cite.CitationView do
       quote: citation.quote,
       user_id: citation.user_id}
   end
+
+  def render("delete.json", _) do
+    %{ok: true}
+  end
 end

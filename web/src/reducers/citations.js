@@ -32,6 +32,10 @@ export default function (state = initialState, action) {
         ...state,
         newCitationErrors: action.error.errors,
       };
+    case 'DELETE_CITATION':
+      return {
+        ...state
+      };
     default:
       return state;
   }

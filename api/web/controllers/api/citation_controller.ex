@@ -33,7 +33,7 @@ defmodule Cite.CitationController do
   end
 
   def update(conn, %{"id" => id, "citation" => citation_params}) do
-    citation = Repo.get!(Citation, id)
+    citation  = Repo.get!(Citation, id)
     changeset = Citation.changeset(citation, citation_params)
 
     case Repo.update(changeset) do
@@ -50,6 +50,8 @@ defmodule Cite.CitationController do
     citation = Repo.get!(Citation, id)
     Repo.delete!(citation)
 
-    send_resp(conn, :no_content, "")
+    conn
+      |> put_status(:ok)
+      |> render("delete.json")
   end
 end

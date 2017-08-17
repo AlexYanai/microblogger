@@ -20,6 +20,7 @@
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.13.3", "c277cfb2a9c5034d445a722494c13359e361d344ef6f25d604c2353185682bfc", [:mix], [{:connection, "~> 1.0", [hex: :connection, optional: false]}, {:db_connection, "~> 1.1", [hex: :db_connection, optional: false]}, {:decimal, "~> 1.0", [hex: :decimal, optional: false]}]},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], []},
+  "rummage_ecto": {:hex, :rummage_ecto, "1.2.0", "06b9f77a5a7b4a319b3d9992de4bcb37ea70bcbea5d4b5cc328b74c1b3958be1", [:mix], [{:ecto, "~> 2.1", [hex: :ecto, optional: false]}]},
   "scrivener": {:hex, :scrivener, "2.3.0", "16b1d744202d47233798205447b35592d96a209241c566304f84ddef63c718b2", [:mix], []},
   "scrivener_ecto": {:hex, :scrivener_ecto, "1.2.2", "811e4016dc19836a12c746989d2b9b495c3a9e739a2531c4b58226219109ff51", [:mix], [{:ecto, "~> 2.0", [hex: :ecto, optional: false]}, {:postgrex, "~> 0.11.0 or ~> 0.12.0 or ~> 0.13.0", [hex: :postgrex, optional: true]}, {:scrivener, "~> 2.3", [hex: :scrivener, optional: false]}]},
   "uuid": {:hex, :uuid, "1.1.7", "007afd58273bc0bc7f849c3bdc763e2f8124e83b957e515368c498b641f7ab69", [:mix], []}}

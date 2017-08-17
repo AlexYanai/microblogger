@@ -30,3 +30,16 @@ export function createCitation(data, router, currentUser) {
       dispatch({ type: 'CREATE_CITATION_FAILURE', error });
     });
 }
+
+export function deleteCitation(router, currentUser, citationId) {
+  return dispatch => api.delete(`/users/${currentUser.id}/citations/${citationId}`, {"id": citationId})
+    .then(() => {
+      // dispatch({ type: 'DELETE_CITATION', response });
+      dispatch(fetchCitations(currentUser.id));
+
+      router.history.push('/');
+    })
+    // .catch((error) => {
+    //   dispatch({ type: 'CREATE_CITATION_FAILURE', error });
+    // });
+}

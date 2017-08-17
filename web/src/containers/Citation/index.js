@@ -33,7 +33,7 @@ class Citation extends Component {
   props: Props;
 
   render() {
-    const { currentUser, isAuthenticated } = this.props;
+    // const { currentUser, isAuthenticated } = this.props;
     const userId     = this.props.match.params.id;
     const citationId = this.props.match.params.citation_id;
     console.log(this);
@@ -51,9 +51,9 @@ class Citation extends Component {
 
 export default connect(
   state => ({
-    isAuthenticated: state.session.isAuthenticated,
-    currentUser: state.session.currentUser,
-    citation: state.citations.citation,
+    // isAuthenticated: state.session.isAuthenticated,
+    // currentUser: state.session.currentUser,
+    citation: state.citations.citation
   }),
   { fetchCitation }
 )(Citation);

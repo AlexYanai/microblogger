@@ -51,7 +51,7 @@ class NewCitationForm extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, errors } = this.props;
+    const { handleSubmit, submitting } = this.props;
 
     return (
       <div className={`modal ${css(styles.modal)}`} onClick={this.showCitationModal.bind(this)}>
@@ -87,27 +87,8 @@ class NewCitationForm extends Component {
   }
 }
 
-const validate = (values) => {
-  const errors = {};
-  
-  if (!values.title) {
-    errors.title = 'Required';
-  }
-  
-  if (!values.source) {
-    errors.source = 'Required';
-  }
-  
-  if (!values.quote) {
-    errors.quote = 'Required';
-  }
-
-  return errors;
-};
-
 NewCitationForm = reduxForm({
-  form: 'newCitation',
-  validate,
+  form: 'newCitation'
 })(NewCitationForm);
 
 NewCitationForm = connect(

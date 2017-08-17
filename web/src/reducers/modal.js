@@ -1,7 +1,5 @@
 const initialState = {
-  isModalOpen: false,
-  modalType: null,
-  modalProps: {}
+  isModalOpen: false
 }
 
 export default function (state = initialState, action) {
@@ -11,18 +9,14 @@ export default function (state = initialState, action) {
       console.log(state);
       return {
         ...state,
-        modalType: action.modalType,
-        isModalOpen: action.isModalOpen,
-        modalProps: action.modalProps
+        isModalOpen: action.isModalOpen
       }
     case 'HIDE_MODAL':
       console.log("IN HIDE MODAL");
       console.log(state);
       return {
         ...state,
-        modalType: action.modalType,
-        isModalOpen: action.isModalOpen,
-        modalProps: action.modalProps
+        isModalOpen: action.isModalOpen
       }
     default:
       return state

@@ -6,10 +6,9 @@ import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { fetchCitation, createCitation } from '../../actions/citations';
+import { fetchCitation, createCitation, deleteCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
-import ModalRoot from '../../components/ModalRoot';
 
 const styles = StyleSheet.create({
   citationListContainer: {
@@ -19,6 +18,20 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
     marginLeft: 'auto',
   },
+
+  buttonRow: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    marginLeft: '2px',
+    marginBottom: '20px'
+  },
+
+  search: {
+    flex: '1',
+    width: '40%',
+    marginLeft: '10%'
+  }
 });
 
 type Citation = {
@@ -35,6 +48,7 @@ type Props = {
   isAuthenticated: boolean,
   isModalOpen: boolean,
   createCitation: () => void,
+  deleteCitation: () => void,
   showModal: () => void,
   cit: Citation
 };
@@ -43,13 +57,13 @@ class Home extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
+
   props: Props
 
-  handleLogout = () => this.props.logout(this.context.router);
-  
-  showCitationModal = () => this.props.showModal(this.context.router, this.props.isModalOpen);
-
+  handleLogout            = ()    => this.props.logout(this.context.router);
+  showCitationModal       = ()    => this.props.showModal(this.context.router, this.props.isModalOpen);
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
+  handleDeleteCitation    = (data) => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
 
   renderCitations() {
     const currentUserCitationIds = [];
@@ -59,6 +73,7 @@ class Home extends Component {
       <CitationListItem
         key={citation.id}
         citation={citation}
+        handleDeleteCitation={this.handleDeleteCitation}
         currentUserCitationIds={currentUserCitationIds}
       />
     );
@@ -78,9 +93,15 @@ class Home extends Component {
           <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
             <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
 
-            <button className="btn btn-primary" onClick={this.showCitationModal} >
-              New Citation
-            </button>
+            <div className={`buttonRow ${css(styles.buttonRow)}`}>
+              <button className="btn btn-primary" onClick={this.showCitationModal} >
+                New Citation
+              </button>
+              
+              <div className="search">
+                <input type="search" className="form-control" placeholder='Search..'/>
+              </div>
+            </div>
 
             {isModalOpen &&
               <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...authProps}  />
@@ -107,5 +128,5 @@ export default connect(
     currentUserCitations: state.citations.currentUserCitations,
     isModalOpen: state.modal.isModalOpen,
   }),
-  { logout, fetchCitation, createCitation, showModal }
+  { logout, fetchCitation, createCitation, deleteCitation, showModal }
 )(Home);
