@@ -8,12 +8,14 @@ import { logout } from '../../actions/session';
 const styles = StyleSheet.create({
   bar: {
     display: 'flex',
+    position: 'fixed',
     flexDirection: 'row',
     alignItems: 'center',
+    zIndex: '1030',
     width: '100%',
     background: 'var(--white)',
-    padding: '20px',
     height: '70px',
+    top: '0',
     boxShadow: '0 1px 1px rgba(0,0,0,.1)',
   },
 
@@ -71,7 +73,7 @@ class Navbar extends Component {
     // const { currentUser, isAuthenticated } = this.props;
 
     return (
-      <div className={css(styles.bar)}>
+      <nav className={css(styles.bar)}>
           <NavLink to="/" className={css(styles.link)}>Cite</NavLink>
           {isAuthenticated &&
             <div className={css(styles.link, styles.linkRight)}>
@@ -85,7 +87,7 @@ class Navbar extends Component {
               </button>
             </div> 
           }
-      </div>
+      </nav>
     )
   }
 }

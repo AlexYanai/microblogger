@@ -46,7 +46,7 @@ class App extends Component {
 
     return (
       <Router>
-        <div style={{ display: 'flex', flex: '1' }}>
+        <div style={{ display: 'flex', flex: '1', paddingTop: '4rem', }}>
           <Switch>
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
             <Route path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />

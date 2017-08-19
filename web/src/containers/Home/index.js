@@ -13,7 +13,7 @@ import EditCitationForm from '../../components/EditCitationForm';
 const styles = StyleSheet.create({
   citationListContainer: {
     maxWidth: '1500px',
-    padding: '3rem 4rem',
+    padding: '4rem 4rem',
     marginRight: 'auto',
     marginBottom: 'auto',
     marginLeft: 'auto',
@@ -86,8 +86,7 @@ class Home extends Component {
 
   render() {
     const { isAuthenticated, isModalOpen, isEditModalOpen } = this.props;
-    const authProps = { isAuthenticated, isModalOpen, isEditModalOpen };
-    console.log(this.props.currentUserCitations.length);
+    const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen };
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
@@ -102,11 +101,11 @@ class Home extends Component {
           </div>
 
           {isModalOpen &&
-            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...authProps}  />
+            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...modalProps}  />
           }
 
           {isEditModalOpen &&
-            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...authProps} />
+            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...modalProps} />
           }
 
           {this.renderCitations()}

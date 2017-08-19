@@ -32,7 +32,6 @@ export function createCitation(data, router, currentUser) {
 }
 
 export function editCitation(data, router, currentCitation) {
-  console.log("editCitation Before");
   return dispatch => api.patch(`/users/${currentCitation.user_id}/citations/${currentCitation.id}`, {"citation": currentCitation})
     .then((response) => {
       dispatch({ type: 'EDIT_CITATION_SUCCESS', response });
