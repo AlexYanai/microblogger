@@ -108,7 +108,6 @@ class CitationListItem extends Component {
           </div>
         </div>
 
-        <span>{this.props.citation.user_id} - {this.props.citation.id}</span>
         <span>{this.props.citation.source}</span>
         <span>{this.props.citation.quote}</span>
       </div>

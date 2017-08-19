@@ -12,7 +12,7 @@ import EditCitationForm from '../../components/EditCitationForm';
 
 const styles = StyleSheet.create({
   citationListContainer: {
-    maxWidth: '1500px',
+    maxWidth: '1000px',
     padding: '4rem 4rem',
     marginRight: 'auto',
     marginBottom: 'auto',
@@ -92,10 +92,8 @@ class Home extends Component {
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar />
         <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
-
           <div className={`buttonRow ${css(styles.buttonRow)}`}>
-            <button className="btn btn-primary" onClick={this.showCitationModal} >
+            <button className="btn btn-primary" style={{ margin: 'auto' }} onClick={this.showCitationModal} >
               New Citation
             </button>
           </div>
