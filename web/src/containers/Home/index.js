@@ -71,7 +71,7 @@ class Home extends Component {
   renderCitations() {
     const currentUserCitationIds = [];
     this.props.currentUserCitations.map(citation => currentUserCitationIds.push(citation.id));
-
+    
     return this.props.currentUserCitations.map(citation =>
       <CitationListItem
         key={citation.id}
@@ -87,6 +87,7 @@ class Home extends Component {
   render() {
     const { isAuthenticated, isModalOpen, isEditModalOpen } = this.props;
     const authProps = { isAuthenticated, isModalOpen, isEditModalOpen };
+    console.log(this.props.currentUserCitations.length);
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>

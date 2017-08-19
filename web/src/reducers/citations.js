@@ -35,14 +35,6 @@ export default function (state = initialState, action) {
     case 'EDIT_CITATION_SUCCESS':
       return {
         ...state,
-        all: [
-          action.response.data,
-          ...state.all,
-        ],
-        currentUserCitations: [
-          ...state.currentUserCitations,
-          action.response.data,
-        ],
       };
     case 'EDIT_CITATION_FAILURE':
       return {
