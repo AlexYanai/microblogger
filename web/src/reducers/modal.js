@@ -1,22 +1,31 @@
 const initialState = {
-  isModalOpen: false
+  isModalOpen: false,
+  isEditModalOpen: false,
+  editFormData: {}
 }
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case 'SHOW_MODAL':
-      console.log("IN SHOW MODAL");
-      console.log(state);
       return {
         ...state,
         isModalOpen: action.isModalOpen
       }
     case 'HIDE_MODAL':
-      console.log("IN HIDE MODAL");
-      console.log(state);
       return {
         ...state,
         isModalOpen: action.isModalOpen
+      }
+    case 'SHOW_EDIT_MODAL':
+      return {
+        ...state,
+        isEditModalOpen: action.isEditModalOpen,
+        initialValues: action.editFormData
+      }
+    case 'HIDE_EDIT_MODAL':
+      return {
+        ...state,
+        isEditModalOpen: action.isEditModalOpen
       }
     default:
       return state

@@ -1,5 +1,5 @@
 import api from '../api';
-import { hideModal } from './modal';
+import { hideModal, hideEditModal } from './modal';
 
 export function fetchCitation(userId, citationId) {
   return dispatch => api.fetch(`/users/${userId}/citations/${citationId}`)
@@ -31,15 +31,24 @@ export function createCitation(data, router, currentUser) {
     });
 }
 
-export function deleteCitation(router, currentUser, citationId) {
-  return dispatch => api.delete(`/users/${currentUser.id}/citations/${citationId}`, {"id": citationId})
-    .then(() => {
-      // dispatch({ type: 'DELETE_CITATION', response });
-      dispatch(fetchCitations(currentUser.id));
+export function editCitation(data, router, currentCitation) {
+  return dispatch => api.patch(`/users/${currentCitation.user_id}/citations/${currentCitation.id}`, {"citation": currentCitation})
+    .then((response) => {
+      dispatch({ type: 'EDIT_CITATION_SUCCESS', response });
+      dispatch(fetchCitations(response.data.id));
+      dispatch(hideEditModal());
 
       router.history.push('/');
     })
-    // .catch((error) => {
-    //   dispatch({ type: 'CREATE_CITATION_FAILURE', error });
-    // });
+    .catch((error) => {
+      dispatch({ type: 'EDIT_CITATION_FAILURE', error });
+    });
+}
+
+export function deleteCitation(router, currentUser, citationId) {
+  return dispatch => api.delete(`/users/${currentUser}/citations/${citationId}`, {"id": citationId})
+    .then(() => {
+      dispatch(fetchCitations(currentUser));
+      router.history.push('/');
+    })
 }

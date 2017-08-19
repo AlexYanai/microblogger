@@ -43,9 +43,7 @@ class App extends Component {
   render() {
     const { isAuthenticated, willAuthenticate } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
-    console.log("this");
-    console.log(this);
-    console.log("this");
+
     return (
       <Router>
         <div style={{ display: 'flex', flex: '1' }}>

@@ -1,14 +1,14 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { fetchCitation, createCitation, deleteCitation } from '../../actions/citations';
+import { fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
+import EditCitationForm from '../../components/EditCitationForm';
 
 const styles = StyleSheet.create({
   citationListContainer: {
@@ -47,10 +47,12 @@ type Props = {
   currentUserCitations: Array<Citation>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
+  isEditModalOpen: boolean,
   createCitation: () => void,
   deleteCitation: () => void,
+  editCitation: () => void,
   showModal: () => void,
-  cit: Citation
+  editFormData: Citation
 };
 
 class Home extends Component {
@@ -60,10 +62,11 @@ class Home extends Component {
 
   props: Props
 
-  handleLogout            = ()    => this.props.logout(this.context.router);
-  showCitationModal       = ()    => this.props.showModal(this.context.router, this.props.isModalOpen);
+  handleLogout            =  ()  => this.props.logout(this.context.router);
+  showCitationModal       =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
-  handleDeleteCitation    = (data) => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
+  handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
+  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
 
   renderCitations() {
     const currentUserCitationIds = [];
@@ -73,6 +76,8 @@ class Home extends Component {
       <CitationListItem
         key={citation.id}
         citation={citation}
+        isEditModalOpen={this.isEditModalOpen}
+        showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
         currentUserCitationIds={currentUserCitationIds}
       />
@@ -80,42 +85,31 @@ class Home extends Component {
   }
 
   render() {
-    const { isAuthenticated, isModalOpen } = this.props;
-    const authProps = { isAuthenticated, isModalOpen };
-
-    console.log("IN HOME");
-    console.log("isModalOpen");
-    console.log(this.props.isModalOpen);
+    const { isAuthenticated, isModalOpen, isEditModalOpen } = this.props;
+    const authProps = { isAuthenticated, isModalOpen, isEditModalOpen };
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
-          <Navbar />
-          <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-            <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
+        <Navbar />
+        <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
+          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Home</h3>
 
-            <div className={`buttonRow ${css(styles.buttonRow)}`}>
-              <button className="btn btn-primary" onClick={this.showCitationModal} >
-                New Citation
-              </button>
-              
-              <div className="search">
-                <input type="search" className="form-control" placeholder='Search..'/>
-              </div>
-            </div>
-
-            {isModalOpen &&
-              <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...authProps}  />
-            }
-
-            {this.renderCitations()}
-
-            {!isAuthenticated && 
-              <ul>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/signup">Signup</Link></li>
-              </ul>
-            }
+          <div className={`buttonRow ${css(styles.buttonRow)}`}>
+            <button className="btn btn-primary" onClick={this.showCitationModal} >
+              New Citation
+            </button>
           </div>
+
+          {isModalOpen &&
+            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...authProps}  />
+          }
+
+          {isEditModalOpen &&
+            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...authProps} />
+          }
+
+          {this.renderCitations()}
+        </div>
       </div>
     );
   }
@@ -126,7 +120,10 @@ export default connect(
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
     currentUserCitations: state.citations.currentUserCitations,
+    editFormData: state.modal.editFormData,
+    initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
+    isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchCitation, createCitation, deleteCitation, showModal }
+  { logout, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
 )(Home);

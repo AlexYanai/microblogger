@@ -18,3 +18,25 @@ export function hideModal() {
     });
   };
 }
+
+export function showEditModal(router, modalOpen, editFormData) {
+  return (dispatch) => {
+    const open = !modalOpen;
+
+    dispatch({ 
+      type: 'SHOW_EDIT_MODAL',
+      isEditModalOpen: open,
+      editFormData: editFormData
+    });
+  };
+
+}
+
+export function hideEditModal() {
+  return (dispatch) => {
+    dispatch({ 
+      type: 'HIDE_EDIT_MODAL',
+      isEditModalOpen: false
+    });
+  };
+}

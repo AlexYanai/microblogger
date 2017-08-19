@@ -32,6 +32,23 @@ export default function (state = initialState, action) {
         ...state,
         newCitationErrors: action.error.errors,
       };
+    case 'EDIT_CITATION_SUCCESS':
+      return {
+        ...state,
+        all: [
+          action.response.data,
+          ...state.all,
+        ],
+        currentUserCitations: [
+          ...state.currentUserCitations,
+          action.response.data,
+        ],
+      };
+    case 'EDIT_CITATION_FAILURE':
+      return {
+        ...state,
+        newCitationErrors: action.error.errors,
+      };
     case 'DELETE_CITATION':
       return {
         ...state

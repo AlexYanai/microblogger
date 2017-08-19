@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite';
-import { Link } from 'react-router-dom';
-// import { fetchCitation } from '../../actions/citations';
-// import MatchAuthenticated from '../../components/MatchAuthenticated';
+import { connect } from 'react-redux';
+import { showModal, showEditModal } from '../../actions/modal';
+import { deleteCitation, editCitation } from '../../actions/citations';
 
 const styles = StyleSheet.create({
   link: {
@@ -40,10 +40,16 @@ const styles = StyleSheet.create({
     width: '25%',
   },
 
-  logoutButton: {
+  buttons: {
     width: '25%',
     textAlign: 'right',
     padding: '0',
+    background: 'transparent',
+    border: '0',
+    cursor: 'pointer',
+  },
+
+  logoutButton: {
     background: 'transparent',
     border: '0',
     cursor: 'pointer',
@@ -58,43 +64,63 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  citation: {
-    id: number,
-    title: string,
-    source: string,
-    quote: string,
-    user_id: number
-  },
-  
-  currentUserCitationIds: Array
+  citation: Object,
+  editFormData: Object,
+  handleDeleteCitation: () => void,
+  showEditCitationModal: () => void,
+  currentUserCitationIds: Array,
+  isEditModalOpen: boolean,
 };
 
-const partial = (fn, ...args) => fn.bind(null, ...args)
+class CitationListItem extends Component {
+  static contextTypes = {
+    router: PropTypes.object,
+  }
 
-const CitationListItem = (props) => {
-  const handleDeleteCitation = props.handleDeleteCitation.bind(null, props.citation.id);
+  props: Props;
 
-  return (
-    <div key={props.citation.id} className={`card ${css(styles.card)}`}>
-      <div className={`buttonRow ${css(styles.buttonRow)}`} >
-        <div className={`left ${css(styles.left)}`}></div>
-        
-        <Link className={css(styles.link)} to={`/user/${props.citation.user_id}/citations/${props.citation.id}`}>
-          <h2>{props.citation.title}</h2>
-        </Link>
-        
-        <button type="button" className={css(styles.logoutButton)} onClick={handleDeleteCitation}>
-          <div className={css(styles.badge)}>
-            <span className="fa fa-trash" />
+  showEditCitationModal = ()   => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.citation);
+  handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
+  handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
+
+  render() {
+    return (
+      <div key={this.props.citation.id} className={`card ${css(styles.card)}`}>
+        <div className={`buttonRow ${css(styles.buttonRow)}`} >
+          <div className={`left ${css(styles.left)}`}></div>
+          
+          <div className={css(styles.link)}>
+            <h2><a href="#">{this.props.citation.title}</a></h2>
           </div>
-        </button>
+          
+          <div className={css(styles.buttons)}>
+            <button type="button" className={css(styles.logoutButton)} onClick={this.showEditCitationModal}>
+              <div className={css(styles.badge)}>
+                <span className="fa fa-pencil" />
+              </div>
+            </button>
+            
+            <button type="button" className={css(styles.logoutButton)} onClick={this.handleDeleteCitation}>
+              <div className={css(styles.badge)}>
+                <span className="fa fa-trash" />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <span>{this.props.citation.user_id} - {this.props.citation.id}</span>
+        <span>{this.props.citation.source}</span>
+        <span>{this.props.citation.quote}</span>
       </div>
+    )
+  }
+}
 
-      <span>{props.citation.user_id} - {props.citation.id}</span>
-      <span>{props.citation.source}</span>
-      <span>{props.citation.quote}</span>
-    </div>
-  );
-};
-
-export default CitationListItem;
+export default connect(
+  state => ({
+    isEditModalOpen: state.modal.isEditModalOpen,
+    editFormData: state.modal.editFormData,
+    initialValues: state.modal.initialValues,
+  }),
+  { deleteCitation, editCitation, showModal, showEditModal }
+)(CitationListItem);

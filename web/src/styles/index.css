@@ -37,12 +37,11 @@ body {
 
 a {
   margin: 5px;
+  text-decoration: none;
+  color: inherit;
 }
 
-a, a:visited {
-  color: blue;
-}
-
-a.active {
-  color: red;
+a, a:visited, a:link, a:hover, a:active {
+  text-decoration: none;
+  color: inherit;
 }
