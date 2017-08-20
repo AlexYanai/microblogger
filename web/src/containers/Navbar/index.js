@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     zIndex: '1030',
     width: '100%',
     background: 'var(--white)',
+    padding: '20px',
     height: '70px',
     top: '0',
     boxShadow: '0 1px 1px rgba(0,0,0,.1)',
@@ -46,6 +47,13 @@ const styles = StyleSheet.create({
     borderRadius: '5px',
   },
 
+  wrap: {
+    display: 'inherit',
+    alignItems: 'center',
+    color: 'var(--palette-med-gray)',
+    fontSize: '20px',
+  },
+
   logoutButton: {
     padding: '0',
     background: 'transparent',
@@ -69,13 +77,17 @@ class Navbar extends Component {
   handleLogout = () => this.props.logout(this.context.router);
 
   render() {
-    const { isAuthenticated } = this.props;
-    // const { currentUser, isAuthenticated } = this.props;
+    const { currentUser, isAuthenticated } = this.props;
 
     return (
       <nav className={css(styles.bar)}>
-          <NavLink to="/" className={css(styles.link)}>Cite</NavLink>
-          {isAuthenticated &&
+        <NavLink to="/" className={css(styles.link)}>Cite</NavLink>
+        {isAuthenticated &&
+          <div className={css(styles.wrap)} >
+            <div className={css(styles.username)}>
+              <NavLink to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
+            </div>
+
             <div className={css(styles.link, styles.linkRight)}>
               <button type="button" 
                       className={css(styles.logoutButton)}
@@ -86,7 +98,8 @@ class Navbar extends Component {
                 </div>
               </button>
             </div> 
-          }
+          </div> 
+        }
       </nav>
     )
   }
@@ -95,7 +108,7 @@ class Navbar extends Component {
 export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
-    // currentUser: state.session.currentUser,
+    currentUser: state.session.currentUser,
   }),
   { logout }
 )(Navbar);

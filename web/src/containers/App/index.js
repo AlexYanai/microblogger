@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Home from '../Home';
+import Profile from '../Profile';
 import Citation from '../Citation';
 import Login from '../Login';
 import NotFound from '../../components/NotFound';
@@ -49,6 +50,7 @@ class App extends Component {
         <div style={{ display: 'flex', flex: '1', paddingTop: '4rem', }}>
           <Switch>
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
+            <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
             <Route path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
             <RedirectAuthenticated path="/login" component={Login} {...authProps} />
             <RedirectAuthenticated path="/signup" component={Signup} {...authProps} />

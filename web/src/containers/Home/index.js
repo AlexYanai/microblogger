@@ -85,12 +85,12 @@ class Home extends Component {
   }
 
   render() {
-    const { isAuthenticated, isModalOpen, isEditModalOpen } = this.props;
-    const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen };
+    const { isAuthenticated, isModalOpen, isEditModalOpen, currentUser } = this.props;
+    const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen, currentUser };
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
-        <Navbar />
+        <Navbar currentUser={this.props.currentUser} />
         <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
           <div className={`buttonRow ${css(styles.buttonRow)}`}>
             <button className="btn btn-primary" style={{ margin: 'auto' }} onClick={this.showCitationModal} >

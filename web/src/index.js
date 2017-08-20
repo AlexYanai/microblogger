@@ -5,6 +5,7 @@ import store from './store';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import './styles/bootstrap.css';
+// import './styles/bootstrap.js';
 import './styles/font-awesome.css';
 import './styles/index.css';
 
