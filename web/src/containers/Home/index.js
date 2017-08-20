@@ -39,6 +39,7 @@ type Citation = {
   title: string,
   source: string,
   quote: string,
+  is_public: boolean,
   user_id: number
 };
 
@@ -69,6 +70,8 @@ class Home extends Component {
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
 
   renderCitations() {
+    console.log("this.props.currentUserCitations");
+    console.log(this.props.currentUserCitations);
     return this.props.currentUserCitations.map(citation =>
       <CitationListItem
         key={citation.id}

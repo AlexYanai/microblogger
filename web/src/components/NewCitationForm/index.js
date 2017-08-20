@@ -80,7 +80,7 @@ class NewCitationForm extends Component {
                    className="" 
                    label="Public" 
                    htmlFor="public" 
-                   name="public" 
+                   name="is_public" 
                    component={Input} 
                    type="checkbox"/>
 

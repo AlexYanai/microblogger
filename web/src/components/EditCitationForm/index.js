@@ -55,7 +55,7 @@ class EditCitationForm extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
-
+    
     return (
       <div className={`modal ${css(styles.modal)}`} onClick={this.showEditCitationModal.bind(this)}>
         <form className={`card ${css(styles.card)}`} onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>
@@ -79,6 +79,13 @@ class EditCitationForm extends Component {
               component="textarea"
               className="form-control"
             />
+            <Field 
+              name="is_public" 
+              type="checkbox" 
+              className="" 
+              label="Public" 
+              style={{display: 'inline-flex'}} 
+              component={Input} />
 
             <button type="submit" className="btn btn-block btn-primary" disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}

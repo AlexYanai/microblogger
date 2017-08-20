@@ -14,6 +14,7 @@ defmodule Cite.CitationView do
       title: citation.title,
       source: citation.source,
       quote: citation.quote,
+      is_public: citation.is_public,
       user_id: citation.user_id}
   end
 

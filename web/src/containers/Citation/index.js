@@ -11,6 +11,7 @@ type Props = {
     id: number,
     title: string,
     source: string,
+    is_public: boolean,
     quote: string,
     user_id: number
   }
