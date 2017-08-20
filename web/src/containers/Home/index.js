@@ -69,9 +69,6 @@ class Home extends Component {
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
 
   renderCitations() {
-    const currentUserCitationIds = [];
-    this.props.currentUserCitations.map(citation => currentUserCitationIds.push(citation.id));
-    
     return this.props.currentUserCitations.map(citation =>
       <CitationListItem
         key={citation.id}
@@ -79,7 +76,6 @@ class Home extends Component {
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
-        currentUserCitationIds={currentUserCitationIds}
       />
     );
   }

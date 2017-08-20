@@ -16,7 +16,7 @@ defmodule Cite.Mixfile do
   def application do
     [mod: {Cite, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :scrivener_ecto, :corsica]]
+                    :phoenix_ecto, :postgrex, :comeonin, :scrivener_ecto, :faker, :corsica]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -34,6 +34,7 @@ defmodule Cite.Mixfile do
      {:comeonin, "~> 2.5"},
      {:guardian, "~> 0.14.4"},
      {:corsica, "~> 0.5.0"},
+     {:faker, "~> 0.8"},
      {:scrivener_ecto, "~> 1.0"}]
   end
 

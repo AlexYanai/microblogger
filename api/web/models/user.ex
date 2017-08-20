@@ -4,6 +4,7 @@ defmodule Cite.User do
   schema "users" do
     field :username, :string
     field :email, :string
+    field :bio, :string
     field :password_hash, :string
     field :password, :string, virtual: true
     has_many :citations, Cite.Citation
@@ -13,8 +14,8 @@ defmodule Cite.User do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email])
-    |> validate_required([:username, :email])
+    |> cast(params, [:username, :email, :bio])
+    |> validate_required([:username, :email, :bio])
     |> unique_constraint(:username)
     |> unique_constraint(:email)
   end

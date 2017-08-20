@@ -5,6 +5,7 @@ defmodule Cite.Citation do
     field :title, :string
     field :source, :string
     field :quote, :string
+    field :is_public, :boolean
     belongs_to :user, Cite.User
     many_to_many :categories, Cite.Category, join_through: "citation_categories"
 
@@ -17,7 +18,7 @@ defmodule Cite.Citation do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :source, :quote])
+    |> cast(params, [:title, :source, :quote, :is_public])
     |> validate_required([:title, :source, :quote])
   end
 end

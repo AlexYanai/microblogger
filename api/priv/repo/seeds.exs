@@ -4,10 +4,10 @@ alias Cite.{Repo, User, Category, Citation, CitationCategory}
 
 # List of users to be created
 users = [
-  %{username: "a", email: "a@a.com", password: "aaaaaa"},
-  %{username: "b", email: "b@b.com", password: "bbbbbb"},
-  %{username: "c", email: "c@c.com", password: "cccccc"},
-  %{username: "d", email: "d@d.com", password: "dddddd"}
+  %{username: "Test UserA", email: "a@a.com", password: "aaaaaa", bio: Faker.Lorem.paragraph(%Range{first: 1, last: 2})},
+  %{username: "Test UserB", email: "b@b.com", password: "bbbbbb", bio: Faker.Lorem.paragraph(%Range{first: 1, last: 2})},
+  %{username: "Test UserC", email: "c@c.com", password: "cccccc", bio: Faker.Lorem.paragraph(%Range{first: 1, last: 2})},
+  %{username: "Test UserD", email: "d@d.com", password: "dddddd", bio: Faker.Lorem.paragraph(%Range{first: 1, last: 2})}
 ]
 
 # Create the Users

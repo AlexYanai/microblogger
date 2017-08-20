@@ -53,22 +53,19 @@ class Profile extends Component {
   props: Props;
 
   render() {
-    const { isAuthenticated, currentUser } = this.props;
-
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />
         <div className={`profileContainer ${css(styles.profileContainer)}`}>
           <div className={`profileRow ${css(styles.profileRow)}`}>
             <div className={`profilePictureContainer ${css(styles.profilePictureContainer)}`}>
-              <img className={`profilePicture ${css(styles.profilePicture)}`} src={require("./temp_prof.jpg")} alt="Default profile picture" />
+              <img className={`profilePicture ${css(styles.profilePicture)}`} src={require("./temp_prof.jpg")} alt="Default profile" />
             </div>
             
             <div className={`bioContainer ${css(styles.bioContainer)}`}>
-              <h3>Profile Name</h3>
-              <p>Bio information. Bio text bio text bio text bio text bio text bio text bio text bio text</p>
+              <h3>{this.props.currentUser.username}</h3>
+              <p>{this.props.currentUser.bio}</p>
             </div>
-
           </div>
         </div>
       </div>

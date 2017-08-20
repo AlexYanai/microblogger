@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  currentUser: Object,
   isAuthenticated: boolean
 };
 
@@ -77,7 +76,7 @@ class Navbar extends Component {
   handleLogout = () => this.props.logout(this.context.router);
 
   render() {
-    const { currentUser, isAuthenticated } = this.props;
+    const { isAuthenticated } = this.props;
 
     return (
       <nav className={css(styles.bar)}>
@@ -107,8 +106,7 @@ class Navbar extends Component {
 
 export default connect(
   state => ({
-    isAuthenticated: state.session.isAuthenticated,
-    currentUser: state.session.currentUser,
+    isAuthenticated: state.session.isAuthenticated
   }),
   { logout }
 )(Navbar);

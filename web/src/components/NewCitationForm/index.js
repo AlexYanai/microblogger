@@ -76,6 +76,13 @@ class NewCitationForm extends Component {
               component="textarea"
               className="form-control"
             />
+            <Field style={{display: 'inline-flex'}} 
+                   className="" 
+                   label="Public" 
+                   htmlFor="public" 
+                   name="public" 
+                   component={Input} 
+                   type="checkbox"/>
 
             <button type="submit" className="btn btn-block btn-primary" disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}
