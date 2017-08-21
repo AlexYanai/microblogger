@@ -7,7 +7,6 @@ import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
 import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import PublicCitationListItem from '../../components/PublicCitationListItem';
-import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
 
 const styles = StyleSheet.create({
@@ -25,12 +24,6 @@ const styles = StyleSheet.create({
     width: '100%',
     marginLeft: '2px',
     marginBottom: '20px'
-  },
-
-  search: {
-    flex: '1',
-    width: '40%',
-    marginLeft: '10%'
   }
 });
 

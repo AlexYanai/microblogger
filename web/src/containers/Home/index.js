@@ -27,10 +27,33 @@ const styles = StyleSheet.create({
     marginBottom: '20px'
   },
 
-  search: {
-    flex: '1',
-    width: '40%',
-    marginLeft: '10%'
+  ask: {
+    display: 'flex',
+    backgroundColor: '#fff',
+    maxWidth: '1500px',
+    height: '55px',
+    margin: 'auto',
+    textAlign: 'left',
+    alignItems: 'center',
+    width: '100%',
+    fontSize: '20px',
+    fontWeight: '300',
+    opacity: '0.9',
+    boxShadow: '0 1px 0 var(--palette-gray-blue)',
+    border: '1px solid var(--palette-gray-blue)',
+    verticalAlign: 'middle' 
+  },
+
+  linkDiv: {
+    marginLeft: '15px',
+
+    ':hover': {
+      color: 'var(--palette-med-blue)',
+    },
+
+    ':focus': {
+      color: 'var(--palette-med-blue)',
+    },
   }
 });
 
@@ -90,9 +113,9 @@ class Home extends Component {
         <Navbar currentUser={this.props.currentUser} />
         <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
           <div className={`buttonRow ${css(styles.buttonRow)}`}>
-            <button className="btn btn-primary" style={{ margin: 'auto' }} onClick={this.showCitationModal} >
-              New Citation
-            </button>
+            <div className={`ask ${css(styles.ask)}`} onClick={this.showCitationModal} >
+              <div className={`linkDiv ${css(styles.linkDiv)}`}><a href="#">Save Something New...</a></div>
+            </div>
           </div>
 
           {isModalOpen &&
