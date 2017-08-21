@@ -38,12 +38,18 @@ export function createCitation(data, router, currentUser) {
     });
 }
 
-export function editCitation(data, router, currentCitation) {
+export function editCitation(data, router, currentCitation, is_public) {
   return dispatch => api.patch(`/users/${currentCitation.user_id}/citations/${currentCitation.id}`, {"citation": currentCitation})
     .then((response) => {
       dispatch({ type: 'EDIT_CITATION_SUCCESS', response });
       dispatch(hideEditModal());
-      dispatch(fetchUserCitations(response.data.id));
+
+      // Reload currentCitations if public or currentUserCitations otherwise.
+      if (is_public) {
+        dispatch(fetchCitations());
+      } else {
+        dispatch(fetchUserCitations(response.data.id));
+      }
 
       router.history.push('/');
     })

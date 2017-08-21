@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
-import { showModal } from '../../actions/modal';
+import { showEditModal } from '../../actions/modal';
 import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import PublicCitationListItem from '../../components/PublicCitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
@@ -49,7 +49,6 @@ type Props = {
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isEditModalOpen: boolean,
-  createCitation: () => void,
   deleteCitation: () => void,
   editCitation: () => void,
   showModal: () => void,
@@ -67,11 +66,10 @@ class Citations extends Component {
 
   props: Props
 
-  handleLogout            =  ()  => this.props.logout(this.context.router);
-  showCitationModal       =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
-  handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
-  handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
-  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
+  handleLogout         =  ()  => this.props.logout(this.context.router);
+  showCitationModal    =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
+  handleDeleteCitation = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
+  handleEditCitation   = data => this.props.editCitation(this.context.router, this.props.currentUser, data, true);
 
   renderCitations() {
     return this.props.currentCitations.map(citation =>
@@ -98,6 +96,10 @@ class Citations extends Component {
             <h3 style={{ margin: 'auto' }}>All</h3>
           </div>
 
+          {isEditModalOpen &&
+            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...modalProps} />
+          }
+
           {this.renderCitations()}
         </div>
       </div>
@@ -115,5 +117,5 @@ export default connect(
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchCitations, createCitation, deleteCitation, editCitation, showModal }
+  { logout, fetchCitations, createCitation, deleteCitation, editCitation, showEditModal }
 )(Citations);

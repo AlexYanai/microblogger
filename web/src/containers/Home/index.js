@@ -67,7 +67,7 @@ class Home extends Component {
   showCitationModal       =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
   handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
-  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
+  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
 
   renderCitations() {
     return this.props.currentUserCitations.map(citation =>

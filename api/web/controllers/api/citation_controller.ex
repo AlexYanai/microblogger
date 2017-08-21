@@ -6,7 +6,6 @@ defmodule Cite.CitationController do
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
   def public_citations(conn, _params) do
-    IO.puts "****IN PUBLIC CITATIONS****"
     citations = Citation 
       |> where([m], m.is_public == true) 
       |> order_by([desc: :inserted_at, desc: :id]) 
