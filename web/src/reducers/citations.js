@@ -1,11 +1,18 @@
 const initialState = {
   all: [],
   currentUserCitations: [],
+  currentCitations: []
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case 'FETCH_CITATIONS_SUCCESS':
+      return {
+        ...state,
+        currentCitations: action.response.data,
+        // currentUserCitations: []
+      };
+    case 'FETCH_CITATION_SUCCESS':
       return {
         ...state,
         citation: action.response.data,

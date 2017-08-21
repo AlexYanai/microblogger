@@ -5,8 +5,8 @@ import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
-import CitationListItem from '../../components/CitationListItem';
+import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import PublicCitationListItem from '../../components/PublicCitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
 
@@ -45,7 +45,7 @@ type Citation = {
 
 type Props = {
   currentUser: Object,
-  currentUserCitations: Array<Citation>,
+  currentCitations: Array<Citation>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isEditModalOpen: boolean,
@@ -56,9 +56,13 @@ type Props = {
   editFormData: Citation
 };
 
-class Home extends Component {
+class Citations extends Component {
   static contextTypes = {
     router: PropTypes.object,
+  }
+
+  componentDidMount() {
+    this.props.fetchCitations();
   }
 
   props: Props
@@ -70,10 +74,11 @@ class Home extends Component {
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
 
   renderCitations() {
-    return this.props.currentUserCitations.map(citation =>
-      <CitationListItem
+    return this.props.currentCitations.map(citation =>
+      <PublicCitationListItem
         key={citation.id}
         citation={citation}
+        currentUser={this.props.currentUser}
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
@@ -90,18 +95,8 @@ class Home extends Component {
         <Navbar currentUser={this.props.currentUser} />
         <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
           <div className={`buttonRow ${css(styles.buttonRow)}`}>
-            <button className="btn btn-primary" style={{ margin: 'auto' }} onClick={this.showCitationModal} >
-              New Citation
-            </button>
+            <h3 style={{ margin: 'auto' }}>All</h3>
           </div>
-
-          {isModalOpen &&
-            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...modalProps}  />
-          }
-
-          {isEditModalOpen &&
-            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...modalProps} />
-          }
 
           {this.renderCitations()}
         </div>
@@ -114,11 +109,11 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
-    currentUserCitations: state.citations.currentUserCitations,
+    currentCitations: state.citations.currentCitations,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
-)(Home);
+  { logout, fetchCitations, createCitation, deleteCitation, editCitation, showModal }
+)(Citations);

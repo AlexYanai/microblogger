@@ -71,16 +71,20 @@ type Props = {
   isEditModalOpen: boolean,
 };
 
-class CitationListItem extends Component {
+class PublicCitationListItem extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
 
   props: Props;
 
-  showEditCitationModal = ()   => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.citation);
+  showEditCitationModal =  ()  => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
+
+  ownedByCurrentUser() {
+    return this.props.citation.user_id === this.props.currentUser.id;
+  }
 
   render() {
     return (
@@ -92,19 +96,26 @@ class CitationListItem extends Component {
             <h2><a href="#">{this.props.citation.title}</a></h2>
           </div>
           
-          <div className={css(styles.buttons)}>
-            <button type="button" className={css(styles.logoutButton)} onClick={this.showEditCitationModal}>
-              <div className={css(styles.badge)}>
-                <span className="fa fa-pencil" />
-              </div>
-            </button>
-            
-            <button type="button" className={css(styles.logoutButton)} onClick={this.handleDeleteCitation}>
-              <div className={css(styles.badge)}>
-                <span className="fa fa-trash" />
-              </div>
-            </button>
-          </div>
+          {this.ownedByCurrentUser() &&
+            <div className={css(styles.buttons)}>
+              <button type="button" className={css(styles.logoutButton)} onClick={this.showEditCitationModal}>
+                <div className={css(styles.badge)}>
+                  <span className="fa fa-pencil" />
+                </div>
+              </button>
+              
+              <button type="button" className={css(styles.logoutButton)} onClick={this.handleDeleteCitation}>
+                <div className={css(styles.badge)}>
+                  <span className="fa fa-trash" />
+                </div>
+              </button>
+            </div>
+          }
+          
+          {!this.ownedByCurrentUser() &&
+            <div className={css(styles.buttons)}>
+            </div>
+          }
         </div>
 
         <span>{this.props.citation.source}</span>
@@ -121,4 +132,4 @@ export default connect(
     initialValues: state.modal.initialValues,
   }),
   { deleteCitation, editCitation, showModal, showEditModal }
-)(CitationListItem);
+)(PublicCitationListItem);

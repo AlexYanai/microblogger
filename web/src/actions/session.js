@@ -1,11 +1,11 @@
 import { reset } from 'redux-form';
 import api from '../api';
-import { fetchCitations } from './citations';
+import { fetchUserCitations } from './citations';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.meta.token));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
-  dispatch(fetchCitations(response.data.id));
+  dispatch(fetchUserCitations(response.data.id));
 }
 
 export function signup(data, router) {

@@ -84,6 +84,7 @@ class Navbar extends Component {
         {isAuthenticated &&
           <div className={css(styles.wrap)} >
             <div className={css(styles.username)}>
+              <NavLink to={`citations`}>All</NavLink>
               <NavLink to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
             </div>
 
