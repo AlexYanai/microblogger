@@ -2,9 +2,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Input from '../Input';
+import InputCheckbox from '../InputCheckbox';
 import { css, StyleSheet } from 'aphrodite';
 import { connect } from 'react-redux';
 import { showModal } from '../../actions/modal';
+import Multiselect from 'react-widgets/lib/Multiselect'
 
 type Props = {
   handleSubmit: () => void,
@@ -27,6 +29,15 @@ const styles = StyleSheet.create({
     background: 'rgba(0, 0, 0, 0.3)'
   },
 
+  multiselect: {
+    width: '100%',
+  },
+
+  rwMultiselectWrapper: {
+    width: '100%',
+
+  },
+
   card: {
     zIndex: '9998',
     padding: '3rem 4rem',
@@ -35,6 +46,16 @@ const styles = StyleSheet.create({
   }
 });
 
+const renderMultiselect = ({ input, data, valueField, textField }) =>
+  <Multiselect {...input}
+    onBlur={() => input.onBlur()}
+    value={input.value || []}
+    placeholder="Tags..." 
+    data={data}
+    valueField={valueField}
+    textField={textField}
+  />
+
 class NewCitationForm extends Component {
   static contextTypes = {
     router: PropTypes.object,
@@ -42,9 +63,8 @@ class NewCitationForm extends Component {
 
   props: Props
 
-  handleSubmit = (data) => this.props.onSubmit(data);
-
-  showCitationModal = () => this.props.showModal(this.context.router, this.props.isModalOpen);
+  handleSubmit      = data => this.props.onSubmit(data);
+  showCitationModal = ()   => this.props.showModal(this.context.router, this.props.isModalOpen);
 
   dontClose(e) {
     e.stopPropagation();
@@ -52,39 +72,50 @@ class NewCitationForm extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    const categoryNames = this.props.categories.map(function(x) { return x.name });
 
     return (
       <div className={`modal ${css(styles.modal)}`} onClick={this.showCitationModal.bind(this)}>
         <form className={`card ${css(styles.card)}`} onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>
           <div className="input-group">
             <Field
+              style={{marginBottom: '5px'}}
               name="title"
               type="string"
               placeholder="Title"
               component={Input}
             />
             <Field
+              style={{marginBottom: '5px'}}
               name="source"
               type="text"
               placeholder="Source"
               component={Input}
             />
             <Field
+              style={{marginBottom: '5px'}}
               name="quote"
               type="textarea"
               placeholder="Quote"
               component="textarea"
               className="form-control"
             />
-            <Field style={{display: 'inline-flex'}} 
-                   className="" 
-                   label="Public" 
-                   htmlFor="public" 
-                   name="is_public" 
-                   component={Input} 
-                   type="checkbox"/>
+            <Field 
+              style={{display: 'inline-flex', marginTop: '5px', marginLeft: '5px'}} 
+              className="" 
+              label="Public: " 
+              htmlFor="public" 
+              name="is_public" 
+              component={InputCheckbox} 
+              type="checkbox"/>
+            <Field
+              name="hobbies"
+              label="Category" 
+              className="multiselect"
+              component={renderMultiselect}
+              data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
 
-            <button type="submit" className="btn btn-block btn-primary" disabled={submitting}>
+            <button type="submit" className="btn btn-block btn-primary" style={{marginTop: '45px'}} disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}
             </button>
           </div>

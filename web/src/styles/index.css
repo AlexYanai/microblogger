@@ -12,6 +12,17 @@ body {
   color: #555459;
 }
 
+ul {
+  text-decoration: none;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+}
+
 #root {
   display: flex;
   height: 100%;
@@ -28,6 +39,58 @@ body {
   --palette-med-blue: #2b6dad;
   --palette-dark-blue: #004a7c;
   --palette-darker-blue: #112d4e;
+}
+
+.rw-multiselect-wrapper {
+  margin-top: 10px;
+  margin-top: 10px;
+}
+
+.rw-input {
+  width: 100%;
+}
+
+.rw-list-option {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 1px;
+  padding: .214em .15em .214em .4em;
+  line-height: 1.4em;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.rw-multiselect-taglist {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: inline;
+  padding-right: 0;
+}
+.rw-multiselect-taglist li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 1px;
+  margin-bottom: 5px;
+  padding: .214em .15em .214em .4em;
+  line-height: 1.4em;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.rw-popup-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .card {

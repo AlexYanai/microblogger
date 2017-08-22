@@ -57,6 +57,12 @@ const styles = StyleSheet.create({
   }
 });
 
+type Category = {
+  id: number,
+  name: string,
+  description: string
+};
+
 type Citation = {
   id: number,
   title: string,
@@ -69,6 +75,7 @@ type Citation = {
 type Props = {
   currentUser: Object,
   currentUserCitations: Array<Citation>,
+  categories: Array<Category>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isEditModalOpen: boolean,
@@ -119,7 +126,7 @@ class Home extends Component {
           </div>
 
           {isModalOpen &&
-            <NewCitationForm onSubmit={this.handleNewCitationSubmit} {...modalProps}  />
+            <NewCitationForm onSubmit={this.handleNewCitationSubmit} categories={this.props.categories} {...modalProps}  />
           }
 
           {isEditModalOpen &&
@@ -137,6 +144,7 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
+    categories: state.citations.categories,
     currentUserCitations: state.citations.currentUserCitations,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,

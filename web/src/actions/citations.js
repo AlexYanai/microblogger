@@ -8,6 +8,13 @@ export function fetchCitations() {
     });
 }
 
+export function fetchCategories() {
+  return dispatch => api.fetch(`/categories`)
+    .then((response) => {
+      dispatch({ type: 'FETCH_CATEGORIES_SUCCESS', response });
+    });
+}
+
 export function fetchCitation(userId, citationId) {
   return dispatch => api.fetch(`/users/${userId}/citations/${citationId}`)
     .then((response) => {
