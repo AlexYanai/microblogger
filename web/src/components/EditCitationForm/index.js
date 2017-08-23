@@ -68,8 +68,8 @@ class EditCitationForm extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     const categoryNames = this.props.categories.map(function(x) { return x.name });
-    // console.log("this.props.initialValues");
-    // console.log(this.props.initialValues);
+    console.log("this.props.citation");
+    console.log(this.props.citation);
     return (
       <div className={`modal ${css(styles.modal)}`} onClick={this.showEditCitationModal.bind(this)}>
         <form className={`card ${css(styles.card)}`} onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>

@@ -1,4 +1,5 @@
 import { fetchCategories } from './citations';
+const lodash = require("lodash");
 
 export function showModal(router, modalOpen) {
   return (dispatch) => {
@@ -24,15 +25,13 @@ export function hideModal() {
 export function showEditModal(router, modalOpen, editFormData) {
   return (dispatch) => {
     const open = !modalOpen;
+    var clonedFormData = lodash.cloneDeep(editFormData);
     
-    console.log("editFormData");
-    console.log(editFormData);
-
-    if (editFormData && editFormData.categories) {
-      var categories = editFormData.categories;
+    if (clonedFormData && clonedFormData.categories) {
+      var categories = clonedFormData.categories;
 
       if (categories) {
-        editFormData.categories = categories.map(function(x) { return x.name });
+        clonedFormData.categories = categories.map(function(x) { return x.name });
       }
     }
 
@@ -40,7 +39,7 @@ export function showEditModal(router, modalOpen, editFormData) {
     dispatch({ 
       type: 'SHOW_EDIT_MODAL',
       isEditModalOpen: open,
-      editFormData: editFormData
+      editFormData: clonedFormData
     });
   };
 
