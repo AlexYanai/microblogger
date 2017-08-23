@@ -22,4 +22,9 @@ defmodule Cite.CitationCategory do
     cite_cat = %{citation_id: cite.id, category_id: cat.id}
     Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
   end
+
+  def assoc_category_with_citation(cat, cite) do
+    cite_cat = %{citation_id: cite.id, category_id: cat.id}
+    Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
+  end
 end

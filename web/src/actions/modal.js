@@ -22,6 +22,15 @@ export function hideModal() {
 export function showEditModal(router, modalOpen, editFormData) {
   return (dispatch) => {
     const open = !modalOpen;
+    
+    if (editFormData && editFormData.categories) {
+      var categories = editFormData.categories;
+
+      if (categories) {
+        editFormData.categories = categories.map(function(x) { return x.name });
+      }
+    }
+
 
     dispatch({ 
       type: 'SHOW_EDIT_MODAL',

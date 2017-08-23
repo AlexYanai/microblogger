@@ -109,11 +109,11 @@ class NewCitationForm extends Component {
               component={InputCheckbox} 
               type="checkbox"/>
             <Field
-              name="hobbies"
+              name="categories"
               label="Category" 
               className="multiselect"
               component={renderMultiselect}
-              data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+              data={categoryNames}/>
 
             <button type="submit" className="btn btn-block btn-primary" style={{marginTop: '45px'}} disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}

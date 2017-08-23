@@ -43,7 +43,7 @@ cites
   |> Enum.map(&User.create_citation(&1, user))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a user
+# Create the citations and associate them with a Category
 Repo.all(assoc(user, :citations))
   |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category))
   |> Enum.each(&Repo.insert!(&1))

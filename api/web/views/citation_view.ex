@@ -10,12 +10,21 @@ defmodule Cite.CitationView do
   end
 
   def render("citation.json", %{citation: citation}) do
+
     %{id: citation.id,
       title: citation.title,
       source: citation.source,
       quote: citation.quote,
       is_public: citation.is_public,
-      user_id: citation.user_id}
+      user_id: citation.user_id
+    }
+    |> add_categories(citation.categories)
+  end
+
+  defp add_categories(json, _category) do
+    children = render_many(_category, Cite.CategoryView, "category.json")
+    json = Map.put(json, :categories, children)
+    json
   end
 
   def render("delete.json", _) do

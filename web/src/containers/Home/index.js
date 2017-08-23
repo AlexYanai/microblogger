@@ -130,7 +130,7 @@ class Home extends Component {
           }
 
           {isEditModalOpen &&
-            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...modalProps} />
+            <EditCitationForm onSubmit={this.handleEditCitation} categories={this.props.categories} citation={this.props.editFormData} {...modalProps} />
           }
 
           {this.renderCitations()}
