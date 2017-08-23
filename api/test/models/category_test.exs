@@ -3,8 +3,8 @@ defmodule Cite.CategoryTest do
 
   alias Cite.Category
 
-  @valid_attrs %{description: "some content", name: "some content"}
-  @invalid_attrs %{}
+  @valid_attrs %{name: "General", description: "General Category"}
+  @invalid_attrs %{description: "General Category"}
 
   test "changeset with valid attributes" do
     changeset = Category.changeset(%Category{}, @valid_attrs)

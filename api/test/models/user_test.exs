@@ -3,7 +3,7 @@ defmodule Cite.UserTest do
 
   alias Cite.User
 
-  @valid_attrs %{email: "some content", password_hash: "some content", username: "some content"}
+  @valid_attrs %{email: "some content", password_hash: "some content", bio: "some bio", username: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
