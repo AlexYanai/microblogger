@@ -1,3 +1,5 @@
+import { fetchCategories } from './citations';
+
 export function showModal(router, modalOpen) {
   return (dispatch) => {
     const open = !modalOpen;
@@ -23,6 +25,9 @@ export function showEditModal(router, modalOpen, editFormData) {
   return (dispatch) => {
     const open = !modalOpen;
     
+    console.log("editFormData");
+    console.log(editFormData);
+
     if (editFormData && editFormData.categories) {
       var categories = editFormData.categories;
 

@@ -30,7 +30,7 @@ defmodule Cite.UserController do
       |> order_by([desc: :inserted_at, desc: :id])
       |> Repo.all
       |> Repo.preload(:categories)
-    
+
     render(conn, Cite.CitationView, "index.json", %{citations: citations})
   end
 end

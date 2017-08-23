@@ -58,8 +58,23 @@ defmodule Cite.CitationController do
   end
 
   def update(conn, %{"id" => id, "citation" => citation_params}) do
-    categories = citation_params["categories"]
-    citation   = Repo.get!(Citation, id) |> Repo.preload(:categories)
+    remote_categories = citation_params["categories"]
+    citation_params   = citation_params |> Map.drop(["categories"])
+    
+    citation = Citation 
+      |> Repo.get!(id) 
+      |> Repo.preload(:categories)
+
+
+    any_remote   = Enum.any?(remote_categories)
+    any_existing = Enum.any?(Citation.category_ids(citation))
+
+    case {any_remote, any_existing} do
+      {false, false} -> nil
+      {false, true}  -> delete_all(citation.id, Citation.category_ids(citation))
+      _              -> set_categories(citation, remote_categories, Citation.category_ids(citation))
+    end
+
     changeset  = Citation.changeset(citation, citation_params)
 
     case Repo.update(changeset) do
@@ -72,6 +87,28 @@ defmodule Cite.CitationController do
     end
   end
 
+  def cc(n,m), do: (from c in CitationCategory, where: c.citation_id == ^n and c.category_id == ^m, select: c) |> Repo.one
+  
+  # Not the most elegant solution but works - will revise
+  # Currently deleting all existing CitationCategory associations then creating again
+  def set_categories(citation, remote, existing) do
+    n = citation.id
+
+    delete_all(n, existing)
+
+    remote
+      |> Enum.map(fn n -> Repo.get_by(Category, name: n) end) 
+      |> Enum.map(fn m -> m.id end)
+      |> Enum.map(&CitationCategory.assoc_category_id_with_citation_id(&1, n))
+      |> Enum.each(&Repo.insert!(&1))
+  end
+
+  def delete_all(citation_id, existing) do
+    existing 
+      |> Enum.map(fn m -> cc(citation_id, m) end) 
+      |> Enum.map(fn n -> Repo.delete!(n) end)
+  end
+
   def delete(conn, %{"id" => id}) do
     citation = Repo.get!(Citation, id)
     Repo.delete!(citation)
@@ -81,3 +118,5 @@ defmodule Cite.CitationController do
       |> render("delete.json")
   end
 end
+
+

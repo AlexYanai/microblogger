@@ -1,7 +1,6 @@
 const initialState = {
   all: [],
   currentUserCitations: [],
-  categories: [],
   currentCitations: []
 };
 

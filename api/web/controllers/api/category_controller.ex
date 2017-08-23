@@ -45,9 +45,6 @@ defmodule Cite.CategoryController do
 
   def delete(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(category)
 
     send_resp(conn, :no_content, "")

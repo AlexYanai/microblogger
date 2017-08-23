@@ -59,7 +59,7 @@ class EditCitationForm extends Component {
   props: Props;
 
   handleSubmit          = data => this.props.onSubmit(data);
-  showEditCitationModal = ()   => this.props.showEditModal(this.context.router, this.props.isEditModalOpen);
+  showEditCitationModal = ()   => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.initialValues);
 
   dontClose(e) {
     e.stopPropagation();
@@ -68,8 +68,8 @@ class EditCitationForm extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     const categoryNames = this.props.categories.map(function(x) { return x.name });
-    console.log("this.props.initialValues");
-    console.log(this.props.initialValues);
+    // console.log("this.props.initialValues");
+    // console.log(this.props.initialValues);
     return (
       <div className={`modal ${css(styles.modal)}`} onClick={this.showEditCitationModal.bind(this)}>
         <form className={`card ${css(styles.card)}`} onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>

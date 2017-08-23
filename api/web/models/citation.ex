@@ -21,4 +21,12 @@ defmodule Cite.Citation do
     |> cast(params, [:title, :source, :quote, :is_public])
     |> validate_required([:title, :source, :quote])
   end
+
+  def category_ids(citation) do
+    case !!citation and citation.categories do
+      nil   -> []
+      false -> []
+      _     -> Enum.map(citation.categories, fn n -> n.id end)
+    end
+  end
 end
