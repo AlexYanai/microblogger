@@ -17,3 +17,6 @@ config :cite, Cite.Repo,
   database: "cite_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :guardian, Guardian,
+  secret_key: "oSRPnbXpJxNKs9mXgUNCgbFLgdtwyBu7zQQzqQZeRkBqOwgqIcYzQqEKQFdsain8"
