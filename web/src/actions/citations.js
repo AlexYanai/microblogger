@@ -31,6 +31,8 @@ export function fetchUserCitations(userId) {
 
 export function createCitation(data, router, currentUser) {
   data["user_id"] = currentUser.id;
+  console.log("data");
+  console.log(data);
 
   return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
     .then((response) => {

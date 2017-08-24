@@ -36,7 +36,7 @@ defmodule Cite.UserTest do
     u_map = %{username: "Test UserA", email: "a@a.com", password: "aaaaaa", bio: "aaaaaaaaaaaaaaaaaaaaaaaa"}
     user  = User.registration_changeset(%User{}, u_map) |> Repo.insert!
 
-    user_with_citation = User.create_citation(@cite_attrs, user) |> Repo.insert!
+    User.create_citation(@cite_attrs, user) |> Repo.insert!
     user = user |> Repo.preload(:citations)
 
     assert length(user.citations) == 1

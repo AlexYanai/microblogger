@@ -8,8 +8,6 @@ defmodule Cite.UserControllerTest do
     current_user = User.registration_changeset(%User{}, @valid_attrs) |> Repo.insert!
     new_conn     = build_conn() |> post(session_path(build_conn(), :create), @valid_attrs)
 
-    # {:ok, jwt, full_claims} = Guardian.encode_and_sign(user)
-
     {:ok, %{user: current_user, jwt: new_conn.private.guardian_default_jwt}}
   end
 

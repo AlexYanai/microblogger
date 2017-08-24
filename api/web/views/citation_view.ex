@@ -10,7 +10,6 @@ defmodule Cite.CitationView do
   end
 
   def render("citation.json", %{citation: citation}) do
-
     %{id: citation.id,
       title: citation.title,
       source: citation.source,

@@ -10,6 +10,7 @@ defmodule Cite.CitationController do
       |> where([m], m.is_public == true) 
       |> order_by([desc: :inserted_at, desc: :id]) 
       |> Repo.all
+      |> Repo.preload(:categories)
 
     render(conn, "index.json", citations: citations)
   end
@@ -18,10 +19,7 @@ defmodule Cite.CitationController do
 
   def create(conn, %{"citation" => citation_params}) do
     categories   = citation_params["categories"]
-    IO.puts "CATEGORIES"
-    IO.inspect categories
     current_user = Guardian.Plug.current_resource(conn)
-
 
     changeset    = current_user
       |> build_assoc(:citations)
@@ -30,17 +28,13 @@ defmodule Cite.CitationController do
     case Repo.insert(changeset) do
       {:ok, citation} ->
         if Enum.any?(categories) do
-          IO.puts "BEFORE CATEGORIES"
-          
           categories
             |> Enum.map(fn n -> qq(n) end)
             |> Enum.map(&CitationCategory.assoc_category_with_citation(&1, citation))
             |> Enum.each(&Repo.insert!(&1))
-
-          IO.puts "AFTER CATEGORIES"
         end
 
-        IO.puts "BEFORE CONN"
+        citation = citation |> Repo.preload(:categories)
 
         conn
           |> put_status(:created)
@@ -64,7 +58,6 @@ defmodule Cite.CitationController do
     citation = Citation 
       |> Repo.get!(id) 
       |> Repo.preload(:categories)
-
 
     any_remote   = Enum.any?(remote_categories)
     any_existing = Enum.any?(Citation.category_ids(citation))
