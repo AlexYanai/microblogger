@@ -18,16 +18,19 @@ defmodule Cite.CitationCategory do
       |> unique_constraint(:citation_id_category_id)
   end
 
+  # Accepts a citation and category
   def assoc_citation_with_category(cite, cat) do
     cite_cat = %{citation_id: cite.id, category_id: cat.id}
     Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
   end
 
+  # Accepts a category and citation
   def assoc_category_with_citation(cat, cite) do
     cite_cat = %{citation_id: cite.id, category_id: cat.id}
     Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
   end
 
+  # Accepts a category id and citation id
   def assoc_category_id_with_citation_id(cat, cite) do
     cite_cat = %{citation_id: cite, category_id: cat}
     Cite.CitationCategory.changeset(%Cite.CitationCategory{}, cite_cat)
