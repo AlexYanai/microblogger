@@ -20,46 +20,27 @@ const styles = StyleSheet.create({
     boxShadow: '0 1px 1px rgba(0,0,0,.1)',
   },
 
-  link: {
-    flex: '1 auto',
-    color: 'var(--palette-med-gray)',
-    fontSize: '22px',
-    fontWeight: 'bold',
-    ':hover': {
-      textDecoration: 'none',
-    },
-
-    ':focus': {
-      textDecoration: 'none',
-    },
-  },
-
   linkRight: {
     textAlign: 'right',
-  },
-
-  badge: {
-    width: '45px',
-    height: '45px',
-    fontSize: '30px',
-    color: 'var(--palette-med-gray)',
-    background: 'rgba(255,255,255,.2)',
-    borderRadius: '5px',
   },
 
   wrap: {
     display: 'inherit',
     alignItems: 'center',
+    width: '100%',
     color: 'var(--palette-med-gray)',
-    fontSize: '20px',
+    fontSize: '22px',
   },
 
-  logoutButton: {
-    padding: '0',
-    background: 'transparent',
-    border: '0',
-    cursor: 'pointer',
+  navLeft: {
+    alignItems: 'center',
+    flex: '1 1 auto',
+    paddingLeft: '15px',
   },
+
+  navRight: {
+    flex: '0 0 auto',
+  }
 });
 
 type Props = {
@@ -73,31 +54,22 @@ class Navbar extends Component {
 
   props: Props;
 
-  handleLogout = () => this.props.logout(this.context.router);
+  handleLogout = ()                => this.props.logout(this.context.router);
+  isActiveFunc = (match, location) => (location && location.pathname && !!location.pathname.match(/profile/));
 
   render() {
     const { isAuthenticated } = this.props;
 
     return (
       <nav className={css(styles.bar)}>
-        <NavLink to="/" className={css(styles.link)}>Cite</NavLink>
         {isAuthenticated &&
           <div className={css(styles.wrap)} >
-            <div className={css(styles.username)}>
-              <NavLink to={`/citations`}>All</NavLink>
-              <NavLink to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
+            <div className={`navLeft ${css(styles.navLeft)}`}><NavLink exact activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to="/" >Home</NavLink></div>
+            <div className={`navRight ${css(styles.navRight)}`}>
+              <NavLink activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`/citations`}>All</NavLink>
+              <NavLink isActive={this.isActiveFunc} activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
+              <NavLink to={`#`} onClick={this.handleLogout}>Logout</NavLink>
             </div>
-
-            <div className={css(styles.link, styles.linkRight)}>
-              <button type="button" 
-                      className={css(styles.logoutButton)}
-                      onClick={this.handleLogout}>
-                
-                <div className={css(styles.badge)}>
-                  <span className="fa fa-sign-out" />
-                </div>
-              </button>
-            </div> 
           </div> 
         }
       </nav>
