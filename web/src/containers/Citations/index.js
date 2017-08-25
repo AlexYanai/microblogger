@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
+import { Citation } from '../../types';
 import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
 import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
@@ -26,15 +27,6 @@ const styles = StyleSheet.create({
     marginBottom: '20px'
   }
 });
-
-type Citation = {
-  id: number,
-  title: string,
-  source: string,
-  quote: string,
-  is_public: boolean,
-  user_id: number
-};
 
 type Props = {
   currentUser: Object,

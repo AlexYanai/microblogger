@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
+import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
@@ -56,21 +57,6 @@ const styles = StyleSheet.create({
     },
   }
 });
-
-type Category = {
-  id: number,
-  name: string,
-  description: string
-};
-
-type Citation = {
-  id: number,
-  title: string,
-  source: string,
-  quote: string,
-  is_public: boolean,
-  user_id: number
-};
 
 type Props = {
   currentUser: Object,
