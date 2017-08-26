@@ -3,6 +3,8 @@ defmodule Cite.CategoryController do
 
   alias Cite.Category
 
+  plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
+
   def index(conn, _params) do
     categories = Repo.all(Category)
     render(conn, "index.json", categories: categories)

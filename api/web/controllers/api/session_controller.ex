@@ -5,7 +5,7 @@ defmodule Cite.SessionController do
     case authenticate(params) do
       {:ok, user} ->
         new_conn = Guardian.Plug.api_sign_in(conn, user, :access)
-        jwt = Guardian.Plug.current_token(new_conn)
+        jwt      = Guardian.Plug.current_token(new_conn)
 
         new_conn
         |> put_status(:created)
@@ -28,7 +28,7 @@ defmodule Cite.SessionController do
 
   def refresh(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
-    jwt = Guardian.Plug.current_token(conn)
+    jwt  = Guardian.Plug.current_token(conn)
     {:ok, claims} = Guardian.Plug.claims(conn)
 
     case Guardian.refresh!(jwt, claims, %{ttl: {30, :days}}) do
