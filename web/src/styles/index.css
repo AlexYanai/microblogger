@@ -98,6 +98,16 @@ li {
   border: 1px solid #e8e8e8;
 }
 
+.modalForm {
+  z-index: 9998;
+  padding: 3rem 4rem;
+  margin: 2rem auto;
+  background: white;
+  width: 40%;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25);
+  border: 1px solid #e8e8e8;
+}
+
 a {
   margin: 5px;
   text-decoration: none;
@@ -107,4 +117,20 @@ a {
 a, a:visited, a:link, a:hover, a:active {
   text-decoration: none;
   color: inherit;
+}
+
+.modal {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0; 0, 0, 0.3);
+}
+
+.multiselect {
+  width: 100%;
 }
