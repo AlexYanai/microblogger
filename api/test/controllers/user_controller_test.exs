@@ -17,6 +17,13 @@ defmodule Cite.UserControllerTest do
     assert new_conn.status == 201
   end
 
+  test "forbids user if authentication fails", %{user: user} do
+    conn = build_conn()
+      |> get(user_path(build_conn(), :citations, user))
+
+    assert conn.status == 403
+  end
+
   test "can access routes that require Guardian authentication", %{jwt: jwt, user: user} do
     conn = build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
@@ -25,19 +32,27 @@ defmodule Cite.UserControllerTest do
     assert conn.status == 200
   end
 
-  test "forbids user if authentication fails", %{user: user} do
-    conn = build_conn()
-      |> get(user_path(build_conn(), :citations, user))
-
-    assert conn.status == 403
-  end
-
   test "shows citation resource and returns empty List if no citations associated with user", %{jwt: jwt, user: user} do
     conn = build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
       |> get(user_path(build_conn(), :citations, user))
       
     assert json_response(conn, 200)["data"] == []
+  end
+
+  test "update user bio", %{jwt: jwt, user: user} do
+    params = %{
+      "id" => user.id, 
+      "user" => %{@valid_attrs | bio: "updated_bio"}
+    }
+
+    data = build_conn() 
+      |> put_req_header("authorization", "Bearer idkjwt")
+      |> patch(user_path(build_conn(), :update, user), params)
+      |> json_response(200)
+
+    refute data["bio"] == user.bio
+    assert data["bio"] == "updated_bio"
   end
 
   test "delete revokes permissions" do
