@@ -15,7 +15,7 @@ defmodule Cite.User do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:username, :email, :bio])
-    |> validate_required([:username, :email, :bio])
+    |> validate_required([:username, :email])
     |> unique_constraint(:username)
     |> unique_constraint(:email)
   end

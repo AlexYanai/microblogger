@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     color: 'var(--palette-med-gray)',
-    fontSize: '22px',
+    fontSize: '20px',
   },
 
   navLeft: {
@@ -40,6 +40,19 @@ const styles = StyleSheet.create({
 
   navRight: {
     flex: '0 0 auto',
+  },
+
+  mainNavLink: {
+    opacity: '0.8',
+    transition: 'all 0.15s ease-out 0s',
+
+    ':hover': {
+      opacity: '1',
+    },
+
+    ':focus': {
+      opacity: '1',
+    },
   }
 });
 
@@ -64,11 +77,11 @@ class Navbar extends Component {
       <nav className={css(styles.bar)}>
         {isAuthenticated &&
           <div className={css(styles.wrap)} >
-            <div className={`navLeft ${css(styles.navLeft)}`}><NavLink exact activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to="/" >Home</NavLink></div>
+            <div className={`navLeft ${css(styles.navLeft)}`}><NavLink exact activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '1px solid var(--palette-med-blue)' }} to="/" >Home</NavLink></div>
             <div className={`navRight ${css(styles.navRight)}`}>
-              <NavLink activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`/citations`}>Public</NavLink>
-              <NavLink isActive={this.isActiveFunc} activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
-              <NavLink to={`#`} onClick={this.handleLogout}>Logout</NavLink>
+              <NavLink className={`mainNavLink ${css(styles.mainNavLink)}`} activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '1px solid var(--palette-med-blue)' }} to={`/citations`}>Public</NavLink>
+              <NavLink className={`mainNavLink ${css(styles.mainNavLink)}`} isActive={this.isActiveFunc} activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '1px solid var(--palette-med-blue)' }} to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
+              <NavLink className={`mainNavLink ${css(styles.mainNavLink)}`} to={`#`} onClick={this.handleLogout}>Sign out</NavLink>
             </div>
           </div> 
         }

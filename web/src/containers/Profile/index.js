@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
+import Gravatar from 'react-gravatar';
 import Navbar from '../../containers/Navbar';
 import ProfileForm from '../../components/ProfileForm';
 import { editBio, showEditBioForm } from '../../actions/profile';
@@ -23,13 +24,13 @@ const styles = StyleSheet.create({
   },
 
   profilePictureContainer: {
-    height: '150px',
-    maxHeight: '150px',
+    height: '125px',
+    maxHeight: '125px',
   },
 
   profilePicture: {
-    height: '150px',
-    width: '150px',
+    height: '125px',
+    width: '125px',
     border: '1px #f2f2f2 solid',
     borderRadius: '50%',
   },
@@ -72,7 +73,7 @@ class Profile extends Component {
         <div className={`profileContainer ${css(styles.profileContainer)}`}>
           <div className={`profileRow ${css(styles.profileRow)}`}>
             <div className={`profilePictureContainer ${css(styles.profilePictureContainer)}`}>
-              <img className={`profilePicture ${css(styles.profilePicture)}`} src={require("./temp_prof.jpg")} alt="Default profile" />
+              <Gravatar className={`profilePicture ${css(styles.profilePicture)}`} email={this.props.currentUser.email} size={125} />
             </div>
             
             <div className={`bioContainer ${css(styles.bioContainer)}`}>
