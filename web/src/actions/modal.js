@@ -1,4 +1,3 @@
-import { fetchCategories } from './citations';
 const lodash = require("lodash");
 
 export function showModal(router, modalOpen) {
@@ -35,14 +34,12 @@ export function showEditModal(router, modalOpen, editFormData) {
       }
     }
 
-
     dispatch({ 
       type: 'SHOW_EDIT_MODAL',
       isEditModalOpen: open,
       editFormData: clonedFormData
     });
   };
-
 }
 
 export function hideEditModal() {

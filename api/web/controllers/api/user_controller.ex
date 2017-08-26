@@ -23,6 +23,20 @@ defmodule Cite.UserController do
     end
   end
 
+  def update(conn, %{"id" => id, "user" => user_params}) do
+    current_user = Repo.get!(User, id)
+    changeset    = User.changeset(current_user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        render(conn, "user.json", user: user)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
   def citations(conn, %{"id" => user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     citations    = Citation

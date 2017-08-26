@@ -66,7 +66,7 @@ class Navbar extends Component {
           <div className={css(styles.wrap)} >
             <div className={`navLeft ${css(styles.navLeft)}`}><NavLink exact activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to="/" >Home</NavLink></div>
             <div className={`navRight ${css(styles.navRight)}`}>
-              <NavLink activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`/citations`}>All</NavLink>
+              <NavLink activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`/citations`}>Public</NavLink>
               <NavLink isActive={this.isActiveFunc} activeStyle={{color: 'var(--palette-med-blue)', borderBottom: '2px solid var(--palette-med-blue)' }} to={`profile/${this.props.currentUser.id}`}>{this.props.currentUser.username}</NavLink>
               <NavLink to={`#`} onClick={this.handleLogout}>Logout</NavLink>
             </div>
