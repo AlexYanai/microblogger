@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    fontSize: '20px',
+    fontSize: '18px',
+    paddingTop: '1.75%',
   },
 
   navLeft: {
     alignItems: 'center',
     height: '100%',
-    paddingTop: '1.5%',
     flex: '1 1 auto',
     paddingLeft: '15px',
   },
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   navRight: {
     flex: '0 0 auto',
     height: '100%',
-    paddingTop: '1.5%',
     display: 'inline-flex',
   },
 
@@ -87,11 +86,15 @@ class Navbar extends Component {
 
             <div className={`${css(styles.navRight)}`}>
               <NavItem text={this.props.currentUser.username} to={`/profile/${this.props.currentUser.id}`} />
+              
+              <div style={{marginLeft: '5px', marginRight: '5px'}}>|</div>
               <NavItem text="Public" to={`/citations`} />
+              <div style={{marginLeft: '5px', marginRight: '5px'}}>|</div>
 
               <NavLink className={`${css(styles.link)}`} to={`#`} onClick={this.handleLogout}>
                 Sign out
               </NavLink>
+              <div style={{marginRight: '5px'}}></div>
             </div>
           </div> 
         }
