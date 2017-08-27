@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../../actions/session';
+import NavItem from '../../components/NavItem';
 
 const styles = StyleSheet.create({
   bar: {
@@ -14,42 +15,40 @@ const styles = StyleSheet.create({
     zIndex: '1030',
     width: '100%',
     background: 'var(--white)',
-    padding: '20px',
     height: '70px',
     top: '0',
     boxShadow: '0 1px 1px rgba(0,0,0,.1)',
-  },
-
-  linkRight: {
-    textAlign: 'right',
   },
 
   wrap: {
     display: 'inherit',
     alignItems: 'center',
     width: '100%',
+    height: '100%',
     fontSize: '20px',
   },
 
   navLeft: {
     alignItems: 'center',
+    height: '100%',
+    paddingTop: '1.5%',
     flex: '1 1 auto',
     paddingLeft: '15px',
   },
 
   navRight: {
     flex: '0 0 auto',
-  },
-
-  active: {
-    color: 'var(--palette-dark-blue)', 
-    borderBottom: '1px solid var(--palette-dark-blue)'
+    height: '100%',
+    paddingTop: '1.5%',
+    display: 'inline-flex',
   },
 
   link: {
     opacity: '0.85',
     transition: 'all 0.15s ease-out 0s',
     color: 'var(--palette-dark-gray)',
+    height: '100%',
+    margin: 'auto',
 
     ':hover': {
       opacity: '1',
@@ -82,15 +81,27 @@ class Navbar extends Component {
       <nav className={css(styles.bar)}>
         {isAuthenticated &&
           <div className={css(styles.wrap)} >
-            <div className={`navLeft ${css(styles.navLeft)}`}>
-              <NavLink className={`link ${css(styles.link)}`} exact activeClassName={`active ${css(styles.active)}`} to="/" >Home</NavLink>
+            <div className={`${css(styles.navLeft)}`}>
+              <NavItem text="Home" to="/" />
             </div>
-            <div className={`navRight ${css(styles.navRight)}`}>
-              <NavLink className={`link ${css(styles.link)}`} activeClassName={`active ${css(styles.active)}`} to={`/citations`}>Public</NavLink>
-              <NavLink className={`link ${css(styles.link)}`} activeClassName={`active ${css(styles.active)}`} to={`profile/${this.props.currentUser.id}`} isActive={this.isActiveFunc} >{this.props.currentUser.username}</NavLink>
-              <NavLink className={`link ${css(styles.link)}`} to={`#`} onClick={this.handleLogout}>Sign out</NavLink>
+
+            <div className={`${css(styles.navRight)}`}>
+              <NavItem text={this.props.currentUser.username} to={`/profile/${this.props.currentUser.id}`} />
+              <NavItem text="Public" to={`/citations`} />
+
+              <NavLink className={`${css(styles.link)}`} to={`#`} onClick={this.handleLogout}>
+                Sign out
+              </NavLink>
             </div>
           </div> 
+        }
+        
+        {!isAuthenticated && 
+          <div className={css(styles.wrap)} >
+            <div className={`${css(styles.navLeft)}`}>
+              <NavItem text="Home" to="/" />
+            </div>
+          </div>
         }
       </nav>
     )
