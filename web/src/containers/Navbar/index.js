@@ -40,6 +40,7 @@ class Navbar extends Component {
               <NavLink className="navbar-main-link" to={`#`} onClick={this.handleLogout}>
                 Sign out
               </NavLink>
+              
               <div style={{marginRight: '5px', opacity: '0.3'}}></div>
             </div>
           </div> 

@@ -11,7 +11,6 @@ type Props = {
   handleSubmit: () => void,
   onSubmit: () => void,
   submitting: boolean,
-  errors: any,
   showModal: () => void,
 };
 
@@ -23,7 +22,7 @@ class NewCitationForm extends Component {
   props: Props
 
   handleSubmit      = data => this.props.onSubmit(data);
-  showCitationModal = ()   => this.props.showModal(this.context.router, this.props.isModalOpen);
+  showCitationModal = ()   => this.props.showModal(this.props.isModalOpen);
 
   dontClose(e) {
     e.stopPropagation();
@@ -67,6 +66,7 @@ class NewCitationForm extends Component {
               name="is_public" 
               component={InputCheckbox} 
               type="checkbox"/>
+
             <Field
               name="categories"
               label="Category" 

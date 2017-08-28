@@ -1,6 +1,6 @@
 const lodash = require("lodash");
 
-export function showModal(router, modalOpen) {
+export function showModal(modalOpen) {
   return (dispatch) => {
     const open = !modalOpen;
 
@@ -9,44 +9,31 @@ export function showModal(router, modalOpen) {
       isModalOpen: open
     });
   };
-
 }
 
-export function hideModal() {
+export function showEditModal(modalOpen, editFormData) {
   return (dispatch) => {
-    dispatch({ 
-      type: 'HIDE_MODAL',
-      isModalOpen: false
-    });
-  };
-}
-
-export function showEditModal(router, modalOpen, editFormData) {
-  return (dispatch) => {
-    const open = !modalOpen;
-    var clonedFormData = lodash.cloneDeep(editFormData);
-    
-    if (clonedFormData && clonedFormData.categories) {
-      var categories = clonedFormData.categories;
-
-      if (categories) {
-        clonedFormData.categories = categories.map(function(x) { return x.name });
-      }
-    }
+    const open        = !modalOpen;
+    const newFormData = extractCategories(editFormData);
 
     dispatch({ 
       type: 'SHOW_EDIT_MODAL',
       isEditModalOpen: open,
-      editFormData: clonedFormData
+      editFormData: newFormData
     });
   };
 }
 
-export function hideEditModal() {
-  return (dispatch) => {
-    dispatch({ 
-      type: 'HIDE_EDIT_MODAL',
-      isEditModalOpen: false
-    });
-  };
+function extractCategories(editFormData) {
+  var clonedFormData = lodash.cloneDeep(editFormData);
+  
+  if (clonedFormData && clonedFormData.categories && !lodash.isEmpty(clonedFormData.categories)) {
+    var categories = clonedFormData.categories;
+
+    if (categories) {
+      clonedFormData.categories = categories.map(function(x) { return x.name });
+    }
+  }
+
+  return clonedFormData;
 }

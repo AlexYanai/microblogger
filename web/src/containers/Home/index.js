@@ -32,7 +32,7 @@ class Home extends Component {
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
-  showCitationModal       =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
+  showCitationModal       =  ()  => this.props.showModal(this.props.isModalOpen);
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
   handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
@@ -52,6 +52,8 @@ class Home extends Component {
   render() {
     const { isAuthenticated, isModalOpen, isEditModalOpen, currentUser } = this.props;
     const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen, currentUser };
+    
+    console.log("IN HOME");
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>

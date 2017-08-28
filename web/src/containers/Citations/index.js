@@ -35,7 +35,7 @@ class Citations extends Component {
   props: Props
 
   handleLogout         =  ()  => this.props.logout(this.context.router);
-  showCitationModal    =  ()  => this.props.showModal(this.context.router, this.props.isModalOpen);
+  showCitationModal    =  ()  => this.props.showModal(this.props.isModalOpen);
   handleDeleteCitation = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
   handleEditCitation   = data => this.props.editCitation(this.context.router, this.props.currentUser, data, true);
 

@@ -15,7 +15,6 @@ type Props = {
   onSubmit: () => void,
   submitting: boolean,
   isEditModalOpen: boolean,
-  errors: any,
   showEditModal: () => void,
 };
 
@@ -27,7 +26,7 @@ class EditCitationForm extends Component {
   props: Props;
 
   handleSubmit          = data => this.props.onSubmit(data);
-  showEditCitationModal = ()   => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.initialValues);
+  showEditCitationModal = ()   => this.props.showEditModal(this.props.isEditModalOpen, this.props.initialValues);
 
   dontClose(e) {
     e.stopPropagation();

@@ -18,7 +18,7 @@ class PublicCitationListItem extends Component {
 
   props: Props;
 
-  showEditCitationModal =  ()  => this.props.showEditModal(this.context.router, this.props.isEditModalOpen, this.props.citation);
+  showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
 
@@ -58,8 +58,9 @@ class PublicCitationListItem extends Component {
           }
         </div>
 
-        <span>{this.props.citation.source}</span>
-        <span>{this.props.citation.quote}</span>
+        <div className="citation-list-item-source">{this.props.citation.source}</div>
+        <hr style={{ borderTop: '1px solid var(--palette-gray-blue)', width: '50%',  }} />
+        <div className="citation-list-item-quote">{this.props.citation.quote}</div>
       </div>
     )
   }

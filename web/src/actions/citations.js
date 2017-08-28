@@ -1,5 +1,5 @@
 import api from '../api';
-import { hideModal, hideEditModal } from './modal';
+import { showModal, showEditModal } from './modal';
 
 export function fetchCitations() {
   return dispatch => api.fetch(`/citations`)
@@ -38,7 +38,7 @@ export function createCitation(data, router, currentUser) {
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
       dispatch(fetchUserCitations(response.data.id));
-      dispatch(hideModal());
+      dispatch(showModal(true));
 
       router.history.push('/');
     })
@@ -51,7 +51,7 @@ export function editCitation(data, router, currentCitation, is_public) {
   return dispatch => api.patch(`/users/${currentCitation.user_id}/citations/${currentCitation.id}`, {"citation": currentCitation})
     .then((response) => {
       dispatch({ type: 'EDIT_CITATION_SUCCESS', response });
-      dispatch(hideEditModal());
+      dispatch(showEditModal(true, response.data));
 
       // Reload currentCitations if public or currentUserCitations otherwise.
       if (is_public) {
@@ -68,9 +68,15 @@ export function editCitation(data, router, currentCitation, is_public) {
 }
 
 export function deleteCitation(router, currentUser, citationId) {
+  const origin = router.history.location.pathname;
+
   return dispatch => api.delete(`/users/${currentUser}/citations/${citationId}`, {"id": citationId})
     .then(() => {
+      if (origin === '/citations') {
+        dispatch(fetchCitations());
+      }
+
       dispatch(fetchUserCitations(currentUser));
-      router.history.push('/');
+      router.history.push(origin);
     })
 }

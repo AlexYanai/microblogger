@@ -1,5 +1,4 @@
 const initialState = {
-  all: [],
   currentUserCitations: [],
   currentCitations: []
 };
@@ -10,7 +9,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         currentCitations: action.response.data,
-        // currentUserCitations: []
       };
     case 'FETCH_CATEGORIES_SUCCESS':
       return {
@@ -30,10 +28,6 @@ export default function (state = initialState, action) {
     case 'CREATE_CITATION_SUCCESS':
       return {
         ...state,
-        all: [
-          action.response.data,
-          ...state.all,
-        ],
         currentUserCitations: [
           ...state.currentUserCitations,
           action.response.data,
