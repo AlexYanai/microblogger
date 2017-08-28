@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { css, StyleSheet } from 'aphrodite';
 import Navbar from '../../containers/Navbar';
 import { Citation } from '../../types';
 import { logout } from '../../actions/session';
@@ -9,24 +8,6 @@ import { showEditModal } from '../../actions/modal';
 import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import PublicCitationListItem from '../../components/PublicCitationListItem';
 import EditCitationForm from '../../components/EditCitationForm';
-
-const styles = StyleSheet.create({
-  citationListContainer: {
-    maxWidth: '1000px',
-    padding: '4rem 4rem',
-    marginRight: 'auto',
-    marginBottom: 'auto',
-    marginLeft: 'auto',
-  },
-
-  buttonRow: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    marginLeft: '2px',
-    marginBottom: '20px'
-  }
-});
 
 type Props = {
   currentUser: Object,
@@ -46,7 +27,9 @@ class Citations extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchCitations();
+    if (this.props.isAuthenticated) {
+      this.props.fetchCitations();
+    }
   }
 
   props: Props
@@ -76,13 +59,16 @@ class Citations extends Component {
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />
-        <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-          <div className={`buttonRow ${css(styles.buttonRow)}`}>
+        <div className="citations-list-container">
+          <div className="citations-button-row">
             <h3 style={{ margin: 'auto' }}>All</h3>
           </div>
 
           {isEditModalOpen &&
-            <EditCitationForm onSubmit={this.handleEditCitation} citation={this.props.editFormData} {...modalProps} />
+            <EditCitationForm 
+              onSubmit={this.handleEditCitation} 
+              categories={this.props.categories} 
+              citation={this.props.editFormData} {...modalProps} />
           }
 
           {this.renderCitations()}
@@ -97,6 +83,7 @@ export default connect(
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
     currentCitations: state.citations.currentCitations,
+    categories: state.citations.categories,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,

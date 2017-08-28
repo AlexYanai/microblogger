@@ -2,16 +2,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
-import { css, StyleSheet } from 'aphrodite';
 import Input from '../Input';
-
-const styles = StyleSheet.create({
-  card: {
-    maxWidth: '500px',
-    padding: '3rem 4rem',
-    margin: '2rem auto',
-  },
-});
 
 type Props = {
   onSubmit: () => void,
@@ -29,7 +20,7 @@ class SignupForm extends Component {
 
     return (
       <form
-        className={`card ${css(styles.card)}`}
+        className="signup-form-main"
         onSubmit={handleSubmit(this.handleSubmit)}
       >
         <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Create an account</h3>

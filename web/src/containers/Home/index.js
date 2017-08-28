@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { css, StyleSheet } from 'aphrodite';
 import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
@@ -10,53 +9,6 @@ import { fetchCitation, createCitation, deleteCitation, editCitation } from '../
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
-
-const styles = StyleSheet.create({
-  citationListContainer: {
-    maxWidth: '1000px',
-    padding: '4rem 4rem',
-    marginRight: 'auto',
-    marginBottom: 'auto',
-    marginLeft: 'auto',
-  },
-
-  buttonRow: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    marginLeft: '2px',
-    marginBottom: '20px'
-  },
-
-  ask: {
-    display: 'flex',
-    backgroundColor: '#fff',
-    maxWidth: '1500px',
-    height: '55px',
-    margin: 'auto',
-    textAlign: 'left',
-    alignItems: 'center',
-    width: '100%',
-    fontSize: '20px',
-    fontWeight: '300',
-    opacity: '0.9',
-    boxShadow: '0 1px 0 var(--palette-gray-blue)',
-    border: '1px solid var(--palette-gray-blue)',
-    verticalAlign: 'middle' 
-  },
-
-  linkDiv: {
-    marginLeft: '15px',
-
-    ':hover': {
-      color: 'var(--palette-med-blue)',
-    },
-
-    ':focus': {
-      color: 'var(--palette-med-blue)',
-    },
-  }
-});
 
 type Props = {
   currentUser: Object,
@@ -104,10 +56,10 @@ class Home extends Component {
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />
-        <div className={`citationListContainer ${css(styles.citationListContainer)}`}>
-          <div className={`buttonRow ${css(styles.buttonRow)}`}>
-            <div className={`ask ${css(styles.ask)}`} onClick={this.showCitationModal} >
-              <div className={`linkDiv ${css(styles.linkDiv)}`}><a href="#">Save Something New...</a></div>
+        <div className="citations-list-container">
+          <div className="citations-button-row">
+            <div className="citations-ask-box" onClick={this.showCitationModal} >
+              <div className="citations-link-div"><a href="#">Save Something New...</a></div>
             </div>
           </div>
 
