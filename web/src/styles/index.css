@@ -311,6 +311,11 @@ a, a:visited, a:link, a:hover, a:active {
   color: var(--palette-med-red);
 }
 
+.citation-list-item-date {
+  font-size: 12px;
+  color: var(--palette-light-gray);
+}
+
 .profile-container {
   max-width: 1000px;
   padding: 4rem 4rem;

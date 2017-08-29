@@ -15,6 +15,7 @@ defmodule Cite.CitationView do
       source: citation.source,
       quote: citation.quote,
       is_public: citation.is_public,
+      inserted_at: citation.inserted_at,
       user_id: citation.user_id
     }
     |> add_categories(citation.categories)

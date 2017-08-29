@@ -25,6 +25,8 @@ export function fetchCitation(userId, citationId) {
 export function fetchUserCitations(userId) {
   return dispatch => api.fetch(`/users/${userId}/citations`)
     .then((response) => {
+      console.log("response");
+      console.log(response);
       dispatch({ type: 'FETCH_USER_CITATIONS_SUCCESS', response });
     });
 }

@@ -6,7 +6,6 @@ defmodule Cite.CategoryController do
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
   def index(conn, _params) do
-    IO.puts "*****IN CAT CONTROLLER*****"
     categories = Repo.all(Category)
     render(conn, "index.json", categories: categories)
   end

@@ -21,12 +21,23 @@ class PublicCitationListItem extends Component {
   showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
+  formatDateString      = data => (new Date(this.props.citation.inserted_at)).toLocaleDateString('en-US', data);
 
   ownedByCurrentUser() {
     return this.props.citation.user_id === this.props.currentUser.id;
   }
 
   render() {
+    const dateOptions = { 
+      weekday: 'long', 
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    };
+    
     return (
       <div key={this.props.citation.id} className="citation-list-item-card">
         <div className="button-row">
@@ -61,6 +72,7 @@ class PublicCitationListItem extends Component {
         <div className="citation-list-item-source">{this.props.citation.source}</div>
         <hr style={{ borderTop: '1px solid var(--palette-gray-blue)', width: '50%',  }} />
         <div className="citation-list-item-quote">{this.props.citation.quote}</div>
+        <div className="citation-list-item-date">{this.formatDateString(dateOptions)}</div>
       </div>
     )
   }
