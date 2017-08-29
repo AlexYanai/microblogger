@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Faustina-Regular';
+  src: local('Faustina-Regular'), url(./fonts/Faustina-Regular.ttf) format('ttf');
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -5,6 +10,7 @@
 html, body {
   height: 100%;
   box-sizing: border-box;
+  font-family: 'Faustina-Regular';
 }
 
 body {
@@ -39,6 +45,7 @@ li {
   --palette-med-blue: #2b6dad;
   --palette-dark-blue: #004a7c;
   --palette-darker-blue: #112d4e;
+  --palette-med-red: #ab2b2b;
 }
 
 .card {
@@ -149,6 +156,7 @@ a, a:visited, a:link, a:hover, a:active {
 
 .nav-item-link:hover, 
 .nav-item-link:focus {
+  color: var(--palette-dark-blue);
   opacity: 1;
 }
 
@@ -287,10 +295,20 @@ a, a:visited, a:link, a:hover, a:active {
   border-radius: 5px;
 }
 
+.citation-list-item-edit:hover,
+.citation-list-item-edit:focus {
+  color: var(--palette-med-blue);
+}
+
 .citation-list-item-logout-button {
   background: transparent;
   border: 0;
   cursor: pointer;
+}
+
+.citation-list-item-delete:hover,
+.citation-list-item-delete:focus {
+  color: var(--palette-med-red);
 }
 
 .profile-container {

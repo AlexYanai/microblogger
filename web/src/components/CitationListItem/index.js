@@ -34,13 +34,13 @@ class CitationListItem extends Component {
           
           <div className="citation-list-item-buttons">
             <button type="button" className="btn btn-link" onClick={this.showEditCitationModal}>
-              <div className="citation-list-item-badge">
+              <div className="citation-list-item-badge citation-list-item-edit">
                 <span className="fa fa-pencil" />
               </div>
             </button>
             
             <button type="button" className="citation-list-item-logout-button" onClick={this.handleDeleteCitation}>
-              <div className="citation-list-item-badge">
+              <div className="citation-list-item-badge citation-list-item-delete">
                 <span className="fa fa-times" />
               </div>
             </button>
