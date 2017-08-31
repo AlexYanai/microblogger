@@ -59,13 +59,11 @@ export function fetchUserCitations(userId) {
 
 export function createCitation(data, router, currentUser) {
   data["user_id"] = currentUser.id;
-  console.log("data");
-  console.log(data);
 
   return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
-      dispatch(fetchUserCitations(response.data.id));
+      dispatch(fetchPaginatedCitations(currentUser.id, {page: 1, id: currentUser.id}));
       dispatch(showModal(true));
 
       router.history.push('/');
@@ -85,7 +83,7 @@ export function editCitation(data, router, currentCitation, is_public) {
       if (is_public) {
         dispatch(fetchCitations());
       } else {
-        dispatch(fetchUserCitations(response.data.id));
+        dispatch(fetchPaginatedCitations(currentCitation.user_id, {page: 1, id: currentCitation.user_id}));
       }
 
       router.history.push('/');
@@ -95,16 +93,16 @@ export function editCitation(data, router, currentCitation, is_public) {
     });
 }
 
-export function deleteCitation(router, currentUser, citationId) {
+export function deleteCitation(router, userId, citationId) {
   const origin = router.history.location.pathname;
 
-  return dispatch => api.delete(`/users/${currentUser}/citations/${citationId}`, {"id": citationId})
+  return dispatch => api.delete(`/users/${userId}/citations/${citationId}`, {"id": citationId})
     .then(() => {
       if (origin === '/citations') {
         dispatch(fetchCitations());
       }
 
-      dispatch(fetchUserCitations(currentUser));
+      dispatch(fetchPaginatedCitations(userId, {page: 1, id: userId}));
       router.history.push(origin);
     })
 }

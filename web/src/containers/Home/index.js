@@ -33,10 +33,6 @@ class Home extends Component {
     router: PropTypes.object,
   }
 
-  componentDidMount() {
-    this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: 1, id: this.props.currentUser.id});
-  }
-
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
@@ -65,6 +61,7 @@ class Home extends Component {
       <CitationListItem
         key={citation.data.id}
         citation={citation.data}
+        currentUser={this.props.currentUser}
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
@@ -75,8 +72,6 @@ class Home extends Component {
   render() {
     const { isAuthenticated, isModalOpen, isEditModalOpen, currentUser } = this.props;
     const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen, currentUser };
-    
-    console.log("IN HOME");
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>

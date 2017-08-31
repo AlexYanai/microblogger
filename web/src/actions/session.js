@@ -1,11 +1,11 @@
 import { reset } from 'redux-form';
 import api from '../api';
-import { fetchUserCitations, fetchCategories } from './citations';
+import { fetchPaginatedCitations, fetchCategories } from './citations';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.meta.token));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
-  dispatch(fetchUserCitations(response.data.id));
+  dispatch(fetchPaginatedCitations(response.data.id, {page: 1, id: response.data.id}));
   dispatch(fetchCategories());
 }
 

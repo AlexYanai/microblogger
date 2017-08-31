@@ -19,10 +19,14 @@ class CitationListItem extends Component {
 
   props: Props;
 
-  showEditCitationModal = ()   => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
+  showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
   formatDateString      = data => (new Date(this.props.citation.inserted_at)).toLocaleDateString('en-US', data);
+
+  ownedByCurrentUser() {
+    return this.props.citation.user_id === this.props.currentUser.id;
+  }
 
   render() {
     const dateOptions = { 
@@ -44,19 +48,26 @@ class CitationListItem extends Component {
             <h2><a href="#">{this.props.citation.title}</a></h2>
           </div>
           
-          <div className="citation-list-item-buttons">
-            <button type="button" className="btn btn-link" onClick={this.showEditCitationModal}>
-              <div className="citation-list-item-badge citation-list-item-edit">
-                <span className="fa fa-pencil" />
-              </div>
-            </button>
-            
-            <button type="button" className="citation-list-item-logout-button" onClick={this.handleDeleteCitation}>
-              <div className="citation-list-item-badge citation-list-item-delete">
-                <span className="fa fa-times" />
-              </div>
-            </button>
-          </div>
+          {this.ownedByCurrentUser() &&
+            <div className="citation-list-item-buttons">
+              <button type="button" className="btn btn-link" onClick={this.showEditCitationModal}>
+                <div className="citation-list-item-badge citation-list-item-edit">
+                  <span className="fa fa-pencil" />
+                </div>
+              </button>
+              
+              <button type="button" className="citation-list-item-logout-button" onClick={this.handleDeleteCitation}>
+                <div className="citation-list-item-badge citation-list-item-delete">
+                  <span className="fa fa-times" />
+                </div>
+              </button>
+            </div>
+          }
+          
+          {!this.ownedByCurrentUser() &&
+            <div className="citation-list-item-buttons">
+            </div>
+          }
         </div>
 
         <div className="citation-list-item-source">{this.props.citation.source}</div>

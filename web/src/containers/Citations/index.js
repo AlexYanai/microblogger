@@ -6,7 +6,7 @@ import { Citation } from '../../types';
 import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
 import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
-import PublicCitationListItem from '../../components/PublicCitationListItem';
+import CitationListItem from '../../components/CitationListItem';
 import EditCitationForm from '../../components/EditCitationForm';
 
 type Props = {
@@ -41,7 +41,7 @@ class Citations extends Component {
 
   renderCitations() {
     return this.props.currentCitations.map(citation =>
-      <PublicCitationListItem
+      <CitationListItem
         key={citation.id}
         citation={citation}
         currentUser={this.props.currentUser}
