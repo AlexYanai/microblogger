@@ -34,7 +34,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: 1});
+    this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: 1, id: this.props.currentUser.id});
   }
 
   props: Props
@@ -50,7 +50,7 @@ class Home extends Component {
 
     if (this.props.pagination.total_pages > this.props.pagination.page_number) {
       page_num += 1;
-      this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: page_num}, this.props.paginatedCitations);
+      this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: page_num, id: this.props.currentUser.id}, this.props.paginatedCitations);
     } else {
       this.props.endOfCitations();
     }

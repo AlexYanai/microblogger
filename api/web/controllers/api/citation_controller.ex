@@ -7,7 +7,7 @@ defmodule Cite.CitationController do
 
   def paginated_citations(conn, params) do
     page = Citation 
-      |> where([m], m.is_public == true or m.is_public == false) 
+      |> where([m], m.user_id == ^params["id"]) 
       |> order_by([desc: :inserted_at, desc: :id]) 
       |> preload(:categories) 
       |> Repo.paginate(page: params["page"], page_size: 5)
