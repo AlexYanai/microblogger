@@ -5,6 +5,16 @@ defmodule Cite.CitationController do
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
+  def paginated_citations(conn, params) do
+    page = Citation 
+      |> where([m], m.is_public == true or m.is_public == false) 
+      |> order_by([desc: :inserted_at, desc: :id]) 
+      |> preload(:categories) 
+      |> Repo.paginate(page: params["page"], page_size: 5)
+
+    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
+  end
+
   def public_citations(conn, _params) do
     citations = Citation 
       |> where([m], m.is_public == true) 

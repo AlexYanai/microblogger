@@ -5,18 +5,22 @@ import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
 
 type Props = {
   currentUser: Object,
+  paginatedCitations: any,
   currentUserCitations: Array<Citation>,
+  allCitations: Array<Citation>,
   categories: Array<Category>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
+  reachedEnd: boolean,
   isEditModalOpen: boolean,
+  fetchPaginatedCitations: () => void,
   createCitation: () => void,
   deleteCitation: () => void,
   editCitation: () => void,
@@ -29,6 +33,10 @@ class Home extends Component {
     router: PropTypes.object,
   }
 
+  componentDidMount() {
+    this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: 1});
+  }
+
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
@@ -37,11 +45,26 @@ class Home extends Component {
   handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
 
-  renderCitations() {
-    return this.props.currentUserCitations.map(citation =>
+  fetchPaginated() {
+    var page_num = this.props.pagination.page_number;
+
+    if (this.props.pagination.total_pages > this.props.pagination.page_number) {
+      page_num += 1;
+      this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: page_num}, this.props.paginatedCitations);
+    } else {
+      this.props.endOfCitations();
+    }
+  }
+
+  renderCitations(pagCitations) {
+    if (pagCitations === undefined) {
+      return null;
+    }
+
+    return pagCitations.map(citation =>
       <CitationListItem
-        key={citation.id}
-        citation={citation}
+        key={citation.data.id}
+        citation={citation.data}
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
@@ -73,7 +96,11 @@ class Home extends Component {
             <EditCitationForm onSubmit={this.handleEditCitation} categories={this.props.categories} citation={this.props.editFormData} {...modalProps} />
           }
 
-          {this.renderCitations()}
+          {this.renderCitations(this.props.paginatedCitations)}
+
+          <button className="btn btn-link" onClick={this.fetchPaginated.bind(this)}>
+            {this.props.reachedEnd ? "You've reached the end" : 'More...'}
+          </button>
         </div>
       </div>
     );
@@ -86,10 +113,13 @@ export default connect(
     currentUser: state.session.currentUser,
     categories: state.citations.categories,
     currentUserCitations: state.citations.currentUserCitations,
+    paginatedCitations: state.citations.paginatedCitations,
+    pagination: state.citations.pagination,
+    reachedEnd: state.citations.reachedEnd,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
+  { logout, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
 )(Home);

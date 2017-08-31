@@ -1,6 +1,13 @@
 defmodule Cite.CitationView do
   use Cite.Web, :view
 
+  def render("paginated.json", %{citations: citations, pagination: pagination}) do
+    %{
+      data: render_many(citations, Cite.CitationView, "show.json"),
+      pagination: pagination
+    }
+  end
+
   def render("index.json", %{citations: citations}) do
     %{data: render_many(citations, Cite.CitationView, "citation.json")}
   end

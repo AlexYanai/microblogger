@@ -1,6 +1,14 @@
 const initialState = {
   currentUserCitations: [],
-  currentCitations: []
+  currentCitations: [],
+  reachedEnd: false,
+  // paginatedCitations: [],
+  pagination: {
+    total_pages: 0,
+    total_entries: 0,
+    page_size: 0,
+    page_number: 0,
+  },
 };
 
 export default function (state = initialState, action) {
@@ -24,6 +32,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         currentUserCitations: action.response.data,
+      };
+    case 'FETCH_PAGINATED_CITATIONS_SUCCESS':
+      return {
+        ...state,
+        paginatedCitations: action.allCitations,
+        pagination: action.pagination,
+        reachedEnd: initialState.reachedEnd
+      };
+    case 'END_OF_CITATIONS':
+      return {
+        ...state,
+        reachedEnd: true
       };
     case 'CREATE_CITATION_SUCCESS':
       return {

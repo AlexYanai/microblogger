@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Home from '../Home';
 import Profile from '../Profile';
 import Citation from '../Citation';
+import Test from '../Test';
 import Citations from '../Citations';
 import Login from '../Login';
 import NotFound from '../../components/NotFound';
@@ -52,6 +53,7 @@ class App extends Component {
         <div style={{ display: 'flex', flex: '1', paddingTop: '4rem', }}>
           <Switch>
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
+            <MatchAuthenticated path="/test" component={Test} {...authProps} />
             <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
             <MatchAuthenticated path="/citations" component={Citations} {...authProps} />
             <Route path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
