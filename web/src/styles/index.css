@@ -135,9 +135,10 @@ a, a:visited, a:link, a:hover, a:active {
   margin: auto;
 }
 
-.navbar-main-link:hover
+.navbar-main-link:hover,
 .navbar-main-link:focus {
   opacity: 1;
+  color: var(--palette-dark-blue);
 }
 
 .navbar-main-divider {
