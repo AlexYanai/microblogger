@@ -1,5 +1,6 @@
 defmodule Cite.Citation do
   use Cite.Web, :model
+  alias Cite.{Citation, Repo}
 
   schema "citations" do
     field :title, :string
@@ -28,5 +29,33 @@ defmodule Cite.Citation do
       false -> []
       _     -> Enum.map(citation.categories, fn n -> n.id end)
     end
+  end
+
+  def select_categories(cat_names) do
+    Repo.all(
+      from c in Citation, 
+        join: a in assoc(c, :categories), 
+        where: a.name in ^cat_names, 
+      select: c
+    )
+  end
+
+  def query_by_categories(cat_names, user_id) when cat_names == [""] do
+    from c in Citation, 
+      join: a in assoc(c, :categories),
+      where: c.user_id == ^user_id,
+      preload: [:categories],
+      order_by: [desc: c.id],
+    select: c
+  end
+
+  def query_by_categories(cat_names, user_id) do
+    from c in Citation, 
+      join: a in assoc(c, :categories),
+      where: a.name in ^cat_names,
+      where: c.user_id == ^user_id,
+      preload: [:categories],
+      order_by: [desc: c.id],
+    select: c
   end
 end

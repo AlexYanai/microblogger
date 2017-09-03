@@ -5,6 +5,15 @@ defmodule Cite.CitationController do
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
+  def filter_citations(conn, params) do
+    c = params["categories"] |> String.split(",")
+
+    page = Citation.query_by_categories(c, params["id"])
+      |> Repo.paginate(page: params["page"], page_size: 5)
+
+    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
+  end
+
   def paginated_citations(conn, params) do
     page = Citation 
       |> where([m], m.user_id == ^params["id"]) 

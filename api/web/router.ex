@@ -28,6 +28,7 @@ defmodule Cite.Router do
     get "/citations", CitationController, :public_citations
     get "/users/:id/citations", UserController, :citations
     get "/users/:id/paginated_citations", CitationController, :paginated_citations
+    get "/users/:id/filter_citations", CitationController, :filter_citations
 
     resources "/users", UserController do
       resources "/citations", CitationController

@@ -73,6 +73,7 @@ class EditCitationForm extends Component {
           <Field
             name="categories"
             label="Category" 
+            placeholder="tags..." 
             className="multiselect"
             component={MultiSelectField}
             data={categoryNames}/>

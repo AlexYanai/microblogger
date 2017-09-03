@@ -71,6 +71,7 @@ class NewCitationForm extends Component {
               name="categories"
               label="Category" 
               className="multiselect"
+              placeholder="tags..."
               component={MultiSelectField}
               data={categoryNames}/>
 

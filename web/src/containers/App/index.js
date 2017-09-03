@@ -54,7 +54,7 @@ class App extends Component {
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
             <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
             <MatchAuthenticated path="/citations" component={Citations} {...authProps} />
-            <Route path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
+            <MatchAuthenticated path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
             <RedirectAuthenticated path="/login" component={Login} {...authProps} />
             <RedirectAuthenticated path="/signup" component={Signup} {...authProps} />
             <Route component={NotFound} />

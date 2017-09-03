@@ -5,10 +5,11 @@ import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
+import SearchForm from '../../components/SearchForm';
 
 type Props = {
   currentUser: Object,
@@ -18,6 +19,7 @@ type Props = {
   categories: Array<Category>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
+  isSearchFormOpen: boolean,
   reachedEnd: boolean,
   isEditModalOpen: boolean,
   fetchPaginatedCitations: () => void,
@@ -25,6 +27,7 @@ type Props = {
   deleteCitation: () => void,
   editCitation: () => void,
   showModal: () => void,
+  showSearchForm: () => void,
   editFormData: Citation
 };
 
@@ -40,6 +43,46 @@ class Home extends Component {
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
   handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
+  showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
+
+  handleSearch(data = {}) {
+    var categories = data.categories !== undefined ? data.categories : [];
+
+    if (categories.length === 0 && this.props.searchCategories !== undefined) {
+      categories = this.props.searchCategories;
+    }
+
+    var params = {
+      id: this.props.currentUser.id,
+      page: 1, 
+      categories: categories
+    }
+
+    this.props.searchCitations(this.props.currentUser.id, params, []);
+  }
+
+  handleMore(data = {}) {
+    var page_num   = this.props.pagination.page_number;
+    var categories = data.categories !== undefined ? data.categories : [];
+
+    if (categories.length === 0 && this.props.searchCategories !== undefined) {
+      categories = this.props.searchCategories;
+    }
+
+    if (this.props.pagination.total_pages > page_num) {
+      page_num += 1;
+
+      var params = {
+        id: this.props.currentUser.id,
+        page: page_num, 
+        categories: categories
+      }
+
+      this.props.searchCitations(this.props.currentUser.id, params, this.props.paginatedCitations);
+    } else {
+      this.props.endOfCitations();
+    }
+  }
 
   fetchPaginated() {
     var page_num = this.props.pagination.page_number;
@@ -83,6 +126,16 @@ class Home extends Component {
             </div>
           </div>
 
+          {this.props.isSearchFormOpen && 
+            <SearchForm onSubmit={this.handleSearch.bind(this)} categories={this.props.categories} showSearch={this.props.showSearch} />
+          }
+
+          {!this.props.isSearchFormOpen && 
+            <button className="btn btn-link" onClick={this.showSearch}>
+              Filter by category
+            </button>
+          }
+
           {isModalOpen &&
             <NewCitationForm onSubmit={this.handleNewCitationSubmit} categories={this.props.categories} {...modalProps}  />
           }
@@ -93,7 +146,7 @@ class Home extends Component {
 
           {this.renderCitations(this.props.paginatedCitations)}
 
-          <button className="btn btn-link" onClick={this.fetchPaginated.bind(this)}>
+          <button className="btn btn-link" onClick={this.handleMore.bind(this)}>
             {this.props.reachedEnd ? "You've reached the end" : 'More...'}
           </button>
         </div>
@@ -109,12 +162,14 @@ export default connect(
     categories: state.citations.categories,
     currentUserCitations: state.citations.currentUserCitations,
     paginatedCitations: state.citations.paginatedCitations,
+    searchCategories: state.citations.searchCategories,
     pagination: state.citations.pagination,
     reachedEnd: state.citations.reachedEnd,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
+    isSearchFormOpen: state.citations.isSearchFormOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
+  { logout, searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
 )(Home);

@@ -1,6 +1,42 @@
 import api from '../api';
 import { showModal, showEditModal } from './modal';
 
+export function showSearchForm(isSearchFormOpen) {
+  return (dispatch) => {
+    const open = !isSearchFormOpen;
+
+    dispatch({ 
+      type: 'OPEN_SEARCH',
+      isSearchFormOpen: open,
+    });
+  };
+}
+
+export function searchCitations(userId, params, allCitations = []) {
+  var searchCategories = params["categories"];
+
+  return dispatch => api.fetch(`/users/${userId}/filter_citations`, params)
+    .then((response) => {
+      var cites = [];
+      var pag   = {};
+
+      if (response !== undefined) {
+        cites = allCitations.concat(response.data);
+        pag   = response.pagination;
+      }
+
+      dispatch({ 
+        type: 'FETCH_FILTERED_CITATIONS_SUCCESS',
+        allCitations: cites,
+        pagination: pag,
+        searchCategories: searchCategories 
+      });
+    }).catch((error) => {
+      console.log("error");
+      console.log(error);
+    });
+}
+
 export function fetchPaginatedCitations(userId, params, allCitations = []) {
   return dispatch => api.fetch(`/users/${userId}/paginated_citations`, params)
     .then((response) => {

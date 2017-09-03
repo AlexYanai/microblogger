@@ -12,6 +12,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case 'OPEN_SEARCH':
+      return {
+        ...state,
+        isSearchFormOpen: action.isSearchFormOpen,
+      };
     case 'FETCH_CITATIONS_SUCCESS':
       return {
         ...state,
@@ -38,6 +43,19 @@ export default function (state = initialState, action) {
         paginatedCitations: action.allCitations,
         pagination: action.pagination,
         reachedEnd: initialState.reachedEnd
+      };
+    case 'FETCH_FILTERED_CITATIONS_SUCCESS':
+      return {
+        ...state,
+        paginatedCitations: action.allCitations,
+        pagination: action.pagination,
+        searchCategories: action.searchCategories,
+        reachedEnd: initialState.reachedEnd
+      };
+    case 'CLEAR_PAGINATED_CITATIONS':
+      return {
+        ...state,
+        paginatedCitations: []
       };
     case 'END_OF_CITATIONS':
       return {
