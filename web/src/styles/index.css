@@ -289,6 +289,7 @@ a, a:visited, a:link, a:hover, a:active {
   text-decoration: none;
 }
 
+.citation-list-item-edit,
 .citation-list-item-delete {
   justify-content: center;
   color: var(--palette-light-gray);

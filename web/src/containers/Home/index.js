@@ -58,7 +58,7 @@ class Home extends Component {
       categories: categories
     }
 
-    this.props.searchCitations(this.props.currentUser.id, params, []);
+    this.props.searchCitations(params);
   }
 
   handleMore(data = {}) {
@@ -78,7 +78,7 @@ class Home extends Component {
         categories: categories
       }
 
-      this.props.searchCitations(this.props.currentUser.id, params, this.props.paginatedCitations);
+      this.props.searchCitations(params, this.props.paginatedCitations);
     } else {
       this.props.endOfCitations();
     }
@@ -104,6 +104,7 @@ class Home extends Component {
       <CitationListItem
         key={citation.data.id}
         citation={citation.data}
+        pagCitations={pagCitations}
         currentUser={this.props.currentUser}
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}

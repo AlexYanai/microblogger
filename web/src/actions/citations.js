@@ -12,10 +12,10 @@ export function showSearchForm(isSearchFormOpen) {
   };
 }
 
-export function searchCitations(userId, params, allCitations = []) {
+export function searchCitations(params, allCitations = []) {
   var searchCategories = params["categories"];
 
-  return dispatch => api.fetch(`/users/${userId}/filter_citations`, params)
+  return dispatch => api.fetch(`/users/${params.id}/filter_citations`, params)
     .then((response) => {
       var cites = [];
       var pag   = {};
@@ -99,7 +99,7 @@ export function createCitation(data, router, currentUser) {
   return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
-      dispatch(fetchPaginatedCitations(currentUser.id, {page: 1, id: currentUser.id}));
+      dispatch(searchCitations({categories: [], page: 1, id: currentUser.id}));
       dispatch(showModal(true));
 
       router.history.push('/');
@@ -129,16 +129,24 @@ export function editCitation(data, router, currentCitation, is_public) {
     });
 }
 
-export function deleteCitation(router, userId, citationId) {
+export function deleteCitation(router, userId, citationId, pagCitations = []) {
   const origin = router.history.location.pathname;
 
   return dispatch => api.delete(`/users/${userId}/citations/${citationId}`, {"id": citationId})
     .then(() => {
       if (origin === '/citations') {
         dispatch(fetchCitations());
+      } else {
+        var paginatedCitations = pagCitations.filter(function(a) {
+          return a.data.id !== citationId;
+        });
+
+        dispatch({ 
+          type: 'REFRESH_FILTERED_CITATIONS',
+          paginatedCitations: paginatedCitations
+        });
       }
 
-      dispatch(fetchPaginatedCitations(userId, {page: 1, id: userId}));
       router.history.push(origin);
     })
 }

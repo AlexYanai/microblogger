@@ -46,7 +46,7 @@ defmodule Cite.CitationController do
 
     case Repo.insert(changeset) do
       {:ok, citation} ->
-        if Enum.any?(categories) do
+        if !!categories && Enum.any?(categories) do
           categories
             |> Enum.map(fn n -> qq(n) end)
             |> Enum.map(&CitationCategory.assoc_category_with_citation(&1, citation))

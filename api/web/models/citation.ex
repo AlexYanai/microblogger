@@ -45,6 +45,7 @@ defmodule Cite.Citation do
       join: a in assoc(c, :categories),
       where: c.user_id == ^user_id,
       preload: [:categories],
+      distinct: [desc: c.id],
       order_by: [desc: c.id],
     select: c
   end
@@ -52,9 +53,10 @@ defmodule Cite.Citation do
   def query_by_categories(cat_names, user_id) do
     from c in Citation, 
       join: a in assoc(c, :categories),
-      where: a.name in ^cat_names,
       where: c.user_id == ^user_id,
+      where: a.name in ^cat_names,
       preload: [:categories],
+      distinct: [desc: c.id],
       order_by: [desc: c.id],
     select: c
   end

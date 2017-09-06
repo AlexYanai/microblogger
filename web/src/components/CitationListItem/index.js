@@ -20,7 +20,7 @@ class CitationListItem extends Component {
   props: Props;
 
   showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
-  handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id);
+  handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id, this.props.pagCitations);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
   formatDateString      = data => (new Date(this.props.citation.inserted_at)).toLocaleDateString('en-US', data);
 
@@ -45,7 +45,7 @@ class CitationListItem extends Component {
           <div style={{width: '25%'}}></div>
           
           <div className="citation-list-item-link">
-            <h2><a href="#">{this.props.citation.title}</a></h2>
+            <h3><a href="#">{this.props.citation.title}</a></h3>
           </div>
           
           {this.ownedByCurrentUser() &&

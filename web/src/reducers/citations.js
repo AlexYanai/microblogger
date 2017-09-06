@@ -52,6 +52,13 @@ export default function (state = initialState, action) {
         searchCategories: action.searchCategories,
         reachedEnd: initialState.reachedEnd
       };
+    case 'REFRESH_FILTERED_CITATIONS':
+      console.log("pagCitations IN ROUTER");
+      console.log(action.paginatedCitations);
+      return {
+        ...state,
+        paginatedCitations: action.paginatedCitations,
+      };
     case 'CLEAR_PAGINATED_CITATIONS':
       return {
         ...state,
