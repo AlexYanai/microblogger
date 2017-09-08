@@ -8,6 +8,7 @@ defmodule Cite.User do
     field :password_hash, :string
     field :password, :string, virtual: true
     has_many :citations, Cite.Citation
+    has_many :favorites, Cite.Favorite
 
     timestamps()
   end
@@ -30,6 +31,10 @@ defmodule Cite.User do
 
   def create_citation(citation, user) do
     Ecto.build_assoc(user, :citations, citation)
+  end
+
+  def favorites(user) do
+    user |> assoc(:favorites) |> Cite.Repo.all
   end
 
   defp put_password_hash(changeset) do

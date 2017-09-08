@@ -1,11 +1,14 @@
 defmodule Cite.UserTest do
   use Cite.ModelCase
 
-  alias Cite.User
+  alias Cite.{User, Favorite}
 
   @valid_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
   @invalid_attrs %{}
-  @cite_attrs %{quote: "some content", source: "some content", title: "some content", is_public: true}
+  
+  @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
+  @cite_attrs_one %{quote: "a1", source: "b1", title: "c1", is_public: true}
+  @cite_attrs_two %{quote: "a2", source: "b2", title: "c2", is_public: true}
 
   test "changeset with valid attributes" do
     changeset = User.changeset(%User{}, @valid_attrs)
@@ -33,12 +36,27 @@ defmodule Cite.UserTest do
   end
 
   test "create_citation associates citation with user model" do
-    u_map = %{username: "Test UserA", email: "a@a.com", password: "aaaaaa", bio: "aaaaaaaaaaaaaaaaaaaaaaaa"}
-    user  = User.registration_changeset(%User{}, u_map) |> Repo.insert!
+    user = User.registration_changeset(%User{}, @user_attrs) |> Repo.insert!
 
-    User.create_citation(@cite_attrs, user) |> Repo.insert!
+    User.create_citation(@cite_attrs_one, user) |> Repo.insert!
     user = user |> Repo.preload(:citations)
 
     assert length(user.citations) == 1
+  end
+
+  test "favorites returns all of a user's favorites" do
+    user     = User.registration_changeset(%User{}, @user_attrs) |> Repo.insert!
+
+    User.create_citation(@cite_attrs_one, user) |> Repo.insert!
+    User.create_citation(@cite_attrs_two, user) |> Repo.insert!
+
+    user     = user |> Repo.preload(:citations)
+    cite_one = user.citations |> List.first
+    cite_two = user.citations |> List.last
+
+    Favorite.changeset(%Favorite{}, %{citation_id: cite_one.id, user_id: user.id}) |> Repo.insert!
+    Favorite.changeset(%Favorite{}, %{citation_id: cite_two.id, user_id: user.id}) |> Repo.insert!
+
+    assert length(User.favorites(user)) == 2
   end
 end

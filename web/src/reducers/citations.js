@@ -53,8 +53,6 @@ export default function (state = initialState, action) {
         reachedEnd: initialState.reachedEnd
       };
     case 'REFRESH_FILTERED_CITATIONS':
-      console.log("pagCitations IN ROUTER");
-      console.log(action.paginatedCitations);
       return {
         ...state,
         paginatedCitations: action.paginatedCitations,
