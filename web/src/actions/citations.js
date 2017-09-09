@@ -12,6 +12,17 @@ export function showSearchForm(isSearchFormOpen) {
   };
 }
 
+export function favorite(is_fave) {
+  return (dispatch) => {
+    const fave = !is_fave;
+
+    dispatch({ 
+      type: 'FAVORITE',
+      is_fave: fave,
+    });
+  };
+}
+
 export function searchCitations(params, allCitations = []) {
   var searchCategories = params["categories"];
 

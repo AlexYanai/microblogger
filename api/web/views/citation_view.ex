@@ -17,10 +17,13 @@ defmodule Cite.CitationView do
   end
 
   def render("citation.json", %{citation: citation}) do
+    is_favorite = citation.favorites |> Enum.any?
+
     %{id: citation.id,
       title: citation.title,
       source: citation.source,
       quote: citation.quote,
+      is_favorite: is_favorite,
       is_public: citation.is_public,
       inserted_at: citation.inserted_at,
       user_id: citation.user_id

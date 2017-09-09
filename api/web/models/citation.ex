@@ -1,6 +1,6 @@
 defmodule Cite.Citation do
   use Cite.Web, :model
-  alias Cite.{Citation, Repo}
+  alias Cite.{Citation, Favorite, Category, Repo}
 
   schema "citations" do
     field :title, :string
@@ -40,22 +40,23 @@ defmodule Cite.Citation do
     )
   end
 
-  def query_by_categories(cat_names, user_id) when cat_names == [""] do
-    from c in Citation, 
-      join: a in assoc(c, :categories),
-      where: c.user_id == ^user_id,
-      preload: [:categories],
-      distinct: [desc: c.id],
-      order_by: [desc: c.id],
-    select: c
+  def query_by_categories(cat_names, _, user_id) when cat_names == [""] do
+    ff = from f in Favorite, where: f.user_id == ^user_id
+    
+    Citation 
+      |> where([m], m.user_id == ^user_id) 
+      |> order_by([desc: :inserted_at, desc: :id]) 
+      |> preload([:categories, favorites: ^ff]) 
   end
 
-  def query_by_categories(cat_names, user_id) do
+  def query_by_categories(cat_names, page, user_id) do
+    ff = from f in Favorite, where: f.user_id == ^user_id
+    
     from c in Citation, 
       join: a in assoc(c, :categories),
       where: c.user_id == ^user_id,
       where: a.name in ^cat_names,
-      preload: [:categories],
+      preload: [:categories, favorites: ^ff],
       distinct: [desc: c.id],
       order_by: [desc: c.id],
     select: c

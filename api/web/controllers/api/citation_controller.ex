@@ -8,17 +8,14 @@ defmodule Cite.CitationController do
   def filter_citations(conn, params) do
     c = params["categories"] |> String.split(",")
 
-    page = Citation.query_by_categories(c, params["id"])
+    page = Citation.query_by_categories(c, params["page"], params["id"])
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def paginated_citations(conn, params) do
-    page = Citation 
-      |> where([m], m.user_id == ^params["id"]) 
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload(:categories) 
+    page = Citation.query_by_categories([""], params["page"], params["id"])
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
@@ -32,6 +29,17 @@ defmodule Cite.CitationController do
       |> Repo.preload(:categories)
 
     render(conn, "index.json", citations: citations)
+  end
+
+  def favorites(conn, params) do
+    user = Guardian.Plug.current_resource(conn)
+    page = Favorite 
+      |> where([f], f.user_id == ^user.id) 
+      |> order_by([desc: :inserted_at, desc: :id]) 
+      |> preload([:citation, citation: :categories]) 
+      |> Repo.paginate(page: params["page"], page_size: 5)
+
+    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def qq(n), do: (from c in Category, where: c.name == ^n, select: c) |> Repo.one

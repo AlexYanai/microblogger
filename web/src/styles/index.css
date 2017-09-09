@@ -285,8 +285,23 @@ a, a:visited, a:link, a:hover, a:active {
 }
 
 .citation-list-item-link:hover,
-.citation-list-item-link:focus, {
+.citation-list-item-link:focus {
   text-decoration: none;
+}
+
+.citation-list-item-fave,
+.citation-list-item-not-fave {
+  justify-content: center;
+  background: rgba(255,255,255,.2);
+  border-radius: 5px;
+}
+
+.citation-list-item-fave {
+  color: var(--palette-med-blue);
+}
+
+.citation-list-item-not-fave {
+  color: var(--palette-light-gray);
 }
 
 .citation-list-item-edit,
@@ -298,7 +313,9 @@ a, a:visited, a:link, a:hover, a:active {
 }
 
 .citation-list-item-edit:hover,
-.citation-list-item-edit:focus {
+.citation-list-item-edit:focus,
+.citation-list-item-fave:hover,
+.citation-list-item-fave:focus {
   color: var(--palette-med-blue);
 }
 
