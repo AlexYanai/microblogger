@@ -93,6 +93,11 @@ export default function (state = initialState, action) {
       return {
         ...state
       };
+    case 'FAVORITE':
+      return {
+        ...state,
+        paginatedCitations: action.paginatedCitations,
+      };
     default:
       return state;
   }

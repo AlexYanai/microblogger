@@ -21,7 +21,6 @@ class CitationListItem extends Component {
 
   props: Props;
 
-  // favoriteCitation      =  ()  => this.props.favorite(this.context.router, this.props.citation, this.props.pagCitations);
   showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id, this.props.pagCitations);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
@@ -29,8 +28,6 @@ class CitationListItem extends Component {
 
   favoriteCitation() {
     if (this.props.citation.is_favorite) {
-      console.log("this.props.citation");
-      console.log(this.props.citation);
       this.props.unfavorite(this.context.router, this.props.citation, this.props.pagCitations);
     } else {
       this.props.favorite(this.context.router, this.props.citation, this.props.pagCitations);
@@ -52,11 +49,7 @@ class CitationListItem extends Component {
       second: 'numeric'
     };
 
-      if (this.props.citation && this.props.citation.id && this.props.citation.user_id) {
-        console.log("ID: " + this.props.citation.id + " IS FAVE: " + this.props.citation.is_favorite);
-      }
     return (
-
       <div key={this.props.citation.id} className="citation-list-item-card">
         <div className="button-row">
           <div style={{width: '25%'}}></div>
