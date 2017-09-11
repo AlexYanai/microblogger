@@ -117,7 +117,7 @@ class Home extends Component {
     const { isAuthenticated, isModalOpen, isEditModalOpen, currentUser } = this.props;
     const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen, currentUser };
 
-    console.log("this.props.paginatedCitations");
+    console.log("this.props.paginatedCitations in HOME");
     console.log(this.props.paginatedCitations);
 
     return (

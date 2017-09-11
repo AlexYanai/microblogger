@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { showModal, showEditModal } from '../../actions/modal';
-import { favorite, deleteCitation, editCitation } from '../../actions/citations';
+import { favorite, unfavorite } from '../../actions/favorites';
+import { deleteCitation, editCitation } from '../../actions/citations';
 
 type Props = {
   citation: Object,
@@ -20,11 +21,21 @@ class CitationListItem extends Component {
 
   props: Props;
 
-  favoriteCitation      =  ()  => this.props.favorite(this.props.citation.isFavorite);
+  // favoriteCitation      =  ()  => this.props.favorite(this.context.router, this.props.citation, this.props.pagCitations);
   showEditCitationModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.citation);
   handleDeleteCitation  = data => this.props.deleteCitation(this.context.router, this.props.citation.user_id, this.props.citation.id, this.props.pagCitations);
   handleEditCitation    = data => this.props.editCitation(this.context.router, this.props.currentUser, data);
   formatDateString      = data => (new Date(this.props.citation.inserted_at)).toLocaleDateString('en-US', data);
+
+  favoriteCitation() {
+    if (this.props.citation.is_favorite) {
+      console.log("this.props.citation");
+      console.log(this.props.citation);
+      this.props.unfavorite(this.context.router, this.props.citation, this.props.pagCitations);
+    } else {
+      this.props.favorite(this.context.router, this.props.citation, this.props.pagCitations);
+    }
+  }
 
   ownedByCurrentUser() {
     return this.props.citation.user_id === this.props.currentUser.id;
@@ -41,9 +52,11 @@ class CitationListItem extends Component {
       second: 'numeric'
     };
 
-    const fave = this.props.citation.is_favorite;
-
+      if (this.props.citation && this.props.citation.id && this.props.citation.user_id) {
+        console.log("ID: " + this.props.citation.id + " IS FAVE: " + this.props.citation.is_favorite);
+      }
     return (
+
       <div key={this.props.citation.id} className="citation-list-item-card">
         <div className="button-row">
           <div style={{width: '25%'}}></div>
@@ -54,8 +67,8 @@ class CitationListItem extends Component {
           
           {this.ownedByCurrentUser() &&
             <div className="citation-list-item-buttons">
-              <button type="button" className="btn btn-link" onClick={this.favoriteCitation}>
-                <div className={fave ? "citation-list-item-fave" : "citation-list-item-not-fave"}>
+              <button type="button" className="btn btn-link" onClick={this.favoriteCitation.bind(this)}>
+                <div className={this.props.citation.is_favorite ? "citation-list-item-fave" : "citation-list-item-not-fave"}>
                   <span className="fa fa-heart" />
                 </div>
               </button>
@@ -95,5 +108,5 @@ export default connect(
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
   }),
-  { favorite, deleteCitation, editCitation, showModal, showEditModal }
+  { favorite, unfavorite, deleteCitation, editCitation, showModal, showEditModal }
 )(CitationListItem);

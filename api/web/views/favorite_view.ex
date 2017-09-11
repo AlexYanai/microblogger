@@ -14,4 +14,8 @@ defmodule Cite.FavoriteView do
       citation_id: favorite.citation_id,
       user_id: favorite.user_id}
   end
+
+  def render("delete.json", _) do
+    %{ok: true}
+  end
 end
