@@ -63,6 +63,25 @@ export function endOfCitations() {
   return dispatch => dispatch({ type: 'END_OF_CITATIONS' });
 }
 
+export function fetchFavorites(userId, allCitations = []) {
+  return dispatch => api.fetch(`/users/${userId}/favorites`)
+    .then((response) => {
+      var cites = [];
+      var pag   = {};
+
+      if (response !== undefined) {
+        cites = allCitations.concat(response.data);
+        pag   = response.pagination;
+      }
+
+      dispatch({ 
+        type: 'FETCH_FAVORITE_CITATIONS_SUCCESS',
+        allCitations: cites,
+        pagination: pag 
+      });
+    });
+}
+
 export function fetchCitations(params, allCitations = []) {
   return dispatch => api.fetch(`/public_citations`)
     .then((response) => {

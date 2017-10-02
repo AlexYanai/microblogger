@@ -5,13 +5,14 @@ import Navbar from '../../containers/Navbar';
 import { Citation } from '../../types';
 import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
-import { fetchCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { fetchFavorites, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import EditCitationForm from '../../components/EditCitationForm';
 
 type Props = {
   currentUser: Object,
   currentCitations: Array<Citation>,
+  favoritedCitations: Array<Citation>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isEditModalOpen: boolean,
@@ -28,7 +29,7 @@ class Favorites extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.fetchCitations();
+      this.props.fetchFavorites(this.props.currentUser.id);
     }
   }
 
@@ -39,11 +40,15 @@ class Favorites extends Component {
   handleDeleteCitation = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
   handleEditCitation   = data => this.props.editCitation(this.context.router, this.props.currentUser, data, true);
 
-  renderCitations() {
-    return this.props.currentCitations.map(citation =>
+  renderCitations(pagCitations) {
+    if (pagCitations === undefined || pagCitations.length === []) {
+      return null;
+    }
+
+    return pagCitations.map(citation =>
       <CitationListItem
-        key={citation.id}
-        citation={citation}
+        key={citation.data.id}
+        citation={citation.data}
         currentUser={this.props.currentUser}
         isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
@@ -61,7 +66,7 @@ class Favorites extends Component {
         <Navbar currentUser={this.props.currentUser} />
         <div className="citations-list-container">
           <div className="citations-button-row">
-            <h3 style={{ margin: 'auto' }}>All</h3>
+            <h3 style={{ margin: 'auto' }}>Favorites</h3>
           </div>
 
           {isEditModalOpen &&
@@ -71,7 +76,7 @@ class Favorites extends Component {
               citation={this.props.editFormData} {...modalProps} />
           }
 
-          {this.renderCitations()}
+          {this.renderCitations(this.props.favoritedCitations)}
         </div>
       </div>
     );
@@ -83,11 +88,12 @@ export default connect(
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
     currentCitations: state.citations.currentCitations,
+    favoritedCitations: state.citations.favoritedCitations,
     categories: state.citations.categories,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchCitations, createCitation, deleteCitation, editCitation, showEditModal }
+  { logout, fetchFavorites, createCitation, deleteCitation, editCitation, showEditModal }
 )(Favorites);

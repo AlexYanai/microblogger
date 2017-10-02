@@ -1,7 +1,7 @@
 defmodule Cite.CitationController do
   use Cite.Web, :controller
 
-  alias Cite.{Citation, Category, CitationCategory}
+  alias Cite.{Citation, Category, CitationCategory, Favorite}
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
@@ -38,10 +38,12 @@ defmodule Cite.CitationController do
     page = Favorite 
       |> where([f], f.user_id == ^user.id) 
       |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:citation, citation: :categories]) 
+      |> preload([:citation, citation: :categories, citation: :favorites]) 
       |> Repo.paginate(page: params["page"], page_size: 5)
 
-    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
+    entries = page.entries |> Enum.map(fn c -> c.citation end)
+
+    render(conn, "paginated.json", %{citations: entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def qq(n), do: (from c in Category, where: c.name == ^n, select: c) |> Repo.one

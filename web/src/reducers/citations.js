@@ -1,6 +1,7 @@
 const initialState = {
   currentUserCitations: [],
   currentCitations: [],
+  favoritedCitations: [],
   paginatedCitations: [],
   reachedEnd: false,
   pagination: {
@@ -42,6 +43,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         paginatedCitations: action.allCitations,
+        pagination: action.pagination,
+        reachedEnd: initialState.reachedEnd
+      };
+    case 'FETCH_FAVORITE_CITATIONS_SUCCESS':
+      return {
+        ...state,
+        favoritedCitations: action.allCitations,
         pagination: action.pagination,
         reachedEnd: initialState.reachedEnd
       };

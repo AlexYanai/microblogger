@@ -34,7 +34,7 @@ defmodule Cite.Router do
 
     resources "/users", UserController do
       resources "/citations", CitationController
-      resources "/favorites", FavoriteController
+      # resources "/favorites", FavoriteController
     end
 
     resources "/categories", CategoryController do
