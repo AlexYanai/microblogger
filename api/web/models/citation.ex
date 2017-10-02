@@ -8,7 +8,7 @@ defmodule Cite.Citation do
     field :quote, :string
     field :is_public, :boolean
     belongs_to :user, Cite.User
-    has_many :favorites, Cite.Favorite
+    has_many :favorites, Cite.Favorite, on_delete: :delete_all
     many_to_many :categories, Cite.Category, join_through: "citation_categories", on_delete: :delete_all
 
     timestamps()

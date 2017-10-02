@@ -7,7 +7,6 @@ defmodule Cite.FavoriteController do
     favorite = Favorite.changeset(%Favorite{}, %{citation_id: id, user_id: user_id}) 
       |> Repo.insert!
 
-
     conn
       |> put_status(:created)
       |> render("show.json", favorite: favorite)

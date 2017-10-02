@@ -6,6 +6,7 @@ import Home from '../Home';
 import Profile from '../Profile';
 import Citation from '../Citation';
 import Citations from '../Citations';
+import Favorites from '../Favorites';
 import Login from '../Login';
 import NotFound from '../../components/NotFound';
 import Signup from '../Signup';
@@ -54,6 +55,7 @@ class App extends Component {
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
             <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
             <MatchAuthenticated path="/citations" component={Citations} {...authProps} />
+            <MatchAuthenticated path="/favorites" component={Favorites} {...authProps} />
             <MatchAuthenticated path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
             <RedirectAuthenticated path="/login" component={Login} {...authProps} />
             <RedirectAuthenticated path="/signup" component={Signup} {...authProps} />

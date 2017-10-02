@@ -22,13 +22,15 @@ defmodule Cite.CitationController do
   end
 
   def public_citations(conn, _params) do
-    citations = Citation 
+    ff = from f in Favorite, where: f.user_id == 1
+    
+    page = Citation 
       |> where([m], m.is_public == true) 
       |> order_by([desc: :inserted_at, desc: :id]) 
-      |> Repo.all
-      |> Repo.preload(:categories)
+      |> preload([:categories, favorites: ^ff]) 
+      |> Repo.paginate(page: _params["page"], page_size: 5)
 
-    render(conn, "index.json", citations: citations)
+    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def favorites(conn, params) do
@@ -61,7 +63,9 @@ defmodule Cite.CitationController do
             |> Enum.each(&Repo.insert!(&1))
         end
 
-        citation = citation |> Repo.preload(:categories)
+        citation = citation 
+          |> Repo.preload(:categories)
+          |> Repo.preload(:favorites)
 
         conn
           |> put_status(:created)
@@ -85,6 +89,7 @@ defmodule Cite.CitationController do
     citation = Citation 
       |> Repo.get!(id) 
       |> Repo.preload(:categories)
+      |> Repo.preload(:favorites)
 
     any_remote   = Enum.any?(remote_categories)
     any_existing = Enum.any?(Citation.category_ids(citation))

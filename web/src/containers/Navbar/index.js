@@ -16,8 +16,7 @@ class Navbar extends Component {
 
   props: Props;
 
-  handleLogout = ()                => this.props.logout(this.context.router);
-  isActiveFunc = (match, location) => (location && location.pathname && !!location.pathname.match(/profile/));
+  handleLogout = ()  => this.props.logout(this.context.router);
 
   render() {
     const { isAuthenticated } = this.props;
@@ -31,10 +30,11 @@ class Navbar extends Component {
             </div>
 
             <div className="navbar-main-right">
-              <NavItem text={this.props.currentUser.username} to={`/profile/${this.props.currentUser.id}`} />
-              
-              <div className="navbar-main-divider">|</div>
               <NavItem text="Public" to={`/citations`} />
+              <div className="navbar-main-divider">|</div>
+              <NavItem text="Favorites" to={`/favorites`} />
+              <div className="navbar-main-divider">|</div>
+              <NavItem text={this.props.currentUser.username} to={`/profile/${this.props.currentUser.id}`} />
               <div className="navbar-main-divider">|</div>
 
               <NavLink className="navbar-main-link" to={`#`} onClick={this.handleLogout}>

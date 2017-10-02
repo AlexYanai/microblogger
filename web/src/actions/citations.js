@@ -63,10 +63,22 @@ export function endOfCitations() {
   return dispatch => dispatch({ type: 'END_OF_CITATIONS' });
 }
 
-export function fetchCitations() {
-  return dispatch => api.fetch(`/citations`)
+export function fetchCitations(params, allCitations = []) {
+  return dispatch => api.fetch(`/public_citations`)
     .then((response) => {
-      dispatch({ type: 'FETCH_CITATIONS_SUCCESS', response });
+      var cites = [];
+      var pag   = {};
+
+      if (response !== undefined) {
+        cites = allCitations.concat(response.data);
+        pag   = response.pagination;
+      }
+
+      dispatch({ 
+        type: 'FETCH_PAGINATED_CITATIONS_SUCCESS',
+        allCitations: cites,
+        pagination: pag 
+      });
     });
 }
 

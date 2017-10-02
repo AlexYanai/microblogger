@@ -1,6 +1,7 @@
 const initialState = {
   currentUserCitations: [],
   currentCitations: [],
+  paginatedCitations: [],
   reachedEnd: false,
   pagination: {
     total_pages: 0,
