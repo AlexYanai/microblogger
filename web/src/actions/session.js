@@ -5,8 +5,20 @@ import { fetchPaginatedCitations, fetchCategories } from './citations';
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.meta.token));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
-  dispatch(fetchPaginatedCitations(response.data.id, {page: 1, id: response.data.id}));
+  const route = currentLocation(window.location.pathname);
+  dispatch(fetchPaginatedCitations({page: 1, id: response.data.id, route: route}));
   dispatch(fetchCategories());
+}
+
+function currentLocation(loc) {
+  switch (loc) {
+    case '/citations':
+      return 'citations';
+    case '/favorites':
+      return 'favorites';
+    default:
+      return 'paginated_citations';
+  }
 }
 
 export function signup(data, router) {

@@ -5,7 +5,7 @@ import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { fetchPaginatedCitations, showSearchForm, endOfCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
@@ -13,16 +13,13 @@ import SearchForm from '../../components/SearchForm';
 
 type Props = {
   currentUser: Object,
-  paginatedCitations: any,
-  currentUserCitations: Array<Citation>,
-  allCitations: Array<Citation>,
+  paginatedCitations: Array<Citation>,
   categories: Array<Category>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isSearchFormOpen: boolean,
   reachedEnd: boolean,
   isEditModalOpen: boolean,
-  fetchPaginatedCitations: () => void,
   createCitation: () => void,
   deleteCitation: () => void,
   editCitation: () => void,
@@ -36,13 +33,19 @@ class Citations extends Component {
     router: PropTypes.object,
   }
 
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.fetchPaginatedCitations({page: 1, id: this.props.currentUser.id, route: 'citations'});
+    }
+  }
+
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
   showCitationModal       =  ()  => this.props.showModal(this.props.isModalOpen);
   handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
   handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
-  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
+  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, true);
   showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
 
   handleSearch(data = {}) {
@@ -55,10 +58,11 @@ class Citations extends Component {
     var params = {
       id: this.props.currentUser.id,
       page: 1, 
-      categories: categories
+      categories: categories,
+      route: 'citations'
     }
 
-    this.props.searchCitations(params);
+    this.props.fetchPaginatedCitations(params);
   }
 
   handleMore(data = {}) {
@@ -75,10 +79,11 @@ class Citations extends Component {
       var params = {
         id: this.props.currentUser.id,
         page: page_num, 
-        categories: categories
+        categories: categories,
+        route: 'citations'
       }
 
-      this.props.searchCitations(params, this.props.paginatedCitations);
+      this.props.fetchPaginatedCitations(params, this.props.paginatedCitations);
     } else {
       this.props.endOfCitations();
     }
@@ -150,7 +155,6 @@ export default connect(
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
     categories: state.citations.categories,
-    currentUserCitations: state.citations.currentUserCitations,
     paginatedCitations: state.citations.paginatedCitations,
     searchCategories: state.citations.searchCategories,
     pagination: state.citations.pagination,
@@ -161,5 +165,5 @@ export default connect(
     isSearchFormOpen: state.citations.isSearchFormOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
+  { logout, fetchPaginatedCitations, showSearchForm, endOfCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
 )(Citations);

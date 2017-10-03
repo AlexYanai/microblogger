@@ -25,7 +25,7 @@ defmodule Cite.Router do
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
-    get "/citations", CitationController, :public_citations
+    get "/users/:id/citations", CitationController, :public_citations
     get "/users/:id/favorites", CitationController, :favorites
     post "/users/:id/favorite_citation", CitationController, :favorite_citation
     get "/users/:id/citations", UserController, :citations
@@ -33,8 +33,8 @@ defmodule Cite.Router do
     get "/users/:id/filter_citations", CitationController, :filter_citations
 
     resources "/users", UserController do
-      resources "/citations", CitationController
-      # resources "/favorites", FavoriteController
+      resources "/citations", CitationController, except: [:index]
+      resources "/favorites", FavoriteController, only: [:create, :delete]
     end
 
     resources "/categories", CategoryController do

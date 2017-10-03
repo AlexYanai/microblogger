@@ -5,7 +5,7 @@ import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import NewCitationForm from '../../components/NewCitationForm';
 import EditCitationForm from '../../components/EditCitationForm';
@@ -36,6 +36,12 @@ class Home extends Component {
     router: PropTypes.object,
   }
 
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.fetchPaginatedCitations({page: 1, id: this.props.currentUser.id, route: 'paginated_citations'});
+    }
+  }
+
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
@@ -55,10 +61,11 @@ class Home extends Component {
     var params = {
       id: this.props.currentUser.id,
       page: 1, 
-      categories: categories
+      categories: categories,
+      route: 'filter_citations'
     }
 
-    this.props.searchCitations(params);
+    this.props.fetchPaginatedCitations(params);
   }
 
   handleMore(data = {}) {
@@ -75,10 +82,11 @@ class Home extends Component {
       var params = {
         id: this.props.currentUser.id,
         page: page_num, 
-        categories: categories
+        categories: categories,
+        route: 'filter_citations'
       }
 
-      this.props.searchCitations(params, this.props.paginatedCitations);
+      this.props.fetchPaginatedCitations(params, this.props.paginatedCitations);
     } else {
       this.props.endOfCitations();
     }
@@ -89,7 +97,7 @@ class Home extends Component {
 
     if (this.props.pagination.total_pages > this.props.pagination.page_number) {
       page_num += 1;
-      this.props.fetchPaginatedCitations(this.props.currentUser.id, {page: page_num, id: this.props.currentUser.id}, this.props.paginatedCitations);
+      this.props.fetchPaginatedCitations({page: page_num, id: this.props.currentUser.id, route: 'paginated_citations'}, this.props.paginatedCitations);
     } else {
       this.props.endOfCitations();
     }
@@ -172,5 +180,5 @@ export default connect(
     isSearchFormOpen: state.citations.isSearchFormOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, searchCitations, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
+  { logout, showSearchForm, endOfCitations, fetchPaginatedCitations, fetchCitation, createCitation, deleteCitation, editCitation, showModal }
 )(Home);

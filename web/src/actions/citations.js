@@ -12,10 +12,12 @@ export function showSearchForm(isSearchFormOpen) {
   };
 }
 
-export function searchCitations(params, allCitations = []) {
-  var searchCategories = params["categories"];
+export function fetchPaginatedCitations(params, allCitations = []) {
+  const userId = params.id;
+  const route  = params.route;
+  const cats   = params["categories"];
 
-  return dispatch => api.fetch(`/users/${params.id}/filter_citations`, params)
+  return dispatch => api.fetch(`/users/${userId}/${route}`, params)
     .then((response) => {
       var cites = [];
       var pag   = {};
@@ -29,76 +31,15 @@ export function searchCitations(params, allCitations = []) {
         type: 'FETCH_FILTERED_CITATIONS_SUCCESS',
         allCitations: cites,
         pagination: pag,
-        searchCategories: searchCategories 
+        searchCategories: cats 
       });
     }).catch((error) => {
-      console.log("error");
-      console.log(error);
-    });
-}
-
-export function fetchPaginatedCitations(userId, params, allCitations = []) {
-  return dispatch => api.fetch(`/users/${userId}/paginated_citations`, params)
-    .then((response) => {
-      var cites = [];
-      var pag   = {};
-
-      if (response !== undefined) {
-        cites = allCitations.concat(response.data);
-        pag   = response.pagination;
-      }
-
-      dispatch({ 
-        type: 'FETCH_PAGINATED_CITATIONS_SUCCESS',
-        allCitations: cites,
-        pagination: pag 
-      });
-    }).catch((error) => {
-      console.log("error");
       console.log(error);
     });
 }
 
 export function endOfCitations() {
   return dispatch => dispatch({ type: 'END_OF_CITATIONS' });
-}
-
-export function fetchFavorites(userId, allCitations = []) {
-  return dispatch => api.fetch(`/users/${userId}/favorites`)
-    .then((response) => {
-      var cites = [];
-      var pag   = {};
-
-      if (response !== undefined) {
-        cites = allCitations.concat(response.data);
-        pag   = response.pagination;
-      }
-
-      dispatch({ 
-        type: 'FETCH_FAVORITE_CITATIONS_SUCCESS',
-        allCitations: cites,
-        pagination: pag 
-      });
-    });
-}
-
-export function fetchCitations(params, allCitations = []) {
-  return dispatch => api.fetch(`/public_citations`)
-    .then((response) => {
-      var cites = [];
-      var pag   = {};
-
-      if (response !== undefined) {
-        cites = allCitations.concat(response.data);
-        pag   = response.pagination;
-      }
-
-      dispatch({ 
-        type: 'FETCH_PAGINATED_CITATIONS_SUCCESS',
-        allCitations: cites,
-        pagination: pag 
-      });
-    });
 }
 
 export function fetchCategories() {
@@ -115,22 +56,13 @@ export function fetchCitation(userId, citationId) {
     });
 }
 
-export function fetchUserCitations(userId) {
-  return dispatch => api.fetch(`/users/${userId}/citations`)
-    .then((response) => {
-      console.log("response");
-      console.log(response);
-      dispatch({ type: 'FETCH_USER_CITATIONS_SUCCESS', response });
-    });
-}
-
 export function createCitation(data, router, currentUser) {
   data["user_id"] = currentUser.id;
 
   return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
-      dispatch(searchCitations({categories: [], page: 1, id: currentUser.id}));
+      dispatch(fetchPaginatedCitations({categories: [], page: 1, id: currentUser.id, route: 'filter_citations'}));
       dispatch(showModal(true));
 
       router.history.push('/');
@@ -147,11 +79,8 @@ export function editCitation(data, router, currentCitation, is_public) {
       dispatch(showEditModal(true, response.data));
 
       // Reload currentCitations if public or currentUserCitations otherwise.
-      if (is_public) {
-        dispatch(fetchCitations());
-      } else {
-        dispatch(fetchPaginatedCitations(currentCitation.user_id, {page: 1, id: currentCitation.user_id}));
-      }
+      const route = is_public ? 'citations' : 'paginated_citations';
+      dispatch(fetchPaginatedCitations({page: 1, id: currentCitation.user_id, route: route}));
 
       router.history.push('/');
     })
@@ -166,7 +95,7 @@ export function deleteCitation(router, userId, citationId, pagCitations = []) {
   return dispatch => api.delete(`/users/${userId}/citations/${citationId}`, {"id": citationId})
     .then(() => {
       if (origin === '/citations') {
-        dispatch(fetchCitations());
+        dispatch(fetchPaginatedCitations({page: 1, id: userId, route: 'citations'}));
       } else {
         var paginatedCitations = pagCitations.filter(function(a) {
           return a.data.id !== citationId;

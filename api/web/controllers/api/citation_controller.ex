@@ -22,6 +22,9 @@ defmodule Cite.CitationController do
   end
 
   def public_citations(conn, _params) do
+    IO.puts "*****************"
+    IO.puts "IN public_citations"
+    IO.puts "*****************"
     ff = from f in Favorite, where: f.user_id == 1
     
     page = Citation 

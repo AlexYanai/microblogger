@@ -5,14 +5,14 @@ import Navbar from '../../containers/Navbar';
 import { Citation } from '../../types';
 import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
-import { fetchFavorites, createCitation, deleteCitation, editCitation } from '../../actions/citations';
+import { fetchPaginatedCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
 import EditCitationForm from '../../components/EditCitationForm';
 
 type Props = {
   currentUser: Object,
   currentCitations: Array<Citation>,
-  favoritedCitations: Array<Citation>,
+  paginatedCitations: Array<Citation>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isEditModalOpen: boolean,
@@ -29,7 +29,13 @@ class Favorites extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.fetchFavorites(this.props.currentUser.id);
+      const params = {
+        id: this.props.currentUser.id,
+        route: 'favorites',
+        page: 1
+      }
+
+      this.props.fetchPaginatedCitations(params);
     }
   }
 
@@ -76,7 +82,7 @@ class Favorites extends Component {
               citation={this.props.editFormData} {...modalProps} />
           }
 
-          {this.renderCitations(this.props.favoritedCitations)}
+          {this.renderCitations(this.props.paginatedCitations)}
         </div>
       </div>
     );
@@ -88,12 +94,12 @@ export default connect(
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
     currentCitations: state.citations.currentCitations,
-    favoritedCitations: state.citations.favoritedCitations,
+    paginatedCitations: state.citations.paginatedCitations,
     categories: state.citations.categories,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, fetchFavorites, createCitation, deleteCitation, editCitation, showEditModal }
+  { logout, fetchPaginatedCitations, createCitation, deleteCitation, editCitation, showEditModal }
 )(Favorites);

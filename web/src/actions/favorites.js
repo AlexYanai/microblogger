@@ -1,4 +1,3 @@
-// import { fetchPaginatedCitations, fetchCategories } from './citations';
 import api from '../api';
 
 export function favorite(router, citation, pagCitations) {

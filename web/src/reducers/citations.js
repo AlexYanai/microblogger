@@ -1,7 +1,5 @@
 const initialState = {
   currentUserCitations: [],
-  currentCitations: [],
-  favoritedCitations: [],
   paginatedCitations: [],
   reachedEnd: false,
   pagination: {
@@ -19,11 +17,6 @@ export default function (state = initialState, action) {
         ...state,
         isSearchFormOpen: action.isSearchFormOpen,
       };
-    case 'FETCH_CITATIONS_SUCCESS':
-      return {
-        ...state,
-        currentCitations: action.response.data,
-      };
     case 'FETCH_CATEGORIES_SUCCESS':
       return {
         ...state,
@@ -33,25 +26,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         citation: action.response.data,
-      };
-    case 'FETCH_USER_CITATIONS_SUCCESS':
-      return {
-        ...state,
-        currentUserCitations: action.response.data,
-      };
-    case 'FETCH_PAGINATED_CITATIONS_SUCCESS':
-      return {
-        ...state,
-        paginatedCitations: action.allCitations,
-        pagination: action.pagination,
-        reachedEnd: initialState.reachedEnd
-      };
-    case 'FETCH_FAVORITE_CITATIONS_SUCCESS':
-      return {
-        ...state,
-        favoritedCitations: action.allCitations,
-        pagination: action.pagination,
-        reachedEnd: initialState.reachedEnd
       };
     case 'FETCH_FILTERED_CITATIONS_SUCCESS':
       return {
@@ -65,11 +39,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         paginatedCitations: action.paginatedCitations,
-      };
-    case 'CLEAR_PAGINATED_CITATIONS':
-      return {
-        ...state,
-        paginatedCitations: []
       };
     case 'END_OF_CITATIONS':
       return {
