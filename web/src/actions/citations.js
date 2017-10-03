@@ -62,7 +62,7 @@ export function createCitation(data, router, currentUser) {
   return dispatch => api.post(`/users/${currentUser.id}/citations`, {"citation": data})
     .then((response) => {
       dispatch({ type: 'CREATE_CITATION_SUCCESS', response });
-      dispatch(fetchPaginatedCitations({categories: [], page: 1, id: currentUser.id, route: 'filter_citations'}));
+      dispatch(fetchPaginatedCitations({categories: [], page: 1, id: currentUser.id, route: 'paginated_citations'}));
       dispatch(showModal(true));
 
       router.history.push('/');

@@ -1,7 +1,7 @@
 defmodule Cite.SessionControllerTest do
   use Cite.ConnCase
 
-  alias Cite.{User, Session, Category}
+  alias Cite.{User}
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
   setup %{conn: _} do
@@ -11,7 +11,7 @@ defmodule Cite.SessionControllerTest do
     {:ok, %{user: current_user, jwt: new_conn.private.guardian_default_jwt}}
   end
 
-  test "refresh current jwt and session and gets new jwt", %{jwt: jwt, user: user}  do
+  test "refresh current jwt and session and gets new jwt", %{jwt: jwt, user: _user}  do
     new_jwt = build_conn() 
       |> put_req_header("authorization", "Bearer #{jwt}")
       |> post(session_path(build_conn(), :refresh)) 
@@ -20,7 +20,7 @@ defmodule Cite.SessionControllerTest do
     refute jwt == new_jwt["token"]
   end
 
-  test "delete current jwt and session", %{jwt: jwt, user: user}  do
+  test "delete current jwt and session", %{jwt: jwt, user: _user}  do
     # Get categories index to show that the session exists
     conn = build_conn() 
       |> put_req_header("authorization", "Bearer #{jwt}")

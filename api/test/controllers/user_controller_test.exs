@@ -40,7 +40,7 @@ defmodule Cite.UserControllerTest do
     assert json_response(conn, 200)["data"] == []
   end
 
-  test "update user bio", %{jwt: jwt, user: user} do
+  test "update user bio", %{jwt: _jwt, user: user} do
     params = %{
       "id" => user.id, 
       "user" => %{@valid_attrs | bio: "updated_bio"}

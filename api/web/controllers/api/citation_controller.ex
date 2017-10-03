@@ -5,8 +5,12 @@ defmodule Cite.CitationController do
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
-  def filter_citations(conn, params) do
-    c = params["categories"] |> String.split(",")
+  def paginated_citations(conn, params) do
+    c = case params["categories"] do
+      nil  -> [""]
+      [""] -> [""]
+      _    -> String.split(params["categories"], ",")
+    end
 
     page = Citation.query_by_categories(c, params["page"], params["id"])
       |> Repo.paginate(page: params["page"], page_size: 5)
@@ -14,34 +18,16 @@ defmodule Cite.CitationController do
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
-  def paginated_citations(conn, params) do
-    page = Citation.query_by_categories([""], params["page"], params["id"])
+  def public_citations(conn, params) do
+    page = Citation.query_public_citations(params)
       |> Repo.paginate(page: params["page"], page_size: 5)
-
-    render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
-  end
-
-  def public_citations(conn, _params) do
-    IO.puts "*****************"
-    IO.puts "IN public_citations"
-    IO.puts "*****************"
-    ff = from f in Favorite, where: f.user_id == 1
-    
-    page = Citation 
-      |> where([m], m.is_public == true) 
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:categories, favorites: ^ff]) 
-      |> Repo.paginate(page: _params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def favorites(conn, params) do
     user = Guardian.Plug.current_resource(conn)
-    page = Favorite 
-      |> where([f], f.user_id == ^user.id) 
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:citation, citation: :categories, citation: :favorites]) 
+    page = Favorite.get_citations(params, user)
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     entries = page.entries |> Enum.map(fn c -> c.citation end)
@@ -123,7 +109,6 @@ defmodule Cite.CitationController do
   # Currently deleting all existing CitationCategory associations then creating again
   def set_categories(citation, remote, existing) do
     n = citation.id
-
     delete_all(n, existing)
 
     remote
@@ -148,5 +133,3 @@ defmodule Cite.CitationController do
       |> render("delete.json")
   end
 end
-
-

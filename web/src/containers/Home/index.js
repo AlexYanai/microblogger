@@ -62,7 +62,7 @@ class Home extends Component {
       id: this.props.currentUser.id,
       page: 1, 
       categories: categories,
-      route: 'filter_citations'
+      route: 'paginated_citations'
     }
 
     this.props.fetchPaginatedCitations(params);
@@ -83,7 +83,7 @@ class Home extends Component {
         id: this.props.currentUser.id,
         page: page_num, 
         categories: categories,
-        route: 'filter_citations'
+        route: 'paginated_citations'
       }
 
       this.props.fetchPaginatedCitations(params, this.props.paginatedCitations);

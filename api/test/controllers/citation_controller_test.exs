@@ -1,7 +1,8 @@
 defmodule Cite.CitationControllerTest do
   use Cite.ConnCase
 
-  alias Cite.{Citation, User, Category, CitationCategory}
+  alias Cite.{Citation, User, Category, CitationCategory, Favorite}
+  
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
   @valid_attrs %{quote: "some content", source: "some content", title: "some content", is_public: true}
 
@@ -24,12 +25,34 @@ defmodule Cite.CitationControllerTest do
     {:ok, conn: conn, user: current_user}
   end
 
-  test "returns all publicly-flagged records", %{conn: conn} do
-    conn = get(conn, citation_path(build_conn(), :public_citations))
+  test "returns all publicly-flagged records", %{conn: conn, user: user} do
+    conn = get(conn, citation_path(build_conn(), :public_citations, user))
     data = json_response(conn, 200)["data"]
 
     assert length(data) == 2
-    assert data |> Enum.all?(fn n -> n["is_public"] end)
+    assert data |> Enum.all?(fn n -> n["data"]["is_public"] end)
+  end
+
+  test "returns all favorited records", %{conn: conn, user: user} do
+    user_cites = user |> Repo.preload(:citations)
+    citations  = user_cites.citations
+
+    first  = citations |> Enum.at(0)
+    second = citations |> Enum.at(1)
+
+    %Favorite{} 
+      |> Favorite.changeset(%{citation_id: first.id, user_id: user.id}) 
+      |> Repo.insert!
+
+    %Favorite{} 
+      |> Favorite.changeset(%{citation_id: second.id, user_id: user.id}) 
+      |> Repo.insert!
+
+    conn = get(conn, citation_path(build_conn(), :favorites, user))
+    data = json_response(conn, 200)["data"]
+
+    assert length(data) == 2
+    assert data |> Enum.all?(fn n -> n["data"]["is_favorite"] end)
   end
 
   test "create citation and associate it with user and categories", %{conn: conn, user: user} do
