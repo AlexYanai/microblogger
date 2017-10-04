@@ -39,6 +39,7 @@ class Home extends Component {
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.fetchPaginatedCitations({page: 1, id: this.props.currentUser.id, route: 'paginated_citations'});
+      this.props.showSearchForm(true);
     }
   }
 

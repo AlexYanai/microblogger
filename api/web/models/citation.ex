@@ -40,18 +40,21 @@ defmodule Cite.Citation do
     )
   end
 
+  def query_public_citations(params, cat_names) when cat_names == [""] do
+    user_id = params["id"] |> String.to_integer
+    faves   = from f in Favorite, where: f.user_id == ^user_id
+
+    Citation 
+      |> where([m], m.is_public == true) 
+      |> order_by([desc: :inserted_at, desc: :id]) 
+      |> preload([:categories, favorites: ^faves]) 
+  end
+
   def query_public_citations(params, cat_names) do
     user_id = params["id"] |> String.to_integer
     faves   = from f in Favorite, where: f.user_id == ^user_id
 
-    # Citation 
-    #   |> where([m], m.is_public == true) 
-    #   |> order_by([desc: :inserted_at, desc: :id]) 
-    #   |> preload([:categories, favorites: ^faves]) 
-
-      # faves = from f in Favorite, where: f.user_id == ^user_id
-      
-      from c in Citation, 
+      q = from c in Citation, 
         join: a in assoc(c, :categories),
         where: c.is_public,
         where: a.name in ^cat_names,

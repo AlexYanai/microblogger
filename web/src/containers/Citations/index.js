@@ -36,6 +36,7 @@ class Citations extends Component {
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.fetchPaginatedCitations({page: 1, id: this.props.currentUser.id, route: 'citations'});
+      this.props.showSearchForm(true);
     }
   }
 
