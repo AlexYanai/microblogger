@@ -3,6 +3,18 @@ defmodule Cite.FavoriteController do
 
   alias Cite.{Repo, Favorite}
 
+  plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
+
+  def favorites(conn, params) do
+    user = Guardian.Plug.current_resource(conn)
+    page = Favorite.get_citations(params, user)
+      |> Repo.paginate(page: params["page"], page_size: 5)
+
+    entries = page.entries |> Enum.map(fn c -> c.citation end)
+
+    render(conn, Cite.CitationView, "paginated.json", %{citations: entries, pagination: Cite.PaginationHelpers.pagination(page)})
+  end
+
   def create(conn, %{"citation_id" => id, "user_id" => user_id}) do
     favorite = Favorite.changeset(%Favorite{}, %{citation_id: id, user_id: user_id}) 
       |> Repo.insert!

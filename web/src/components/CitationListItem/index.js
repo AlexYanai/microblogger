@@ -58,32 +58,29 @@ class CitationListItem extends Component {
             <h3><a href="#">{this.props.citation.title}</a></h3>
           </div>
           
-          {this.ownedByCurrentUser() &&
-            <div className="citation-list-item-buttons">
-              <button type="button" className="btn btn-link" onClick={this.favoriteCitation.bind(this)}>
-                <div className={this.props.citation.is_favorite ? "citation-list-item-fave" : "citation-list-item-not-fave"}>
-                  <span className="fa fa-heart" />
-                </div>
-              </button>
+          <div className="citation-list-item-buttons">
+            <button type="button" className="btn btn-link" onClick={this.favoriteCitation.bind(this)}>
+              <div className={this.props.citation.is_favorite ? "citation-list-item-fave" : "citation-list-item-not-fave"}>
+                <span className="fa fa-heart" />
+              </div>
+            </button>
 
-              <button type="button" className="btn btn-link" onClick={this.showEditCitationModal}>
-                <div className="citation-list-item-edit">
-                  <span className="fa fa-pencil" />
-                </div>
-              </button>
-              
-              <button type="button" className="citation-list-item-logout-button" onClick={this.handleDeleteCitation}>
-                <div className="citation-list-item-delete">
-                  <span className="fa fa-times" />
-                </div>
-              </button>
-            </div>
-          }
-          
-          {!this.ownedByCurrentUser() &&
-            <div className="citation-list-item-buttons">
-            </div>
-          }
+            {this.ownedByCurrentUser() &&
+              <div style={{display: 'inline-flex'}}>
+                <button type="button" className="btn btn-link" onClick={this.showEditCitationModal}>
+                  <div className="citation-list-item-edit">
+                    <span className="fa fa-pencil" />
+                  </div>
+                </button>
+                
+                <button type="button" className="citation-list-item-logout-button" onClick={this.handleDeleteCitation}>
+                  <div className="citation-list-item-delete">
+                    <span className="fa fa-times" />
+                  </div>
+                </button>
+              </div>
+            }
+          </div>
         </div>
 
         <div className="citation-list-item-source">{this.props.citation.source}</div>

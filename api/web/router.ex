@@ -26,7 +26,7 @@ defmodule Cite.Router do
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
     get "/users/:id/citations", CitationController, :public_citations
-    get "/users/:id/favorites", CitationController, :favorites
+    get "/users/:id/favorites", FavoriteController, :favorites
     post "/users/:id/favorite_citation", CitationController, :favorite_citation
     get "/users/:id/citations", UserController, :citations
     get "/users/:id/paginated_citations", CitationController, :paginated_citations

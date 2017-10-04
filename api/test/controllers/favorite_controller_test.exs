@@ -1,61 +1,48 @@
-# defmodule Cite.FavoriteControllerTest do
-#   use Cite.ConnCase
+defmodule Cite.FavoriteControllerTest do
+  use Cite.ConnCase
 
-#   alias Cite.Favorite
-#   @valid_attrs %{}
-#   @invalid_attrs %{}
+  alias Cite.{User, Favorite}
+  
+  @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
-#   setup %{conn: conn} do
-#     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-#   end
+  setup %{conn: _} do
+    current_user = User.registration_changeset(%User{}, @user_attrs) |> Repo.insert!
+    new_conn     = build_conn() |> post(session_path(build_conn(), :create), @user_attrs)
+    jwt          = new_conn.private.guardian_default_jwt
 
-#   test "lists all entries on index", %{conn: conn} do
-#     conn = get conn, favorite_path(conn, :index)
-#     assert json_response(conn, 200)["data"] == []
-#   end
+    [
+      %{title: "z", source: "y", quote: "x", is_public: true},
+      %{title: "w", source: "v", quote: "u", is_public: true},
+      %{title: "t", source: "s", quote: "r.", is_public: false}
+    ]
+      |> Enum.map(&User.create_citation(&1, current_user))
+      |> Enum.each(&Repo.insert!(&1))
 
-#   test "shows chosen resource", %{conn: conn} do
-#     favorite = Repo.insert! %Favorite{}
-#     conn = get conn, favorite_path(conn, :show, favorite)
-#     assert json_response(conn, 200)["data"] == %{"id" => favorite.id,
-#       "citation_id" => favorite.citation_id,
-#       "user_id" => favorite.user_id}
-#   end
+    user_cites = current_user |> Repo.preload(:citations)
+    citations  = user_cites.citations
 
-#   test "renders page not found when id is nonexistent", %{conn: conn} do
-#     assert_error_sent 404, fn ->
-#       get conn, favorite_path(conn, :show, -1)
-#     end
-#   end
+    first  = citations |> Enum.at(0)
+    second = citations |> Enum.at(1)
 
-#   test "creates and renders resource when data is valid", %{conn: conn} do
-#     conn = post conn, favorite_path(conn, :create), favorite: @valid_attrs
-#     assert json_response(conn, 201)["data"]["id"]
-#     assert Repo.get_by(Favorite, @valid_attrs)
-#   end
+    %Favorite{} 
+      |> Favorite.changeset(%{citation_id: first.id, user_id: current_user.id}) 
+      |> Repo.insert!
 
-#   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-#     conn = post conn, favorite_path(conn, :create), favorite: @invalid_attrs
-#     assert json_response(conn, 422)["errors"] != %{}
-#   end
+    %Favorite{} 
+      |> Favorite.changeset(%{citation_id: second.id, user_id: current_user.id}) 
+      |> Repo.insert!
 
-#   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-#     favorite = Repo.insert! %Favorite{}
-#     conn = put conn, favorite_path(conn, :update, favorite), favorite: @valid_attrs
-#     assert json_response(conn, 200)["data"]["id"]
-#     assert Repo.get_by(Favorite, @valid_attrs)
-#   end
+    conn = build_conn() 
+      |> put_req_header("authorization", "Bearer #{jwt}")
 
-#   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-#     favorite = Repo.insert! %Favorite{}
-#     conn = put conn, favorite_path(conn, :update, favorite), favorite: @invalid_attrs
-#     assert json_response(conn, 422)["errors"] != %{}
-#   end
+    {:ok, conn: conn, user: current_user}
+  end
 
-#   test "deletes chosen resource", %{conn: conn} do
-#     favorite = Repo.insert! %Favorite{}
-#     conn = delete conn, favorite_path(conn, :delete, favorite)
-#     assert response(conn, 204)
-#     refute Repo.get(Favorite, favorite.id)
-#   end
-# end
+  test "returns all favorited records", %{conn: conn, user: user} do
+    conn = get(conn, favorite_path(build_conn(), :favorites, user))
+    data = json_response(conn, 200)["data"]
+
+    assert length(data) == 2
+    assert data |> Enum.all?(fn n -> n["data"]["is_favorite"] end)
+  end
+end

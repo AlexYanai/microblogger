@@ -19,20 +19,16 @@ defmodule Cite.CitationController do
   end
 
   def public_citations(conn, params) do
-    page = Citation.query_public_citations(params)
+    c = case params["categories"] do
+      nil  -> [""]
+      [""] -> [""]
+      _    -> String.split(params["categories"], ",")
+    end
+
+    page = Citation.query_public_citations(params, c)
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
-  end
-
-  def favorites(conn, params) do
-    user = Guardian.Plug.current_resource(conn)
-    page = Favorite.get_citations(params, user)
-      |> Repo.paginate(page: params["page"], page_size: 5)
-
-    entries = page.entries |> Enum.map(fn c -> c.citation end)
-
-    render(conn, "paginated.json", %{citations: entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def qq(n), do: (from c in Category, where: c.name == ^n, select: c) |> Repo.one
