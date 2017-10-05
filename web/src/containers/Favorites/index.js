@@ -7,7 +7,7 @@ import { logout } from '../../actions/session';
 import { showEditModal } from '../../actions/modal';
 import { fetchPaginatedCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
-import EditCitationForm from '../../components/EditCitationForm';
+import CitationForm from '../../components/CitationForm';
 
 type Props = {
   currentUser: Object,
@@ -76,7 +76,7 @@ class Favorites extends Component {
           </div>
 
           {isEditModalOpen &&
-            <EditCitationForm 
+            <CitationForm 
               onSubmit={this.handleEditCitation} 
               categories={this.props.categories} 
               citation={this.props.editFormData} {...modalProps} />

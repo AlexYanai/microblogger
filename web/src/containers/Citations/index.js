@@ -7,8 +7,7 @@ import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
 import { fetchPaginatedCitations, showSearchForm, endOfCitations, fetchCitation, createCitation, deleteCitation, editCitation } from '../../actions/citations';
 import CitationListItem from '../../components/CitationListItem';
-import NewCitationForm from '../../components/NewCitationForm';
-import EditCitationForm from '../../components/EditCitationForm';
+import CitationForm from '../../components/CitationForm';
 import SearchForm from '../../components/SearchForm';
 
 type Props = {
@@ -49,42 +48,26 @@ class Citations extends Component {
   handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, true);
   showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
 
-  handleSearch(data = {}) {
+  handleSearch(isSearch, data = {}) {
+    var page_num   = isSearch ? 0 : this.props.pagination.page_number;
     var categories = data.categories !== undefined ? data.categories : [];
 
     if (categories.length === 0 && this.props.searchCategories !== undefined) {
       categories = this.props.searchCategories;
     }
 
-    var params = {
-      id: this.props.currentUser.id,
-      page: 1, 
-      categories: categories,
-      route: 'citations'
-    }
-
-    this.props.fetchPaginatedCitations(params);
-  }
-
-  handleMore(data = {}) {
-    var page_num   = this.props.pagination.page_number;
-    var categories = data.categories !== undefined ? data.categories : [];
-
-    if (categories.length === 0 && this.props.searchCategories !== undefined) {
-      categories = this.props.searchCategories;
-    }
-
-    if (this.props.pagination.total_pages > page_num) {
+    if (this.props.pagination.total_pages > page_num || isSearch) {
       page_num += 1;
 
-      var params = {
+      const cites  = isSearch ? [] : this.props.paginatedCitations;
+      const params = {
         id: this.props.currentUser.id,
         page: page_num, 
         categories: categories,
         route: 'citations'
       }
 
-      this.props.fetchPaginatedCitations(params, this.props.paginatedCitations);
+      this.props.fetchPaginatedCitations(params, cites);
     } else {
       this.props.endOfCitations();
     }
@@ -101,7 +84,6 @@ class Citations extends Component {
         citation={citation.data}
         pagCitations={pagCitations}
         currentUser={this.props.currentUser}
-        isEditModalOpen={this.isEditModalOpen}
         showCitationModal={this.showCitationModal}
         handleDeleteCitation={this.handleDeleteCitation}
       />
@@ -123,7 +105,7 @@ class Citations extends Component {
           </div>
 
           {this.props.isSearchFormOpen && 
-            <SearchForm onSubmit={this.handleSearch.bind(this)} categories={this.props.categories} showSearch={this.props.showSearch} />
+            <SearchForm onSubmit={this.handleSearch.bind(this, true)} categories={this.props.categories} showSearch={this.props.showSearch} />
           }
 
           {!this.props.isSearchFormOpen && 
@@ -132,17 +114,18 @@ class Citations extends Component {
             </button>
           }
 
-          {isModalOpen &&
-            <NewCitationForm onSubmit={this.handleNewCitationSubmit} categories={this.props.categories} {...modalProps}  />
-          }
-
-          {isEditModalOpen &&
-            <EditCitationForm onSubmit={this.handleEditCitation} categories={this.props.categories} citation={this.props.editFormData} {...modalProps} />
+          {(this.props.isModalOpen || this.props.isEditModalOpen) &&
+            <CitationForm 
+              onNewSubmit={this.handleNewCitationSubmit} 
+              onEditSubmit={this.handleEditCitation} 
+              showModal={this.showCitationModal} 
+              categories={this.props.categories} 
+              citation={this.props.editFormData} {...modalProps} />
           }
 
           {this.renderCitations(this.props.paginatedCitations)}
 
-          <button className="btn btn-link" onClick={this.handleMore.bind(this)}>
+          <button className="btn btn-link" onClick={this.handleSearch.bind(this, false)}>
             {this.props.reachedEnd ? "You've reached the end" : 'More...'}
           </button>
         </div>

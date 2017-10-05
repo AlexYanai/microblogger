@@ -4,37 +4,46 @@ import { Field, reduxForm } from 'redux-form';
 import Input from '../Input';
 import InputCheckbox from '../InputCheckbox';
 import { connect } from 'react-redux';
-import { showModal } from '../../actions/modal';
+import { showEditModal } from '../../actions/modal';
 import MultiSelectField  from '../MultiSelectField';
 
 type Props = {
-  handleSubmit: () => void,
-  onSubmit: () => void,
+  initialValues: Object,
   submitting: boolean,
+  isEditModalOpen: boolean,
+  isModalOpen: boolean,
+  onSubmit: () => void,
+  handleSubmit: () => void,
   showModal: () => void,
+  showEditModal: () => void,
 };
 
-class NewCitationForm extends Component {
+class CitationForm extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
 
-  props: Props
+  props: Props;
 
-  handleSubmit      = data => this.props.onSubmit(data);
-  showCitationModal = ()   => this.props.showModal(this.props.isModalOpen);
+  dontClose       = (e)    => e.stopPropagation();
+  handleAllSubmit = (data) => this.props.isEditModalOpen ? this.props.onEditSubmit(data) : this.props.onNewSubmit(data);
 
-  dontClose(e) {
-    e.stopPropagation();
+  handleModal() {
+    if (this.props.isEditModalOpen) {
+      this.props.showEditModal(this.props.isEditModalOpen, this.props.initialValues);
+    } else {
+      this.props.showModal(this.props.isModalOpen);
+    }
   }
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting  } = this.props;
     const categoryNames = this.props.categories.map(function(x) { return x.name });
 
     return (
-      <div className="modal" onClick={this.showCitationModal.bind(this)}>
-        <form className="modalForm" onClick={this.dontClose} onSubmit={handleSubmit(this.handleSubmit)}>
+      <div className="modal" onClick={this.handleModal.bind(this)}>
+        <div className="modal-overlay"></div>
+        <form className="modal-form" onClick={this.dontClose} onSubmit={handleSubmit(this.handleAllSubmit.bind(this))}>
           <div className="input-group">
             <Field
               style={{marginBottom: '5px'}}
@@ -65,15 +74,16 @@ class NewCitationForm extends Component {
               htmlFor="public" 
               name="is_public" 
               component={InputCheckbox} 
-              type="checkbox"/>
-
+              type="checkbox"
+            />
             <Field
               name="categories"
               label="Category" 
               className="multiselect"
               placeholder="tags..."
               component={MultiSelectField}
-              data={categoryNames}/>
+              data={categoryNames}
+            />
 
             <button type="submit" className="btn btn-block btn-primary" style={{marginTop: '45px'}} disabled={submitting}>
               {submitting ? 'Saving...' : 'Submit'}
@@ -85,15 +95,18 @@ class NewCitationForm extends Component {
   }
 }
 
-NewCitationForm = reduxForm({
-  form: 'newCitation'
-})(NewCitationForm);
+CitationForm = reduxForm({
+  form: 'editCitation',
+  enableReinitialize: true,
+})(CitationForm);
 
-NewCitationForm = connect(
+CitationForm = connect(
   state => ({
-    isModalOpen: state.modal.isModalOpen
+    isModalOpen: state.modal.isModalOpen,
+    isEditModalOpen: state.modal.isEditModalOpen,
+    initialValues: state.modal.initialValues,
   }),
-  { showModal }
-)(NewCitationForm);
+  { showEditModal }
+)(CitationForm);
 
-export default NewCitationForm;
+export default CitationForm;

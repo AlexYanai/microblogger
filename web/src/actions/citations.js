@@ -3,11 +3,9 @@ import { showModal, showEditModal } from './modal';
 
 export function showSearchForm(isSearchFormOpen) {
   return (dispatch) => {
-    const open = !isSearchFormOpen;
-
     dispatch({ 
       type: 'OPEN_SEARCH',
-      isSearchFormOpen: open,
+      isSearchFormOpen: !isSearchFormOpen,
     });
   };
 }
@@ -97,13 +95,13 @@ export function deleteCitation(router, userId, citationId, pagCitations = []) {
       if (origin === '/citations') {
         dispatch(fetchPaginatedCitations({page: 1, id: userId, route: 'citations'}));
       } else {
-        var paginatedCitations = pagCitations.filter(function(a) {
+        const cites = pagCitations.filter(function(a) {
           return a.data.id !== citationId;
         });
 
         dispatch({ 
           type: 'REFRESH_FILTERED_CITATIONS',
-          paginatedCitations: paginatedCitations
+          paginatedCitations: cites
         });
       }
 

@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { showModal, showEditModal } from '../../actions/modal';
 import { favorite, unfavorite } from '../../actions/favorites';
 import { deleteCitation, editCitation } from '../../actions/citations';
+import { Citation } from '../../types';
 
 type Props = {
-  citation: Object,
+  citation: Citation,
   dateOptions: Object,
   editFormData: Object,
   handleDeleteCitation: () => void,
@@ -84,7 +85,7 @@ class CitationListItem extends Component {
         </div>
 
         <div className="citation-list-item-source">{this.props.citation.source}</div>
-        <hr style={{ borderTop: '1px solid var(--palette-gray-blue)', width: '50%',  }} />
+        <hr style={{ borderTop: '1px solid var(--palette-gray-blue)', width: '50%' }} />
         <div className="citation-list-item-quote">{this.props.citation.quote}</div>
         <div className="citation-list-item-date">{this.formatDateString(dateOptions)}</div>
       </div>

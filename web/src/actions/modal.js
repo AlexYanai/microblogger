@@ -6,7 +6,8 @@ export function showModal(modalOpen) {
 
     dispatch({ 
       type: 'SHOW_MODAL',
-      isModalOpen: open
+      isModalOpen: open,
+      editFormData: {}
     });
   };
 }
@@ -14,7 +15,11 @@ export function showModal(modalOpen) {
 export function showEditModal(modalOpen, editFormData) {
   return (dispatch) => {
     const open        = !modalOpen;
-    const newFormData = extractCategories(editFormData);
+    var newFormData = extractCategories(editFormData);
+
+    if (!newFormData) {
+      newFormData = {};
+    }
 
     dispatch({ 
       type: 'SHOW_EDIT_MODAL',

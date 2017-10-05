@@ -10,5 +10,8 @@ export type Citation = {
   source: string,
   quote: string,
   is_public: boolean,
+  is_favorite: boolean,
+  categories: Array<Category>,
+  inserted_at: string,
   user_id: number
 };

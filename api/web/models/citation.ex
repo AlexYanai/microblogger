@@ -46,6 +46,7 @@ defmodule Cite.Citation do
 
     Citation 
       |> where([m], m.is_public == true) 
+      |> distinct(true)
       |> order_by([desc: :inserted_at, desc: :id]) 
       |> preload([:categories, favorites: ^faves]) 
   end
@@ -69,6 +70,7 @@ defmodule Cite.Citation do
     
     Citation 
       |> where([m], m.user_id == ^user_id) 
+      |> distinct(true)
       |> order_by([desc: :inserted_at, desc: :id]) 
       |> preload([:categories, favorites: ^ff]) 
   end

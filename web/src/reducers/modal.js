@@ -9,23 +9,14 @@ export default function (state = initialState, action) {
     case 'SHOW_MODAL':
       return {
         ...state,
-        isModalOpen: action.isModalOpen
-      }
-    case 'HIDE_MODAL':
-      return {
-        ...state,
-        isModalOpen: action.isModalOpen
+        isModalOpen: action.isModalOpen,
+        initialValues: action.editFormData
       }
     case 'SHOW_EDIT_MODAL':
       return {
         ...state,
         isEditModalOpen: action.isEditModalOpen,
         initialValues: action.editFormData
-      }
-    case 'HIDE_EDIT_MODAL':
-      return {
-        ...state,
-        isEditModalOpen: action.isEditModalOpen
       }
     default:
       return state
