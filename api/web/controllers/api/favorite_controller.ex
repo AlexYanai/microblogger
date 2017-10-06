@@ -1,13 +1,14 @@
 defmodule Cite.FavoriteController do
   use Cite.Web, :controller
 
-  alias Cite.{Repo, Favorite}
+  alias Cite.{Repo, Favorite, Citation}
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
   def favorites(conn, params) do
     user = Guardian.Plug.current_resource(conn)
-    page = Favorite.get_citations(params, user)
+    page = Citation.extract_categories(params) 
+      |> Favorite.get_citations(user)
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     entries = page.entries |> Enum.map(fn c -> c.citation end)

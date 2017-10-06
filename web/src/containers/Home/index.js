@@ -106,7 +106,11 @@ class Home extends Component {
           </div>
 
           {this.props.isSearchFormOpen && 
-            <SearchForm onSubmit={this.fetchPaginated.bind(this, true)} categories={this.props.categories} showSearch={this.props.showSearch} />
+            <SearchForm 
+              onSubmit={this.fetchPaginated.bind(this, true)} 
+              categories={this.props.categories} 
+              showSearch={this.props.showSearch} 
+            />
           }
 
           {!this.props.isSearchFormOpen && 
@@ -121,7 +125,8 @@ class Home extends Component {
               onEditSubmit={this.handleEditCitation} 
               showModal={this.showCitationModal} 
               categories={this.props.categories} 
-              citation={this.props.editFormData} {...modalProps} />
+              citation={this.props.editFormData} {...modalProps} 
+            />
           }
 
           {this.renderCitations(this.props.paginatedCitations)}

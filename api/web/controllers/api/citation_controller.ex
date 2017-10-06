@@ -6,26 +6,16 @@ defmodule Cite.CitationController do
   plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
 
   def paginated_citations(conn, params) do
-    c = case params["categories"] do
-      nil  -> [""]
-      [""] -> [""]
-      _    -> String.split(params["categories"], ",")
-    end
-
-    page = Citation.query_by_categories(c, params["page"], params["id"])
+    page = Citation.extract_categories(params) 
+      |> Citation.query_by_categories(params["page"], params["id"])
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
   def public_citations(conn, params) do
-    c = case params["categories"] do
-      nil  -> [""]
-      [""] -> [""]
-      _    -> String.split(params["categories"], ",")
-    end
-
-    page = Citation.query_public_citations(params, c)
+    page = Citation.extract_categories(params)     
+      |> Citation.query_public_citations(params)
       |> Repo.paginate(page: params["page"], page_size: 5)
 
     render(conn, "paginated.json", %{citations: page.entries, pagination: Cite.PaginationHelpers.pagination(page)})

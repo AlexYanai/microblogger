@@ -23,6 +23,14 @@ defmodule Cite.Citation do
     |> validate_required([:title, :source, :quote])
   end
 
+  def extract_categories(params) do
+    case params["categories"] do
+      nil  -> [""]
+      [""] -> [""]
+      _    -> String.split(params["categories"], ",")
+    end
+  end
+
   def category_ids(citation) do
     case !!citation and citation.categories do
       nil   -> []
@@ -40,7 +48,7 @@ defmodule Cite.Citation do
     )
   end
 
-  def query_public_citations(params, cat_names) when cat_names == [""] do
+  def query_public_citations(cat_names, params) when cat_names == [""] do
     user_id = params["id"] |> String.to_integer
     faves   = from f in Favorite, where: f.user_id == ^user_id
 
@@ -51,7 +59,7 @@ defmodule Cite.Citation do
       |> preload([:categories, favorites: ^faves]) 
   end
 
-  def query_public_citations(params, cat_names) do
+  def query_public_citations(cat_names, params) do
     user_id = params["id"] |> String.to_integer
     faves   = from f in Favorite, where: f.user_id == ^user_id
 

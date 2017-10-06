@@ -6,10 +6,6 @@ class NavItem extends Component {
     router: PropTypes.object,
   }
 
-  clearCitations() {
-    console.log("HERE");
-  }
-
   render () {
     const { router }   = this.context
     const { text, to } = this.props;
@@ -20,7 +16,7 @@ class NavItem extends Component {
     }
     
     return (
-      <NavLink className="nav-item-link" activeClassName="nav-item-active" to={to} onClick={this.clearCitations}>
+      <NavLink className="nav-item-link" activeClassName="nav-item-active" to={to}>
         <div className={routeExist ? "nav-item-bottom-border" : "nav-item-bottom-border-alt" }>
           {text}
         </div>
