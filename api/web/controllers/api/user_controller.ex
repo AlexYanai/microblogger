@@ -14,12 +14,12 @@ defmodule Cite.UserController do
         jwt      = Guardian.Plug.current_token(new_conn)
 
         new_conn
-        |> put_status(:created)
-        |> render(Cite.SessionView, "show.json", user: user, jwt: jwt)
+          |> put_status(:created)
+          |> render(Cite.SessionView, "show.json", user: user, jwt: jwt)
       {:error, changeset} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> put_status(:unprocessable_entity)
+          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -32,12 +32,12 @@ defmodule Cite.UserController do
         render(conn, "user.json", user: user)
       {:error, changeset} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> put_status(:unprocessable_entity)
+          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
-  def citations(conn, %{"id" => user_id}) do
+  def citations(conn, %{"id" => _user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     citations    = Citation
       |> where([m], m.user_id == ^current_user.id)

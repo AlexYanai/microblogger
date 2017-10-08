@@ -1,6 +1,6 @@
 defmodule Cite.Citation do
   use Cite.Web, :model
-  alias Cite.{Citation, Favorite, Category, Repo}
+  alias Cite.{Citation, Favorite, Repo}
 
   schema "citations" do
     field :title, :string
@@ -14,9 +14,6 @@ defmodule Cite.Citation do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :source, :quote, :is_public])
@@ -63,7 +60,7 @@ defmodule Cite.Citation do
     user_id = params["id"] |> String.to_integer
     faves   = from f in Favorite, where: f.user_id == ^user_id
 
-      q = from c in Citation, 
+      from c in Citation, 
         join: a in assoc(c, :categories),
         where: c.is_public,
         where: a.name in ^cat_names,
@@ -73,7 +70,7 @@ defmodule Cite.Citation do
       select: c
   end
 
-  def query_by_categories(cat_names, _, user_id) when cat_names == [""] do
+  def query_by_categories(cat_names, user_id) when cat_names == [""] do
     ff = from f in Favorite, where: f.user_id == ^user_id
     
     Citation 
@@ -83,7 +80,7 @@ defmodule Cite.Citation do
       |> preload([:categories, favorites: ^ff]) 
   end
 
-  def query_by_categories(cat_names, page, user_id) do
+  def query_by_categories(cat_names, user_id) do
     ff = from f in Favorite, where: f.user_id == ^user_id
     
     from c in Citation, 

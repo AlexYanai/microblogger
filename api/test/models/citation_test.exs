@@ -41,4 +41,25 @@ defmodule Cite.CitationTest do
 
     refute categories |> Enum.any?
   end
+
+  test "extract_categories with nil" do
+    params     = %{}
+    categories = Citation.extract_categories(params)
+
+    assert categories == [""]
+  end
+
+  test "extract_categories with single empty string" do
+    params     = %{"categories" => [""]}
+    categories = Citation.extract_categories(params)
+
+    assert categories == [""]
+  end
+
+  test "extract_categories with correctly formatted string" do
+    params = %{"categories" => "one,two,three"}
+    count  = Citation.extract_categories(params) |> Enum.count
+
+    assert count == 3
+  end
 end
