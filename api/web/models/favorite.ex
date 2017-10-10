@@ -9,31 +9,13 @@ defmodule Cite.Favorite do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:citation_id, :user_id])
     |> validate_required([:citation_id, :user_id])
   end
 
-  def get_citations(cat_names, user) when cat_names == [""] do
-    Favorite 
-      |> where([f], f.user_id == ^user.id) 
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:citation, citation: :categories, citation: :favorites]) 
-  end
-
-  def get_citations(cat_names, user) do
-      from f in Favorite,
-        join: c in assoc(f, :citation),
-        join: a in assoc(c, :categories),
-        where: f.user_id == ^user.id,
-        where: a.name in ^cat_names,
-        preload: [:citation, citation: :categories, citation: :favorites],
-        distinct: [desc: f.id],
-        order_by: [desc: f.id],
-      select: f 
+  def extract_citations(page) do
+    page.entries |> Enum.map(fn c -> c.citation end)
   end
 end

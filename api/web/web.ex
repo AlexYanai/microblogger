@@ -36,6 +36,8 @@ defmodule Cite.Web do
 
       import Cite.Router.Helpers
       import Cite.Gettext
+      import Cite.CitationQuery
+      import Cite.FavoriteQuery
     end
   end
 

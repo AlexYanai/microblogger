@@ -21,75 +21,30 @@ defmodule Cite.Citation do
   end
 
   def extract_categories(params) do
-    case params["categories"] do
-      nil  -> [""]
-      [""] -> [""]
-      _    -> String.split(params["categories"], ",")
-    end
+    extract(params["categories"])
+  end
+
+  def extract(cats) when cats == nil or cats == [""] do
+    [""]
+  end
+
+  def extract(cats) do
+    String.split(cats, ",")
+  end 
+
+  def exists?(citation) do
+    !!citation and !!citation.categories
   end
 
   def category_ids(citation) do
-    case !!citation and citation.categories do
-      nil   -> []
-      false -> []
-      _     -> Enum.map(citation.categories, fn n -> n.id end)
-    end
+    get_cat_ids(exists?(citation), citation)
   end
 
-  def select_categories(cat_names) do
-    Repo.all(
-      from c in Citation, 
-        join: a in assoc(c, :categories), 
-        where: a.name in ^cat_names, 
-      select: c
-    )
+  def get_cat_ids(true, citation) do
+    Enum.map(citation.categories, fn n -> n.id end)
   end
 
-  def query_public_citations(cat_names, params) when cat_names == [""] do
-    user_id = params["id"] |> String.to_integer
-    faves   = from f in Favorite, where: f.user_id == ^user_id
-
-    Citation 
-      |> where([m], m.is_public == true) 
-      |> distinct(true)
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:categories, favorites: ^faves]) 
-  end
-
-  def query_public_citations(cat_names, params) do
-    user_id = params["id"] |> String.to_integer
-    faves   = from f in Favorite, where: f.user_id == ^user_id
-
-      from c in Citation, 
-        join: a in assoc(c, :categories),
-        where: c.is_public,
-        where: a.name in ^cat_names,
-        preload: [:categories, favorites: ^faves],
-        distinct: [desc: c.id],
-        order_by: [desc: c.id],
-      select: c
-  end
-
-  def query_by_categories(cat_names, user_id) when cat_names == [""] do
-    ff = from f in Favorite, where: f.user_id == ^user_id
-    
-    Citation 
-      |> where([m], m.user_id == ^user_id) 
-      |> distinct(true)
-      |> order_by([desc: :inserted_at, desc: :id]) 
-      |> preload([:categories, favorites: ^ff]) 
-  end
-
-  def query_by_categories(cat_names, user_id) do
-    ff = from f in Favorite, where: f.user_id == ^user_id
-    
-    from c in Citation, 
-      join: a in assoc(c, :categories),
-      where: c.user_id == ^user_id,
-      where: a.name in ^cat_names,
-      preload: [:categories, favorites: ^ff],
-      distinct: [desc: c.id],
-      order_by: [desc: c.id],
-    select: c
+  def get_cat_ids(_, _) do
+    []
   end
 end
