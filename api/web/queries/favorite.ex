@@ -18,6 +18,9 @@ defmodule Cite.FavoriteQuery do
   end
 
   def get_citations(q, cat_names) do
-    from f in q, join: c in assoc(f, :citation), join: a in assoc(c, :categories), where: a.name in ^cat_names
+    from f in q,
+      join: c in assoc(f, :citation),
+      join: a in assoc(c, :categories), 
+      where: a.name in ^cat_names
   end
 end

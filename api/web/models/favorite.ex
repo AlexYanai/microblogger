@@ -15,7 +15,7 @@ defmodule Cite.Favorite do
     |> validate_required([:citation_id, :user_id])
   end
 
-  def extract_citations(page) do
-    page.entries |> Enum.map(fn c -> c.citation end)
+  def citations(page) do
+    page.entries |> Enum.map(fn n -> n.citation end)
   end
 end

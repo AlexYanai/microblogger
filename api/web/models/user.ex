@@ -30,6 +30,9 @@ defmodule Cite.User do
   end
 
   def create_citation(citation, user) do
+    citation = Map.put(citation, :author_name, user.username)
+    citation = Map.put(citation, :author_emai, user.email)
+    
     Ecto.build_assoc(user, :citations, citation)
   end
 

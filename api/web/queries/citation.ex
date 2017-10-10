@@ -7,7 +7,7 @@ defmodule Cite.CitationQuery do
     faves   = from f in Favorite, where: f.user_id == ^user_id
 
     q = from c in Citation
-    q = public_query(q, is_public)
+    q = public_query(q, user_id, is_public)
     q = get_categories(q, cat_names)
     q = from c in q, preload: [:categories, favorites: ^faves]
     q = from c in q, distinct: [desc: c.id]
@@ -16,11 +16,11 @@ defmodule Cite.CitationQuery do
     from c in q, select: c
   end
 
-  def public_query(q, false) do
-    q
+  def public_query(q, user_id, false) do
+    from c in q, where: c.user_id == ^user_id
   end
 
-  def public_query(q, true) do
+  def public_query(q, _user_id, true) do
     from c in q, where: c.is_public
   end
 

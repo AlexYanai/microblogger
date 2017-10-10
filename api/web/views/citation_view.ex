@@ -26,7 +26,9 @@ defmodule Cite.CitationView do
       is_favorite: is_favorite,
       is_public: citation.is_public,
       inserted_at: citation.inserted_at,
-      user_id: citation.user_id
+      user_id: citation.user_id,
+      username: citation.author_name,
+      email: citation.author_email
     }
     |> add_categories(citation.categories)
   end

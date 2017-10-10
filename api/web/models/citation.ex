@@ -6,6 +6,8 @@ defmodule Cite.Citation do
     field :title, :string
     field :source, :string
     field :quote, :string
+    field :author_name, :string
+    field :author_email, :string
     field :is_public, :boolean
     belongs_to :user, Cite.User
     has_many :favorites, Cite.Favorite, on_delete: :delete_all

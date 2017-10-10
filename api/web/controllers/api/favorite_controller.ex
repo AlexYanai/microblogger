@@ -10,13 +10,15 @@ defmodule Cite.FavoriteController do
     page = Citation.extract_categories(params) 
       |> FavoriteQuery.build(user.id)
       |> Repo.paginate(page: params["page"], page_size: 5)
-      |> Favorite.extract_citations
 
-    render(conn, Cite.CitationView, "paginated.json", %{citations: page, pagination: Cite.PaginationHelpers.pagination(page)})
+    entries = Favorite.citations(page)
+
+    render(conn, Cite.CitationView, "paginated.json", %{citations: entries, pagination: Cite.PaginationHelpers.pagination(page)})
   end
 
-  def create(conn, %{"citation_id" => id, "user_id" => user_id}) do
-    favorite = Favorite.changeset(%Favorite{}, %{citation_id: id, user_id: user_id}) 
+  def create(conn, %{"citation_id" => id, "user_id" => _user_id}) do
+    user     = Guardian.Plug.current_resource(conn)
+    favorite = Favorite.changeset(%Favorite{}, %{citation_id: id, user_id: user.id}) 
       |> Repo.insert!
 
     conn
@@ -24,9 +26,10 @@ defmodule Cite.FavoriteController do
       |> render("show.json", favorite: favorite)
   end
 
-  def delete(conn, %{"id" => id, "user_id" => user_id}) do
+  def delete(conn, %{"id" => id, "user_id" => _user_id}) do
+    user = Guardian.Plug.current_resource(conn)
     Favorite 
-      |> where([citation_id: ^id, user_id: ^user_id])
+      |> where([citation_id: ^id, user_id: ^user.id])
       |> Repo.one
       |> Repo.delete!
 
