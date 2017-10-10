@@ -48,6 +48,15 @@ li {
   --palette-med-red: #ab2b2b;
 }
 
+.main-link {
+  text-decoration: none;
+}
+
+.main-link:hover,
+.main-link:focus {
+  text-decoration: none;
+}
+
 .card {
   box-shadow: 0 1px 0 rgba(0,0,0,.25);
   border: 1px solid #e8e8e8;
@@ -108,7 +117,7 @@ a, a:visited, a:link, a:hover, a:active {
   z-index: 1030;
   width: 100%;
   background: var(--white);
-  height: 50px;
+  height: 60px;
   top: 0;
   box-shadow: 0 1px 4px rgba(0,0,0,.3);
 }
@@ -118,7 +127,7 @@ a, a:visited, a:link, a:hover, a:active {
   align-items: center;
   width: 100%;
   height: 100%;
-  font-size: 18px;
+  font-size: 20px;
   padding-top: 1%;
 }
 
@@ -276,6 +285,26 @@ a, a:visited, a:link, a:hover, a:active {
   width: 100%;
 }
 
+.citation-list-item-author {
+  display: inline-flex;
+  width: 25%;
+}
+
+.citation-list-item-author-name {
+  padding-top: 1px;
+  color: var(--palette-light-gray);
+  font-size: 14px;
+}
+
+.citation-list-item-author-picture {
+  display: inline-flex;
+  height: 28px;
+  width: 28px;
+  margin-right: 5px;
+  border: 1px #f2f2f2 solid;
+  border-radius: 50%;
+}
+
 .citation-list-item-link {
   color: var(--palette-med-gray);
   font-size: 22px;
@@ -307,6 +336,11 @@ a, a:visited, a:link, a:hover, a:active {
 }
 
 .citation-list-item-fave {
+  color: var(--palette-med-blue);
+}
+
+.citation-list-item-not-fave:hover, 
+.citation-list-item-not-fave:focus {
   color: var(--palette-med-blue);
 }
 

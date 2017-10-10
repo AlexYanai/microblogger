@@ -110,14 +110,12 @@ class Home extends Component {
               onSubmit={this.fetchPaginated.bind(this, true)} 
               categories={this.props.categories} 
               showSearch={this.props.showSearch} 
-            />
-          }
+            />}
 
           {!this.props.isSearchFormOpen && 
-            <button className="btn btn-link" onClick={this.showSearch}>
+            <button className="btn btn-link main-link" onClick={this.showSearch}>
               Filter by category
-            </button>
-          }
+            </button>}
 
           {(this.props.isModalOpen || this.props.isEditModalOpen) &&
             <CitationForm 
@@ -126,12 +124,11 @@ class Home extends Component {
               showModal={this.showCitationModal} 
               categories={this.props.categories} 
               citation={this.props.editFormData} {...modalProps} 
-            />
-          }
+            />}
 
           {this.renderCitations(this.props.paginatedCitations)}
 
-          <button className="btn btn-link" onClick={this.fetchPaginated.bind(this, false)}>
+          <button className="btn btn-link main-link" onClick={this.fetchPaginated.bind(this, false)}>
             {this.props.reachedEnd ? "You've reached the end" : 'More...'}
           </button>
         </div>

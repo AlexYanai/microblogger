@@ -13,5 +13,7 @@ export type Citation = {
   is_favorite: boolean,
   categories: Array<Category>,
   inserted_at: string,
+  username: string,
+  email: string,
   user_id: number
 };

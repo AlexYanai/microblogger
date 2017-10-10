@@ -4,6 +4,7 @@ import { showModal, showEditModal } from '../../actions/modal';
 import { favorite, unfavorite } from '../../actions/favorites';
 import { deleteCitation, editCitation } from '../../actions/citations';
 import { Citation } from '../../types';
+import Gravatar from 'react-gravatar';
 
 type Props = {
   citation: Citation,
@@ -53,7 +54,12 @@ class CitationListItem extends Component {
     return (
       <div key={this.props.citation.id} className="citation-list-item-card">
         <div className="button-row">
-          <div style={{width: '25%'}}></div>
+          <div className="citation-list-item-author">
+            <Gravatar className="citation-list-item-author-picture" email={this.props.citation.email} size={30} />
+            <div className="citation-list-item-author-name">
+              <p style={{margin: 'auto'}}>{this.props.citation.username}</p>
+            </div>
+          </div>
           
           <div className="citation-list-item-link">
             <h3><a href="#">{this.props.citation.title}</a></h3>
