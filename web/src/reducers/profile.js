@@ -1,5 +1,6 @@
 const initialState = {
   isBioFormOpen: false,
+  profileUser: {}
 }
 
 export default function (state = initialState, action) {
@@ -19,6 +20,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isBioFormOpen: false
+      }
+    case 'FETCH_PROFILE_SUCCESS':
+      return {
+        ...state,
+        profileUser: action.response,
       }
     default:
       return state

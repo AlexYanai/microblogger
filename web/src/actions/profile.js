@@ -3,6 +3,13 @@ import api from '../api';
 
 const lodash = require("lodash");
 
+export function getUserInfo(router, userId) {
+  return dispatch => api.fetch(`/users/${userId}`)
+    .then((response) => {
+      dispatch({ type: 'FETCH_PROFILE_SUCCESS', response });
+    });
+}
+
 export function showEditBioForm(router, isBioFormOpen) {
   return (dispatch) => {
     const open = !isBioFormOpen;

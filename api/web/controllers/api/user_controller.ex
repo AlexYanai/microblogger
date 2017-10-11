@@ -37,6 +37,11 @@ defmodule Cite.UserController do
     end
   end
 
+  def show(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+    render(conn, "user.json", user: user)
+  end
+
   def citations(conn, %{"id" => _user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     citations    = Citation

@@ -13,22 +13,14 @@ import Signup from '../Signup';
 import { authenticate, unauthenticate } from '../../actions/session';
 import MatchAuthenticated from '../../components/MatchAuthenticated';
 import RedirectAuthenticated from '../../components/RedirectAuthenticated';
-
-type cite = {
-  id: number,
-  title: string,
-  source: string,
-  quote: string,
-  is_public: boolean,
-  user_id: number
-};
+import { Citation as Cite } from '../../types';
 
 type Props = {
   authenticate: () => void,
   unauthenticate: () => void,
   isAuthenticated: boolean,
   willAuthenticate: boolean,
-  citation: cite
+  citation: Cite
 };
 
 class App extends Component {
@@ -47,6 +39,7 @@ class App extends Component {
   render() {
     const { isAuthenticated, willAuthenticate } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
+    console.log(history);
 
     return (
       <Router>

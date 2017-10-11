@@ -1,3 +1,10 @@
+export type User = {
+  id: number,
+  username: string,
+  bio: string,
+  email: string
+};
+
 export type Category = {
   id: number,
   name: string,
