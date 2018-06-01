@@ -33,8 +33,8 @@ defmodule Cite.CitationView do
     |> add_categories(citation.categories)
   end
 
-  defp add_categories(json, _category) do
-    children = render_many(_category, Cite.CategoryView, "category.json")
+  defp add_categories(json, category) do
+    children = render_many(category, Cite.CategoryView, "category.json")
     json = Map.put(json, :categories, children)
     json
   end

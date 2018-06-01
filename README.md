@@ -12,7 +12,7 @@ A platform for microblogging.
   1. Install **Phoenix** dependencies: `cd api && mix deps.get`
   2. Edit `/config/dev.exs` or `config/dev.secret.exs` with your **Postgres** user credentials.
   3. Create, migrate, and seed the database `mix ecto.setup`
-  4. Start the Phoenix endpoint: `mix phoenix.server`
+  4. Start the Phoenix endpoint: `mix phx.server`
   5. Install **NPM** packages: `cd ../web && yarn`
   6. Create a `.env` file and add `REACT_APP_API_URL=http://localhost:4000/api`
   7. Start the dev server: `npm start`
