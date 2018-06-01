@@ -27,7 +27,13 @@ defmodule Cite.Endpoint do
     key: "_cite_key",
     signing_salt: "mbwGfSdG"
 
-  plug Corsica, allow_headers: ~w(Accept Content-Type Authorization Origin)
+  plug Corsica,
+    log: [rejected: :debug],
+    origins: ~r{^http://localhost:3000*},
+    max_age: 600,
+    allow_headers: ~w(content-type special authorization),
+    expose_headers: ~w(content-type special authorization),
+    allow_credentials: true
 
   plug Cite.Router
 end

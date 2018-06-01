@@ -33,7 +33,7 @@ defmodule Cite.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.5"},
      {:guardian, "~> 0.14.4"},
-     {:corsica, "~> 0.5.0"},
+     {:corsica, "~> 1.0"},
      {:faker, "~> 0.10"},
      {:scrivener_ecto, "~> 1.0"}]
   end
