@@ -1,6 +1,8 @@
-# Cite
+# Micro Blogger
 
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/AlexYanai/cite/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/AlexYanai/microblogger/blob/master/LICENSE.txt)
+
+A platform for microblogging.
 
 ## Requirements
 **Elixir v1.5**, **PostgreSQL**.
@@ -18,9 +20,11 @@
 You can now demo the app in your browser at [`localhost:3000`](http://localhost:3000).
 
 ## Testing
+
 `cd api/ &&  mix test test/`
 
 ## To Do
+
 - Add category creation
 - Expand search and filtering
 - Allow users to create collections
