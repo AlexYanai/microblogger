@@ -39,7 +39,7 @@ class App extends Component {
   render() {
     const { isAuthenticated, willAuthenticate } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
-    console.log(history);
+    console.log(window.history);
 
     return (
       <Router>

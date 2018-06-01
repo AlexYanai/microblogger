@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Category, Citation } from '../../types';
 import Navbar from '../../containers/Navbar';
@@ -101,7 +102,7 @@ class Home extends Component {
         <div className="citations-list-container">
           <div className="citations-button-row">
             <div className="citations-ask-box" onClick={this.showCitationModal} >
-              <div className="citations-link-div"><a href="#">Save Something New...</a></div>
+              <div className="citations-link-div"><a>Save Something New...</a></div>
             </div>
           </div>
 

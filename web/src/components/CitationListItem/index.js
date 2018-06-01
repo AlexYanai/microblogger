@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { showModal, showEditModal } from '../../actions/modal';
 import { favorite, unfavorite } from '../../actions/favorites';
@@ -63,7 +64,7 @@ class CitationListItem extends Component {
           </div>
           
           <div className="citation-list-item-link">
-            <h3><a href="#">{this.props.citation.title}</a></h3>
+            <h3><a>{this.props.citation.title}</a></h3>
           </div>
           
           <div className="citation-list-item-buttons">

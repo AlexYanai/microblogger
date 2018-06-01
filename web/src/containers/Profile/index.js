@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Gravatar from 'react-gravatar';
 import Navbar from '../../containers/Navbar';
@@ -21,8 +22,8 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    if (location && location.pathname) {
-      this.props.getUserInfo(this.context.router, location.pathname.split("/").pop());
+    if (window.location && window.location.pathname) {
+      this.props.getUserInfo(this.context.router, window.location.pathname.split("/").pop());
     }
   }
 
