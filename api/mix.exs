@@ -34,7 +34,7 @@ defmodule Cite.Mixfile do
      {:comeonin, "~> 2.5"},
      {:guardian, "~> 0.14.4"},
      {:corsica, "~> 0.5.0"},
-     {:faker, "~> 0.8"},
+     {:faker, "~> 0.10"},
      {:scrivener_ecto, "~> 1.0"}]
   end
 
