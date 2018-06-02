@@ -43,12 +43,12 @@ class Home extends Component {
 
   props: Props
 
-  handleLogout            =  ()  => this.props.logout(this.context.router);
+  handleLogout        =  ()  => this.props.logout(this.context.router);
   showPostModal       =  ()  => this.props.showModal(this.props.isModalOpen);
   handleNewPostSubmit = data => this.props.createPost(data, this.context.router, this.props.currentUser);
   handleDeletePost    = data => this.props.deletePost(this.context.router, this.props.currentUser, data);
   handleEditPost      = data => this.props.editPost(this.context.router, this.props.currentUser, data, false);
-  showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
+  showSearch          = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
 
   fetchPaginated(isSearch, data = {}) {
     var page_num   = isSearch ? 0 : this.props.pagination.page_number;

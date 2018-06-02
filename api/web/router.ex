@@ -25,8 +25,9 @@ defmodule Microblogger.Router do
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
-    get "/users/:id/posts", PostController, :public_posts
+    get "/users/:id/public", PostController, :public_posts
     get "/users/:id/favorites", FavoriteController, :favorites
+    get "/users/:id/posts", UserController, :posts
     post "/users/:id/favorite_post", PostController, :favorite_post
     get "/users/:id/paginated_posts", PostController, :paginated_posts
     get "/users/:id/filter_posts", PostController, :filter_posts

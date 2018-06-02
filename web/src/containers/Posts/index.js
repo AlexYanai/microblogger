@@ -35,19 +35,19 @@ class Posts extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.fetchPaginatedPosts({page: 1, id: this.props.currentUser.id, route: 'posts'});
+      this.props.fetchPaginatedPosts({page: 1, id: this.props.currentUser.id, route: 'public'});
       this.props.showSearchForm(true);
     }
   }
 
   props: Props
 
-  handleLogout            =  ()  => this.props.logout(this.context.router);
+  handleLogout        =  ()  => this.props.logout(this.context.router);
   showPostModal       =  ()  => this.props.showModal(this.props.isModalOpen);
   handleNewPostSubmit = data => this.props.createPost(data, this.context.router, this.props.currentUser);
   handleDeletePost    = data => this.props.deletePost(this.context.router, this.props.currentUser, data);
   handleEditPost      = data => this.props.editPost(this.context.router, this.props.currentUser, data, true);
-  showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
+  showSearch          = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
 
   handleSearch(isSearch, data = {}) {
     var page_num   = isSearch ? 0 : this.props.pagination.page_number;
@@ -65,7 +65,7 @@ class Posts extends Component {
         id: this.props.currentUser.id,
         page: page_num, 
         categories: categories,
-        route: 'posts'
+        route: 'public'
       }
 
       this.props.fetchPaginatedPosts(params, cites);
