@@ -6,7 +6,6 @@ import Navbar from '../../containers/Navbar';
 import { fetchPost } from '../../actions/posts';
 
 type Props = {
-  currentUser: Object,
   isAuthenticated: boolean,
   post: {
     id: number,
@@ -24,8 +23,12 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    const userId     = this.props.match.params.id;
+    const userId = this.props.match.params.id;
     const postId = this.props.match.params.post_id;
+
+    console.log("here");
+    console.log("userId: ", userId);
+    console.log("postId: ", postId);
 
     if (userId && postId) {
       this.props.fetchPost(userId, postId);
@@ -34,16 +37,26 @@ class Post extends Component {
 
   props: Props;
 
+  isCurrentUser = ()   => this.props.currentUser.id === this.props.profileUser.id;
+
   render() {
-    const userId     = this.props.match.params.id;
+    const { isAuthenticated, currentUser } = this.props;
+    const formProps = { isAuthenticated, currentUser };
+    console.log(isAuthenticated)
+    console.log(currentUser)
+    const userId = this.props.match.params.id;
     const postId = this.props.match.params.post_id;
 
     return (
-      <div style={{ flex: '1' }}>
-        <Navbar />
-        <h2>Post</h2>
-        <span>{userId}</span><br/>
-        <span>{postId}</span>
+      <div style={{ flex: '1', overflow: 'scroll' }}>
+        <Navbar currentUser={currentUser} />
+        <div className="profile-container">
+          <div style={{ flex: '1' }}>
+            <h2>Post</h2>
+            <span>{userId}</span><br/>
+            <span>{postId}</span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -51,8 +64,8 @@ class Post extends Component {
 
 export default connect(
   state => ({
-    // isAuthenticated: state.session.isAuthenticated,
-    // currentUser: state.session.currentUser,
+    isAuthenticated: state.session.isAuthenticated,
+    currentUser: state.session.currentUser,
     post: state.posts.post
   }),
   { fetchPost }

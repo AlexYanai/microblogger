@@ -28,6 +28,7 @@ class App extends Component {
     const token = localStorage.getItem('token');
 
     if (token) {
+      console.log("IN AUTH");
       this.props.authenticate();
     } else {
       this.props.unauthenticate();
@@ -39,8 +40,7 @@ class App extends Component {
   render() {
     const { isAuthenticated, willAuthenticate } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
-    console.log(window.history);
-
+    console.log("IN AUTH RENDER");
     return (
       <Router>
         <div style={{ display: 'flex', flex: '1', paddingTop: '4rem', }}>
@@ -49,7 +49,7 @@ class App extends Component {
             <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
             <MatchAuthenticated path="/posts" component={Posts} {...authProps} />
             <MatchAuthenticated path="/favorites" component={Favorites} {...authProps} />
-            <MatchAuthenticated path="/user/:id/posts/:post_id" component={Post} {...authProps} />
+            <MatchAuthenticated path="/users/:id/posts/:post_id" component={Post} {...authProps} />
             <RedirectAuthenticated path="/login" component={Login} {...authProps} />
             <RedirectAuthenticated path="/signup" component={Signup} {...authProps} />
             <Route component={NotFound} />

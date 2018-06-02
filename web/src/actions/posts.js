@@ -48,6 +48,7 @@ export function fetchCategories() {
 }
 
 export function fetchPost(userId, postId) {
+  console.log("IN fetchPost");
   return dispatch => api.fetch(`/users/${userId}/posts/${postId}`)
     .then((response) => {
       dispatch({ type: 'FETCH_POST_SUCCESS', response });

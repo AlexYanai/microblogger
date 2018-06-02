@@ -16,6 +16,8 @@ function currentLocation(loc) {
       return 'posts';
     case '/favorites':
       return 'favorites';
+    case '/post':
+      return 'post';
     default:
       return 'paginated_posts';
   }

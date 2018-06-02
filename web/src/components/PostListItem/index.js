@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { showModal, showEditModal } from '../../actions/modal';
 import { favorite, unfavorite } from '../../actions/favorites';
-import { deletePost, editPost } from '../../actions/posts';
+import { fetchPost, deletePost, editPost } from '../../actions/posts';
 import { Post } from '../../types';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ class PostListItem extends Component {
   showEditPostModal =  ()  => this.props.showEditModal(this.props.isEditModalOpen, this.props.post);
   handleDeletePost  = data => this.props.deletePost(this.context.router, this.props.post.user_id, this.props.post.id, this.props.pagPosts);
   handleEditPost    = data => this.props.editPost(this.context.router, this.props.currentUser, data);
-  formatDateString      = data => (new Date(this.props.post.inserted_at)).toLocaleDateString('en-US', data);
+  formatDateString  = data => (new Date(this.props.post.inserted_at)).toLocaleDateString('en-US', data);
 
   favoritePost() {
     if (this.props.post.is_favorite) {
@@ -63,8 +63,10 @@ class PostListItem extends Component {
             </div>
           </div>
           
-          <div className="post-list-item-link">
-            <h3><a>{this.props.post.title}</a></h3>
+          <div style={{paddingTop: 0}} className="post-list-item-link">
+            <Link to={`/users/${this.props.post.user_id}/posts/${this.props.post.id}`}>
+                <h3>{this.props.post.title}</h3>
+             </Link>
           </div>
           
           <div className="post-list-item-buttons">

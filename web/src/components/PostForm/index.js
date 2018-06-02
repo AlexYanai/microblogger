@@ -57,7 +57,7 @@ class PostForm extends Component {
               style={{marginBottom: '5px'}}
               name="source"
               type="text"
-              placeholder="Source"
+              placeholder="Subheader"
               component={Input}
             />
             <Field

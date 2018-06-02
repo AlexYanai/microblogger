@@ -53,6 +53,9 @@ defmodule Microblogger.PostController do
   end
 
   def show(conn, %{"id" => id}) do
+    IO.puts "*********************"
+    IO.puts "IN POSTS SHOW"
+    IO.puts "*********************"
     post = Repo.get!(Post, id)
     render(conn, "show.json", post: post)
   end

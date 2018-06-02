@@ -43,6 +43,9 @@ defmodule Microblogger.UserController do
   end
 
   def posts(conn, %{"id" => _user_id}) do
+    IO.puts "*********************"
+    IO.puts "IN USERS POSTS"
+    IO.puts "*********************"
     current_user = Guardian.Plug.current_resource(conn)
     posts    = Post
       |> where([m], m.user_id == ^current_user.id)

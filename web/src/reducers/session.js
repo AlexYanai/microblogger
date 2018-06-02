@@ -12,6 +12,8 @@ export default function (state = initialState, action) {
         willAuthenticate: true,
       };
     case 'AUTHENTICATION_SUCCESS':
+      console.log("AUTHENTICATION_SUCCESS");
+      console.log(action.response.data);
       return {
         ...state,
         willAuthenticate: false,
