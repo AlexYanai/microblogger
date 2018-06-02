@@ -1,5 +1,5 @@
-defmodule Cite.ErrorView do
-  use Cite.Web, :view
+defmodule Microblogger.ErrorView do
+  use Microblogger.Web, :view
 
   def render("404.json", _assigns) do
     %{errors: %{detail: "Page not found"}}

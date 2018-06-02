@@ -1,29 +1,29 @@
 import api from '../api';
 
-export function favorite(router, citation, pagCitations) {
+export function favorite(router, post, pagPosts) {
   const params = {
-    "citation_id": citation.id,
-    "user_id": citation.user_id
+    "post_id": post.id,
+    "user_id": post.user_id
   };
 
-  return dispatch => api.post(`/users/${citation.user_id}/favorites/`, params)
+  return dispatch => api.post(`/users/${post.user_id}/favorites/`, params)
     .then(() => {
-      processFavoritesResponse(router, citation, pagCitations, dispatch);
+      processFavoritesResponse(router, post, pagPosts, dispatch);
     })
 }
 
-export function unfavorite(router, citation, pagCitations) {
-  return dispatch => api.delete(`/users/${citation.user_id}/favorites/${citation.id}`)
+export function unfavorite(router, post, pagPosts) {
+  return dispatch => api.delete(`/users/${post.user_id}/favorites/${post.id}`)
     .then(() => {
-      processFavoritesResponse(router, citation, pagCitations, dispatch);
+      processFavoritesResponse(router, post, pagPosts, dispatch);
     })
 }
 
-function processFavoritesResponse(router, citation, pagCitations, dispatch) {
+function processFavoritesResponse(router, post, pagPosts, dispatch) {
   const origin = router.history.location.pathname;
 
-  var paginatedCitations = pagCitations.filter(function(a) {
-    if (a.data.id !== citation.id) {
+  var paginatedPosts = pagPosts.filter(function(a) {
+    if (a.data.id !== post.id) {
       return a;
     }
 
@@ -33,7 +33,7 @@ function processFavoritesResponse(router, citation, pagCitations, dispatch) {
 
   dispatch({ 
     type: 'FAVORITE',
-    paginatedCitations: paginatedCitations
+    paginatedPosts: paginatedPosts
   });
 
   router.history.push(origin);

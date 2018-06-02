@@ -1,23 +1,23 @@
 import { reset } from 'redux-form';
 import api from '../api';
-import { fetchPaginatedCitations, fetchCategories } from './citations';
+import { fetchPaginatedPosts, fetchCategories } from './posts';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.meta.token));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
   const route = currentLocation(window.location.pathname);
-  dispatch(fetchPaginatedCitations({page: 1, id: response.data.id, route: route}));
+  dispatch(fetchPaginatedPosts({page: 1, id: response.data.id, route: route}));
   dispatch(fetchCategories());
 }
 
 function currentLocation(loc) {
   switch (loc) {
-    case '/citations':
-      return 'citations';
+    case '/posts':
+      return 'posts';
     case '/favorites':
       return 'favorites';
     default:
-      return 'paginated_citations';
+      return 'paginated_posts';
   }
 }
 

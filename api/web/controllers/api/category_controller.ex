@@ -1,9 +1,9 @@
-defmodule Cite.CategoryController do
-  use Cite.Web, :controller
+defmodule Microblogger.CategoryController do
+  use Microblogger.Web, :controller
 
-  alias Cite.Category
+  alias Microblogger.Category
 
-  plug Guardian.Plug.EnsureAuthenticated, handler: Cite.SessionController
+  plug Guardian.Plug.EnsureAuthenticated, handler: Microblogger.SessionController
 
   def index(conn, _params) do
     categories = Repo.all(Category)
@@ -22,7 +22,7 @@ defmodule Cite.CategoryController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+        |> render(Microblogger.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -41,7 +41,7 @@ defmodule Cite.CategoryController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+        |> render(Microblogger.ChangesetView, "error.json", changeset: changeset)
     end
   end
 

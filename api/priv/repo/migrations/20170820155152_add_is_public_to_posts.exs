@@ -1,8 +1,8 @@
-defmodule Cite.Repo.Migrations.AddIsPublicToCitations do
+defmodule Microblogger.Repo.Migrations.AddIsPublicToPosts do
   use Ecto.Migration
 
   def change do
-    alter table(:citations) do
+    alter table(:posts) do
       add :is_public, :boolean, default: false
     end
   end

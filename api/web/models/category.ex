@@ -1,12 +1,12 @@
-defmodule Cite.Category do
-  use Cite.Web, :model
+defmodule Microblogger.Category do
+  use Microblogger.Web, :model
 
-  alias Cite.{Category, CitationCategory, Repo}
+  alias Microblogger.{Category, PostCategory, Repo}
 
   schema "categories" do
     field :name, :string
     field :description, :string
-    many_to_many :citations, Cite.Citation, join_through: "citation_categories"
+    many_to_many :posts, Microblogger.Post, join_through: "post_categories"
 
     timestamps()
   end
@@ -21,8 +21,8 @@ defmodule Cite.Category do
 
   def find_by_cc(n, m) do
     (
-      from c in CitationCategory, 
-        where: c.citation_id == ^n and c.category_id == ^m, 
+      from c in PostCategory, 
+        where: c.post_id == ^n and c.category_id == ^m, 
       select: c
     ) 
     |> Repo.one

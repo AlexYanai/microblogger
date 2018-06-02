@@ -1,10 +1,10 @@
-defmodule Cite.Endpoint do
-  use Phoenix.Endpoint, otp_app: :cite
+defmodule Microblogger.Endpoint do
+  use Phoenix.Endpoint, otp_app: :microblogger
 
-  socket "/socket", Cite.UserSocket
+  socket "/socket", Microblogger.UserSocket
 
   plug Plug.Static,
-    at: "/", from: :cite, gzip: false,
+    at: "/", from: :microblogger, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   if code_reloading? do
@@ -24,7 +24,7 @@ defmodule Cite.Endpoint do
 
   plug Plug.Session,
     store: :cookie,
-    key: "_cite_key",
+    key: "_microblogger_key",
     signing_salt: "mbwGfSdG"
 
   plug Corsica,
@@ -35,5 +35,5 @@ defmodule Cite.Endpoint do
     expose_headers: ~w(content-type special authorization),
     allow_credentials: true
 
-  plug Cite.Router
+  plug Microblogger.Router
 end

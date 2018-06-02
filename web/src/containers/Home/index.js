@@ -2,31 +2,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Category, Citation } from '../../types';
+import { Category, Post } from '../../types';
 import Navbar from '../../containers/Navbar';
 import { logout } from '../../actions/session';
 import { showModal } from '../../actions/modal';
-import { showSearchForm, endOfCitations, fetchPaginatedCitations, createCitation, deleteCitation, editCitation } from '../../actions/citations';
-import CitationListItem from '../../components/CitationListItem';
-import CitationForm from '../../components/CitationForm';
+import { showSearchForm, endOfPosts, fetchPaginatedPosts, createPost, deletePost, editPost } from '../../actions/posts';
+import PostListItem from '../../components/PostListItem';
+import PostForm from '../../components/PostForm';
 import SearchForm from '../../components/SearchForm';
 
 type Props = {
   currentUser: Object,
-  paginatedCitations: Array<Citation>,
+  paginatedPosts: Array<Post>,
   categories: Array<Category>,
   isAuthenticated: boolean,
   isModalOpen: boolean,
   isSearchFormOpen: boolean,
   reachedEnd: boolean,
   isEditModalOpen: boolean,
-  fetchPaginatedCitations: () => void,
-  createCitation: () => void,
-  deleteCitation: () => void,
-  editCitation: () => void,
+  fetchPaginatedPosts: () => void,
+  createPost: () => void,
+  deletePost: () => void,
+  editPost: () => void,
   showModal: () => void,
   showSearchForm: () => void,
-  editFormData: Citation
+  editFormData: Post
 };
 
 class Home extends Component {
@@ -36,7 +36,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.fetchPaginatedCitations({page: 1, id: this.props.currentUser.id, route: 'paginated_citations'});
+      this.props.fetchPaginatedPosts({page: 1, id: this.props.currentUser.id, route: 'paginated_posts'});
       this.props.showSearchForm(true);
     }
   }
@@ -44,10 +44,10 @@ class Home extends Component {
   props: Props
 
   handleLogout            =  ()  => this.props.logout(this.context.router);
-  showCitationModal       =  ()  => this.props.showModal(this.props.isModalOpen);
-  handleNewCitationSubmit = data => this.props.createCitation(data, this.context.router, this.props.currentUser);
-  handleDeleteCitation    = data => this.props.deleteCitation(this.context.router, this.props.currentUser, data);
-  handleEditCitation      = data => this.props.editCitation(this.context.router, this.props.currentUser, data, false);
+  showPostModal       =  ()  => this.props.showModal(this.props.isModalOpen);
+  handleNewPostSubmit = data => this.props.createPost(data, this.context.router, this.props.currentUser);
+  handleDeletePost    = data => this.props.deletePost(this.context.router, this.props.currentUser, data);
+  handleEditPost      = data => this.props.editPost(this.context.router, this.props.currentUser, data, false);
   showSearch              = ()   => this.props.showSearchForm(this.props.isSearchFormOpen);
 
   fetchPaginated(isSearch, data = {}) {
@@ -61,33 +61,33 @@ class Home extends Component {
     if (this.props.pagination.total_pages > page_num || isSearch) {
       page_num += 1;
 
-      const cites  = isSearch ? [] : this.props.paginatedCitations;
+      const cites  = isSearch ? [] : this.props.paginatedPosts;
       const params = {
         id: this.props.currentUser.id,
         page: page_num, 
         categories: categories,
-        route: 'paginated_citations'
+        route: 'paginated_posts'
       }
 
-      this.props.fetchPaginatedCitations(params, cites);
+      this.props.fetchPaginatedPosts(params, cites);
     } else {
-      this.props.endOfCitations();
+      this.props.endOfPosts();
     }
   }
 
-  renderCitations(pagCitations) {
-    if (pagCitations === undefined) {
+  renderPosts(pagPosts) {
+    if (pagPosts === undefined) {
       return null;
     }
 
-    return pagCitations.map(citation =>
-      <CitationListItem
-        key={citation.data.id}
-        citation={citation.data}
-        pagCitations={pagCitations}
+    return pagPosts.map(post =>
+      <PostListItem
+        key={post.data.id}
+        post={post.data}
+        pagPosts={pagPosts}
         currentUser={this.props.currentUser}
-        showCitationModal={this.showCitationModal}
-        handleDeleteCitation={this.handleDeleteCitation}
+        showPostModal={this.showPostModal}
+        handleDeletePost={this.handleDeletePost}
       />
     );
   }
@@ -99,10 +99,10 @@ class Home extends Component {
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />
-        <div className="citations-list-container">
-          <div className="citations-button-row">
-            <div className="citations-ask-box" onClick={this.showCitationModal} >
-              <div className="citations-link-div"><a>Save Something New...</a></div>
+        <div className="posts-list-container">
+          <div className="posts-button-row">
+            <div className="posts-ask-box" onClick={this.showPostModal} >
+              <div className="posts-link-div"><a>Save Something New...</a></div>
             </div>
           </div>
 
@@ -119,15 +119,15 @@ class Home extends Component {
             </button>}
 
           {(this.props.isModalOpen || this.props.isEditModalOpen) &&
-            <CitationForm 
-              onNewSubmit={this.handleNewCitationSubmit} 
-              onEditSubmit={this.handleEditCitation} 
-              showModal={this.showCitationModal} 
+            <PostForm 
+              onNewSubmit={this.handleNewPostSubmit} 
+              onEditSubmit={this.handleEditPost} 
+              showModal={this.showPostModal} 
               categories={this.props.categories} 
-              citation={this.props.editFormData} {...modalProps} 
+              post={this.props.editFormData} {...modalProps} 
             />}
 
-          {this.renderCitations(this.props.paginatedCitations)}
+          {this.renderPosts(this.props.paginatedPosts)}
 
           <button className="btn btn-link main-link" onClick={this.fetchPaginated.bind(this, false)}>
             {this.props.reachedEnd ? "You've reached the end" : 'More...'}
@@ -142,16 +142,16 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
-    categories: state.citations.categories,
-    paginatedCitations: state.citations.paginatedCitations,
-    searchCategories: state.citations.searchCategories,
-    pagination: state.citations.pagination,
-    reachedEnd: state.citations.reachedEnd,
+    categories: state.posts.categories,
+    paginatedPosts: state.posts.paginatedPosts,
+    searchCategories: state.posts.searchCategories,
+    pagination: state.posts.pagination,
+    reachedEnd: state.posts.reachedEnd,
     editFormData: state.modal.editFormData,
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
-    isSearchFormOpen: state.citations.isSearchFormOpen,
+    isSearchFormOpen: state.posts.isSearchFormOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
   }),
-  { logout, showSearchForm, endOfCitations, fetchPaginatedCitations, createCitation, deleteCitation, editCitation, showModal }
+  { logout, showSearchForm, endOfPosts, fetchPaginatedPosts, createPost, deletePost, editPost, showModal }
 )(Home);

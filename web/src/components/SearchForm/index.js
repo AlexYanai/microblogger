@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import MultiSelectField  from '../MultiSelectField';
-import { showSearchForm } from '../../actions/citations';
+import { showSearchForm } from '../../actions/posts';
 
 type Props = {
   handleSubmit: () => void,
@@ -66,7 +66,7 @@ SearchForm = reduxForm({
 
 SearchForm = connect(
   state => ({
-    isSearchFormOpen: state.citations.isSearchFormOpen,
+    isSearchFormOpen: state.posts.isSearchFormOpen,
   }),
   { showSearchForm }
 )(SearchForm);

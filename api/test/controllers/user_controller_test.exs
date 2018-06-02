@@ -1,7 +1,7 @@
-defmodule Cite.UserControllerTest do
-  use Cite.ConnCase
+defmodule Microblogger.UserControllerTest do
+  use Microblogger.ConnCase
 
-  alias Cite.User
+  alias Microblogger.User
   @valid_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
   setup %{conn: _} do
@@ -19,7 +19,7 @@ defmodule Cite.UserControllerTest do
 
   test "forbids user if authentication fails", %{user: user} do
     conn = build_conn()
-      |> get(user_path(build_conn(), :citations, user))
+      |> get(user_path(build_conn(), :posts, user))
 
     assert conn.status == 403
   end
@@ -27,15 +27,15 @@ defmodule Cite.UserControllerTest do
   test "can access routes that require Guardian authentication", %{jwt: jwt, user: user} do
     conn = build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
-      |> get(user_path(build_conn(), :citations, user))
+      |> get(user_path(build_conn(), :posts, user))
       
     assert conn.status == 200
   end
 
-  test "shows citation resource and returns empty List if no citations associated with user", %{jwt: jwt, user: user} do
+  test "shows post resource and returns empty List if no posts associated with user", %{jwt: jwt, user: user} do
     conn = build_conn()
       |> put_req_header("authorization", "Bearer #{jwt}")
-      |> get(user_path(build_conn(), :citations, user))
+      |> get(user_path(build_conn(), :posts, user))
       
     assert json_response(conn, 200)["data"] == []
   end

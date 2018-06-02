@@ -1,8 +1,8 @@
-defmodule Cite.Mixfile do
+defmodule Microblogger.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :cite,
+    [app: :microblogger,
      version: "0.0.1",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -14,7 +14,7 @@ defmodule Cite.Mixfile do
   end
 
   def application do
-    [mod: {Cite, []},
+    [mod: {Microblogger, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex, :comeonin, :scrivener_ecto, :faker, :corsica]]
   end

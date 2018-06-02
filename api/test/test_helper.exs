@@ -1,4 +1,4 @@
 ExUnit.start
 
-Ecto.Adapters.SQL.Sandbox.mode(Cite.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Microblogger.Repo, :manual)
 

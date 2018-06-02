@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Home from '../Home';
 import Profile from '../Profile';
-import Citation from '../Citation';
-import Citations from '../Citations';
+import Post from '../Post';
+import Posts from '../Posts';
 import Favorites from '../Favorites';
 import Login from '../Login';
 import NotFound from '../../components/NotFound';
@@ -13,14 +13,14 @@ import Signup from '../Signup';
 import { authenticate, unauthenticate } from '../../actions/session';
 import MatchAuthenticated from '../../components/MatchAuthenticated';
 import RedirectAuthenticated from '../../components/RedirectAuthenticated';
-import { Citation as Cite } from '../../types';
+import { Post as Cite } from '../../types';
 
 type Props = {
   authenticate: () => void,
   unauthenticate: () => void,
   isAuthenticated: boolean,
   willAuthenticate: boolean,
-  citation: Cite
+  post: Cite
 };
 
 class App extends Component {
@@ -47,9 +47,9 @@ class App extends Component {
           <Switch>
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
             <MatchAuthenticated path="/profile/:id" component={Profile} {...authProps} />
-            <MatchAuthenticated path="/citations" component={Citations} {...authProps} />
+            <MatchAuthenticated path="/posts" component={Posts} {...authProps} />
             <MatchAuthenticated path="/favorites" component={Favorites} {...authProps} />
-            <MatchAuthenticated path="/user/:id/citations/:citation_id" component={Citation} {...authProps} />
+            <MatchAuthenticated path="/user/:id/posts/:post_id" component={Post} {...authProps} />
             <RedirectAuthenticated path="/login" component={Login} {...authProps} />
             <RedirectAuthenticated path="/signup" component={Signup} {...authProps} />
             <Route component={NotFound} />

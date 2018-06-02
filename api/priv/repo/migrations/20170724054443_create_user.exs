@@ -1,4 +1,4 @@
-defmodule Cite.Repo.Migrations.CreateUser do
+defmodule Microblogger.Repo.Migrations.CreateUser do
   use Ecto.Migration
 
   def change do

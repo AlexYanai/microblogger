@@ -1,4 +1,4 @@
-defmodule Cite.ChannelCase do
+defmodule Microblogger.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule Cite.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Cite.Repo
+      alias Microblogger.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint Cite.Endpoint
+      @endpoint Microblogger.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cite.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Microblogger.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cite.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Microblogger.Repo, {:shared, self()})
     end
 
     :ok

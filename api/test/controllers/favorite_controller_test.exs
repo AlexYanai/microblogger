@@ -1,7 +1,7 @@
-defmodule Cite.FavoriteControllerTest do
-  use Cite.ConnCase
+defmodule Microblogger.FavoriteControllerTest do
+  use Microblogger.ConnCase
 
-  alias Cite.{User, Favorite}
+  alias Microblogger.{User, Favorite}
   
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
@@ -15,21 +15,21 @@ defmodule Cite.FavoriteControllerTest do
       %{title: "w", source: "v", quote: "u", is_public: true},
       %{title: "t", source: "s", quote: "r.", is_public: false}
     ]
-      |> Enum.map(&User.create_citation(&1, current_user))
+      |> Enum.map(&User.create_post(&1, current_user))
       |> Enum.each(&Repo.insert!(&1))
 
-    user_cites = current_user |> Repo.preload(:citations)
-    citations  = user_cites.citations
+    user_posts = current_user |> Repo.preload(:posts)
+    posts  = user_posts.posts
 
-    first  = citations |> Enum.at(0)
-    second = citations |> Enum.at(1)
+    first  = posts |> Enum.at(0)
+    second = posts |> Enum.at(1)
 
     %Favorite{} 
-      |> Favorite.changeset(%{citation_id: first.id, user_id: current_user.id}) 
+      |> Favorite.changeset(%{post_id: first.id, user_id: current_user.id}) 
       |> Repo.insert!
 
     %Favorite{} 
-      |> Favorite.changeset(%{citation_id: second.id, user_id: current_user.id}) 
+      |> Favorite.changeset(%{post_id: second.id, user_id: current_user.id}) 
       |> Repo.insert!
 
     conn = build_conn() 

@@ -1,5 +1,5 @@
 const initialState = {
-  paginatedCitations: [],
+  paginatedPosts: [],
 };
 
 export default function (state = initialState, action) {

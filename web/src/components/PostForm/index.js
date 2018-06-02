@@ -19,7 +19,7 @@ type Props = {
   showEditModal: () => void,
 };
 
-class CitationForm extends Component {
+class PostForm extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
@@ -96,18 +96,18 @@ class CitationForm extends Component {
   }
 }
 
-CitationForm = reduxForm({
-  form: 'editCitation',
+PostForm = reduxForm({
+  form: 'editPost',
   enableReinitialize: true,
-})(CitationForm);
+})(PostForm);
 
-CitationForm = connect(
+PostForm = connect(
   state => ({
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
     initialValues: state.modal.initialValues,
   }),
   { showEditModal }
-)(CitationForm);
+)(PostForm);
 
-export default CitationForm;
+export default PostForm;

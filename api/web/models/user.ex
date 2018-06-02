@@ -1,5 +1,5 @@
-defmodule Cite.User do
-  use Cite.Web, :model
+defmodule Microblogger.User do
+  use Microblogger.Web, :model
 
   schema "users" do
     field :username, :string
@@ -7,8 +7,8 @@ defmodule Cite.User do
     field :bio, :string
     field :password_hash, :string
     field :password, :string, virtual: true
-    has_many :citations, Cite.Citation
-    has_many :favorites, Cite.Favorite
+    has_many :posts, Microblogger.Post
+    has_many :favorites, Microblogger.Favorite
 
     timestamps()
   end
@@ -29,15 +29,15 @@ defmodule Cite.User do
     |> put_password_hash()
   end
 
-  def create_citation(citation, user) do
-    citation = Map.put(citation, :author_name, user.username)
-    citation = Map.put(citation, :author_emai, user.email)
+  def create_post(post, user) do
+    post = Map.put(post, :author_name, user.username)
+    post = Map.put(post, :author_emai, user.email)
     
-    Ecto.build_assoc(user, :citations, citation)
+    Ecto.build_assoc(user, :posts, post)
   end
 
   def favorites(user) do
-    user |> assoc(:favorites) |> Cite.Repo.all
+    user |> assoc(:favorites) |> Microblogger.Repo.all
   end
 
   defp put_password_hash(changeset) do

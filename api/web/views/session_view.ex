@@ -1,9 +1,9 @@
-defmodule Cite.SessionView do
-  use Cite.Web, :view
+defmodule Microblogger.SessionView do
+  use Microblogger.Web, :view
 
   def render("show.json", %{user: user, jwt: jwt}) do
     %{
-      data: render_one(user, Cite.UserView, "user.json"),
+      data: render_one(user, Microblogger.UserView, "user.json"),
       meta: %{token: jwt}
     }
   end

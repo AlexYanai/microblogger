@@ -1,4 +1,4 @@
-defmodule Cite.Repo.Migrations.CreateCategory do
+defmodule Microblogger.Repo.Migrations.CreateCategory do
   use Ecto.Migration
 
   def change do

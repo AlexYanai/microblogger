@@ -1,7 +1,7 @@
-defmodule Cite.CategoryTest do
-  use Cite.ModelCase
+defmodule Microblogger.CategoryTest do
+  use Microblogger.ModelCase
 
-  alias Cite.Category
+  alias Microblogger.Category
 
   @valid_attrs %{name: "General", description: "General Category"}
   @invalid_attrs %{description: "General Category"}

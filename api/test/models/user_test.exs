@@ -1,14 +1,14 @@
-defmodule Cite.UserTest do
-  use Cite.ModelCase
+defmodule Microblogger.UserTest do
+  use Microblogger.ModelCase
 
-  alias Cite.{User, Favorite}
+  alias Microblogger.{User, Favorite}
 
   @valid_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
   @invalid_attrs %{}
   
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
-  @cite_attrs_one %{quote: "a1", source: "b1", title: "c1", is_public: true}
-  @cite_attrs_two %{quote: "a2", source: "b2", title: "c2", is_public: true}
+  @post_attrs_one %{quote: "a1", source: "b1", title: "c1", is_public: true}
+  @post_attrs_two %{quote: "a2", source: "b2", title: "c2", is_public: true}
 
   test "changeset with valid attributes" do
     changeset = User.changeset(%User{}, @valid_attrs)
@@ -35,27 +35,27 @@ defmodule Cite.UserTest do
     assert {:ok, _} = Map.fetch(changeset.changes, :password_hash)
   end
 
-  test "create_citation associates citation with user model" do
+  test "create_post associates post with user model" do
     user = User.registration_changeset(%User{}, @user_attrs) |> Repo.insert!
 
-    User.create_citation(@cite_attrs_one, user) |> Repo.insert!
-    user = user |> Repo.preload(:citations)
+    User.create_post(@post_attrs_one, user) |> Repo.insert!
+    user = user |> Repo.preload(:posts)
 
-    assert length(user.citations) == 1
+    assert length(user.posts) == 1
   end
 
   test "favorites returns all of a user's favorites" do
     user     = User.registration_changeset(%User{}, @user_attrs) |> Repo.insert!
 
-    User.create_citation(@cite_attrs_one, user) |> Repo.insert!
-    User.create_citation(@cite_attrs_two, user) |> Repo.insert!
+    User.create_post(@post_attrs_one, user) |> Repo.insert!
+    User.create_post(@post_attrs_two, user) |> Repo.insert!
 
-    user     = user |> Repo.preload(:citations)
-    cite_one = user.citations |> List.first
-    cite_two = user.citations |> List.last
+    user     = user |> Repo.preload(:posts)
+    post_one = user.posts |> List.first
+    post_two = user.posts |> List.last
 
-    Favorite.changeset(%Favorite{}, %{citation_id: cite_one.id, user_id: user.id}) |> Repo.insert!
-    Favorite.changeset(%Favorite{}, %{citation_id: cite_two.id, user_id: user.id}) |> Repo.insert!
+    Favorite.changeset(%Favorite{}, %{post_id: post_one.id, user_id: user.id}) |> Repo.insert!
+    Favorite.changeset(%Favorite{}, %{post_id: post_two.id, user_id: user.id}) |> Repo.insert!
 
     assert length(User.favorites(user)) == 2
   end

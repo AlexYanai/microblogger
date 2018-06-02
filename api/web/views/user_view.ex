@@ -1,5 +1,5 @@
-defmodule Cite.UserView do
-  use Cite.Web, :view
+defmodule Microblogger.UserView do
+  use Microblogger.Web, :view
 
   def render("user.json", %{user: user}) do
     %{

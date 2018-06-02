@@ -1,4 +1,4 @@
-defmodule Cite.ErrorHelpers do
+defmodule Microblogger.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -8,9 +8,9 @@ defmodule Cite.ErrorHelpers do
   """
   def translate_error({msg, opts}) do
     if count = opts[:count] do
-      Gettext.dngettext(Cite.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(Microblogger.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(Cite.Gettext, "errors", msg, opts)
+      Gettext.dgettext(Microblogger.Gettext, "errors", msg, opts)
     end
   end
 end

@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Navbar from '../../containers/Navbar';
-import { fetchCitation } from '../../actions/citations';
+import { fetchPost } from '../../actions/posts';
 
 type Props = {
   currentUser: Object,
   isAuthenticated: boolean,
-  citation: {
+  post: {
     id: number,
     title: string,
     source: string,
@@ -18,17 +18,17 @@ type Props = {
   }
 };
 
-class Citation extends Component {
+class Post extends Component {
   static contextTypes = {
     router: PropTypes.object,
   }
 
   componentDidMount() {
     const userId     = this.props.match.params.id;
-    const citationId = this.props.match.params.citation_id;
+    const postId = this.props.match.params.post_id;
 
-    if (userId && citationId) {
-      this.props.fetchCitation(userId, citationId);
+    if (userId && postId) {
+      this.props.fetchPost(userId, postId);
     }
   }
 
@@ -36,14 +36,14 @@ class Citation extends Component {
 
   render() {
     const userId     = this.props.match.params.id;
-    const citationId = this.props.match.params.citation_id;
+    const postId = this.props.match.params.post_id;
 
     return (
       <div style={{ flex: '1' }}>
         <Navbar />
-        <h2>Citation</h2>
+        <h2>Post</h2>
         <span>{userId}</span><br/>
-        <span>{citationId}</span>
+        <span>{postId}</span>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default connect(
   state => ({
     // isAuthenticated: state.session.isAuthenticated,
     // currentUser: state.session.currentUser,
-    citation: state.citations.citation
+    post: state.posts.post
   }),
-  { fetchCitation }
-)(Citation);
+  { fetchPost }
+)(Post);

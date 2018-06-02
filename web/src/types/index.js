@@ -11,7 +11,7 @@ export type Category = {
   description: string
 };
 
-export type Citation = {
+export type Post = {
   id: number,
   title: string,
   source: string,

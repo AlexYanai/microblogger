@@ -1,6 +1,6 @@
 # mix run priv/repo/seeds.exs
 import Ecto
-alias Cite.{Repo, User, Category, Citation, CitationCategory}
+alias Microblogger.{Repo, User, Category, Post, PostCategory}
 
 # List of users to be created
 users = [
@@ -40,15 +40,15 @@ category_two   = Category |> Repo.get(4)
 category_three = Category |> Repo.get(5)
 category_four  = Category |> Repo.get(6)
 
-# List of general citations to be created
-cites = [
+# List of general posts to be created
+posts = [
   %{title: "test", source: "http://www.example.testurl", quote: "test quote\ntest text test test test test test test", is_public: true},
   %{title: "test note for something", source: "http://www.somethingimportant.testurl", quote: "something, something, something, something", is_public: false},
   %{title: "something important", source: "A book", quote: "Some book quote, Some book quote, Some book quote, Some book quote.", is_public: true}
 ]
 
-# List of CS citations to be created
-cs_cites = [
+# List of CS posts to be created
+cs_posts = [
   %{title: "Priority Queue", source: "https://en.wikipedia.org/wiki/Priority_queue", quote: "In computer science, a priority queue is an abstract data type which is like a regular queue or stack data structure, but where additionally each element has a 'priority' associated with it. In a priority queue, an element with high priority is served before an element with low priority. If two elements have the same priority, they are served according to their order in the queue.", is_public: true},
   %{title: "Stack", source: "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)", quote: "In computer science, a stack is an abstract data type that serves as a collection of elements, with two principal operations: push, which adds an element to the collection, and pop, which removes the most recently added element that was not yet removed. ", is_public: false},
   %{title: "Stack", source: "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)", quote: "In computer science, a stack is an abstract data type that serves as a collection of elements, with two principal operations: push, which adds an element to the collection, and pop, which removes the most recently added element that was not yet removed. ", is_public: false},
@@ -61,7 +61,7 @@ cs_cites = [
   %{title: "Skip List", source: "https://en.wikipedia.org/wiki/Skip_list", quote: "In computer science, a skip list is a data structure that allows fast search within an ordered sequence of elements. Fast search is made possible by maintaining a linked hierarchy of subsequences, with each successive subsequence skipping over fewer elements than the previous one.", is_public: false}
 ]
 
-shak_cites = [
+shak_posts = [
   %{title: "As You Like It 1", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.as_you_like_it, is_public: true},
   %{title: "As You Like It 2", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.as_you_like_it, is_public: false},
   %{title: "As You Like It 3", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.as_you_like_it, is_public: true},
@@ -76,7 +76,7 @@ shak_cites = [
   %{title: "Romeo And Juliet 3", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.romeo_and_juliet, is_public: true}
 ]
 
-beer_cites = [
+beer_posts = [
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: true},
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: true},
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: false},
@@ -84,42 +84,42 @@ beer_cites = [
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: false}
 ]
 
-# Create the citations and associate them with a user
-cites
-  |> Enum.map(&User.create_citation(&1, user_two))
+# Create the posts and associate them with a user
+posts
+  |> Enum.map(&User.create_post(&1, user_two))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a user
-cs_cites
-  |> Enum.map(&User.create_citation(&1, user_one))
+# Create the posts and associate them with a user
+cs_posts
+  |> Enum.map(&User.create_post(&1, user_one))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a user
-shak_cites
-  |> Enum.map(&User.create_citation(&1, user_three))
+# Create the posts and associate them with a user
+shak_posts
+  |> Enum.map(&User.create_post(&1, user_three))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a user
-beer_cites
-  |> Enum.map(&User.create_citation(&1, user_four))
+# Create the posts and associate them with a user
+beer_posts
+  |> Enum.map(&User.create_post(&1, user_four))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a Category
-Repo.all(assoc(user_one, :citations))
-  |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category_two))
+# Create the posts and associate them with a Category
+Repo.all(assoc(user_one, :posts))
+  |> Enum.map(&PostCategory.assoc_post_with_category(&1, category_two))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a Category
-Repo.all(assoc(user_two, :citations))
-  |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category_one))
+# Create the posts and associate them with a Category
+Repo.all(assoc(user_two, :posts))
+  |> Enum.map(&PostCategory.assoc_post_with_category(&1, category_one))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a Category
-Repo.all(assoc(user_three, :citations))
-  |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category_three))
+# Create the posts and associate them with a Category
+Repo.all(assoc(user_three, :posts))
+  |> Enum.map(&PostCategory.assoc_post_with_category(&1, category_three))
   |> Enum.each(&Repo.insert!(&1))
 
-# Create the citations and associate them with a Category
-Repo.all(assoc(user_four, :citations))
-  |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category_four))
+# Create the posts and associate them with a Category
+Repo.all(assoc(user_four, :posts))
+  |> Enum.map(&PostCategory.assoc_post_with_category(&1, category_four))
   |> Enum.each(&Repo.insert!(&1))

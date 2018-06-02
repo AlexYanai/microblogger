@@ -1,12 +1,12 @@
-defmodule Cite.CategoryView do
-  use Cite.Web, :view
+defmodule Microblogger.CategoryView do
+  use Microblogger.Web, :view
 
   def render("index.json", %{categories: categories}) do
-    %{data: render_many(categories, Cite.CategoryView, "category.json")}
+    %{data: render_many(categories, Microblogger.CategoryView, "category.json")}
   end
 
   def render("show.json", %{category: category}) do
-    %{data: render_one(category, Cite.CategoryView, "category.json")}
+    %{data: render_one(category, Microblogger.CategoryView, "category.json")}
   end
 
   def render("category.json", %{category: category}) do

@@ -31,7 +31,7 @@ class Navbar extends Component {
             </div>
 
             <div className="navbar-main-right">
-              <NavItem text="Public" to={`/citations`} />
+              <NavItem text="Public" to={`/posts`} />
               <div className="navbar-main-divider">|</div>
               <NavItem text="Favorites" to={`/favorites`} />
               <div className="navbar-main-divider">|</div>

@@ -1,7 +1,7 @@
-defmodule Cite.CitationControllerTest do
-  use Cite.ConnCase
+defmodule Microblogger.PostControllerTest do
+  use Microblogger.ConnCase
 
-  alias Cite.{Citation, User, Category, CitationCategory}
+  alias Microblogger.{Post, User, Category, PostCategory}
 
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
   @valid_attrs %{quote: "some content", source: "some content", title: "some content", is_public: true}
@@ -16,7 +16,7 @@ defmodule Cite.CitationControllerTest do
       %{title: "w", source: "v", quote: "u", is_public: true},
       %{title: "t", source: "s", quote: "r.", is_public: false}
     ]
-      |> Enum.map(&User.create_citation(&1, current_user))
+      |> Enum.map(&User.create_post(&1, current_user))
       |> Enum.each(&Repo.insert!(&1))
 
     conn = build_conn() 
@@ -26,14 +26,14 @@ defmodule Cite.CitationControllerTest do
   end
 
   test "returns all publicly-flagged records", %{conn: conn, user: user} do
-    conn = get(conn, citation_path(build_conn(), :public_citations, user))
+    conn = get(conn, post_path(build_conn(), :public_posts, user))
     data = json_response(conn, 200)["data"]
 
     assert length(data) == 2
     assert data |> Enum.all?(fn n -> n["data"]["is_public"] end)
   end
 
-  test "create citation and associate it with user and categories", %{conn: conn, user: user} do
+  test "create post and associate it with user and categories", %{conn: conn, user: user} do
     [
       %{name: "General", description: "General_Category"},
       %{name: "Random", description: "Random_Category"}
@@ -41,7 +41,7 @@ defmodule Cite.CitationControllerTest do
       |> Enum.map(&Category.changeset(%Category{}, &1))
       |> Enum.each(&Repo.insert!(&1))
 
-    citation_params = %{
+    post_params = %{
       quote: "some_quote", 
       source: "some_source", 
       title: "some_title",
@@ -50,15 +50,15 @@ defmodule Cite.CitationControllerTest do
       categories: ["General", "Random"]
     }
 
-    conn = conn |> post(user_citation_path(build_conn(), :create, user), %{"citation" => citation_params})
+    conn = conn |> post(user_post_path(build_conn(), :create, user), %{"post" => post_params})
     data = json_response(conn, 201)["data"]
     
     assert conn.status == 201
     assert length(data["categories"]) == 2
-    assert data["quote"] == citation_params.quote
+    assert data["quote"] == post_params.quote
   end
 
-  test "update citation and associated categories if no categories given", %{conn: conn, user: user} do
+  test "update post and associated categories if no categories given", %{conn: conn, user: user} do
     [
       %{name: "General", description: "General_Category"},
       %{name: "Random", description: "Random_Category"}
@@ -66,34 +66,34 @@ defmodule Cite.CitationControllerTest do
       |> Enum.map(&Category.changeset(%Category{}, &1))
       |> Enum.each(&Repo.insert!(&1))
 
-    citation = @valid_attrs 
-      |> User.create_citation(user)
+    post = @valid_attrs 
+      |> User.create_post(user)
       |> Repo.insert!
 
-    citation_params = %{
+    post_params = %{
       quote: "a", 
       source: "b", 
       title: "c",
-      id: citation.id,
+      id: post.id,
       is_public: true,
       user_id: user.id,
       categories: ["General", "Random"]
     }
 
-    conn = conn |> patch(user_citation_path(build_conn(), :update, user, citation), %{"id" => citation.id, "citation" => citation_params})
+    conn = conn |> patch(user_post_path(build_conn(), :update, user, post), %{"id" => post.id, "post" => post_params})
     data = json_response(conn, 200)["data"]
 
-    new_citation = Citation 
-      |> Repo.get(citation.id) 
+    new_post = Post 
+      |> Repo.get(post.id) 
       |> Repo.preload(:categories)
 
     assert conn.status == 200
-    refute data["title"] == citation.title
-    assert data["title"] == citation_params.title
-    assert length(new_citation.categories) == length(citation_params.categories)
+    refute data["title"] == post.title
+    assert data["title"] == post_params.title
+    assert length(new_post.categories) == length(post_params.categories)
   end
 
-  test "update citation if update params have 0 categories but citation already has some associated", %{conn: conn, user: user} do
+  test "update post if update params have 0 categories but post already has some associated", %{conn: conn, user: user} do
     [
       %{name: "TestOne", description: "TestOne_Category"},
       %{name: "Random", description: "Random_Category"}
@@ -103,31 +103,31 @@ defmodule Cite.CitationControllerTest do
 
     category = Category |> Repo.get_by(name: "TestOne")
 
-    citation = @valid_attrs 
-      |> User.create_citation(user)
+    post = @valid_attrs 
+      |> User.create_post(user)
       |> Repo.insert!
 
-    Repo.all(assoc(user, :citations))
-      |> Enum.map(&CitationCategory.assoc_citation_with_category(&1, category))
+    Repo.all(assoc(user, :posts))
+      |> Enum.map(&PostCategory.assoc_post_with_category(&1, category))
       |> Enum.each(&Repo.insert!(&1))
 
-    citation_params = %{
+    post_params = %{
       quote: "a", 
       source: "b", 
       title: "c",
-      id: citation.id,
+      id: post.id,
       is_public: true,
       user_id: user.id,
       categories: []
     }
 
-    conn = conn |> patch(user_citation_path(build_conn(), :update, user, citation), %{"id" => citation.id, "citation" => citation_params})
+    conn = conn |> patch(user_post_path(build_conn(), :update, user, post), %{"id" => post.id, "post" => post_params})
 
-    new_citation = Citation 
-      |> Repo.get(citation.id) 
+    new_post = Post 
+      |> Repo.get(post.id) 
       |> Repo.preload(:categories)
 
     assert conn.status == 200
-    assert length(new_citation.categories) == length(citation_params.categories)
+    assert length(new_post.categories) == length(post_params.categories)
   end
 end

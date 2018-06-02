@@ -1,7 +1,7 @@
-defmodule Cite.CitationTest do
-  use Cite.ModelCase
+defmodule Microblogger.PostTest do
+  use Microblogger.ModelCase
 
-  alias Cite.Citation
+  alias Microblogger.Post
 
   @valid_attrs %{quote: "some content", source: "some content", title: "some content", is_public: true}
   @invalid_attrs %{}
@@ -18,17 +18,17 @@ defmodule Cite.CitationTest do
   }
 
   test "changeset with valid attributes" do
-    changeset = Citation.changeset(%Citation{}, @valid_attrs)
+    changeset = Post.changeset(%Post{}, @valid_attrs)
     assert changeset.valid?
   end
 
   test "changeset with invalid attributes" do
-    changeset = Citation.changeset(%Citation{}, @invalid_attrs)
+    changeset = Post.changeset(%Post{}, @invalid_attrs)
     refute changeset.valid?
   end
 
   test "category_ids with valid data structure" do
-    categories = Citation.category_ids(@with_categories)
+    categories = Post.category_ids(@with_categories)
     assert length(categories) == 2
     
     [a, b] = categories
@@ -37,28 +37,28 @@ defmodule Cite.CitationTest do
   end
 
   test "category_ids with invalid data structure" do
-    categories = Citation.category_ids(nil)
+    categories = Post.category_ids(nil)
 
     refute categories |> Enum.any?
   end
 
   test "extract_categories with nil" do
     params     = %{}
-    categories = Citation.extract_categories(params)
+    categories = Post.extract_categories(params)
 
     assert categories == [""]
   end
 
   test "extract_categories with single empty string" do
     params     = %{"categories" => [""]}
-    categories = Citation.extract_categories(params)
+    categories = Post.extract_categories(params)
 
     assert categories == [""]
   end
 
   test "extract_categories with correctly formatted string" do
     params = %{"categories" => "one,two,three"}
-    count  = Citation.extract_categories(params) |> Enum.count
+    count  = Post.extract_categories(params) |> Enum.count
 
     assert count == 3
   end

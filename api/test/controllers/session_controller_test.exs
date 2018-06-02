@@ -1,7 +1,7 @@
-defmodule Cite.SessionControllerTest do
-  use Cite.ConnCase
+defmodule Microblogger.SessionControllerTest do
+  use Microblogger.ConnCase
 
-  alias Cite.{User}
+  alias Microblogger.{User}
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
   setup %{conn: _} do

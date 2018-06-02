@@ -1,4 +1,4 @@
-# Cite
+# Microblogger
 
 To start your Phoenix app:
 

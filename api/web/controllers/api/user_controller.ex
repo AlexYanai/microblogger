@@ -1,9 +1,9 @@
-defmodule Cite.UserController do
-  use Cite.Web, :controller
+defmodule Microblogger.UserController do
+  use Microblogger.Web, :controller
 
-  alias Cite.{User, Citation, Repo}
+  alias Microblogger.{User, Post, Repo}
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Cite.SessionController] when action in [:citations]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Microblogger.SessionController] when action in [:posts]
 
   def create(conn, params) do
     changeset = User.registration_changeset(%User{}, params)
@@ -15,11 +15,11 @@ defmodule Cite.UserController do
 
         new_conn
           |> put_status(:created)
-          |> render(Cite.SessionView, "show.json", user: user, jwt: jwt)
+          |> render(Microblogger.SessionView, "show.json", user: user, jwt: jwt)
       {:error, changeset} ->
         conn
           |> put_status(:unprocessable_entity)
-          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> render(Microblogger.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -33,7 +33,7 @@ defmodule Cite.UserController do
       {:error, changeset} ->
         conn
           |> put_status(:unprocessable_entity)
-          |> render(Cite.ChangesetView, "error.json", changeset: changeset)
+          |> render(Microblogger.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -42,14 +42,14 @@ defmodule Cite.UserController do
     render(conn, "user.json", user: user)
   end
 
-  def citations(conn, %{"id" => _user_id}) do
+  def posts(conn, %{"id" => _user_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    citations    = Citation
+    posts    = Post
       |> where([m], m.user_id == ^current_user.id)
       |> order_by([desc: :inserted_at, desc: :id])
       |> Repo.all
       |> Repo.preload(:categories)
 
-    render(conn, Cite.CitationView, "index.json", %{citations: citations})
+    render(conn, Microblogger.PostView, "index.json", %{posts: posts})
   end
 end

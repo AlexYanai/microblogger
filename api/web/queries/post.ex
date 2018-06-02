@@ -1,12 +1,12 @@
-defmodule Cite.CitationQuery do
+defmodule Microblogger.PostQuery do
   import Ecto.Query
-  alias Cite.{Citation, Favorite, Repo}
+  alias Microblogger.{Post, Favorite, Repo}
 
   def build(cat_names, params, is_public) do
     user_id = params["id"] |> String.to_integer
     faves   = from f in Favorite, where: f.user_id == ^user_id
 
-    q = from c in Citation
+    q = from c in Post
     q = public_query(q, user_id, is_public)
     q = get_categories(q, cat_names)
     q = from c in q, preload: [:categories, favorites: ^faves]

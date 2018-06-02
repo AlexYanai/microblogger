@@ -1,7 +1,7 @@
-defmodule Cite.CategoryControllerTest do
-  use Cite.ConnCase
+defmodule Microblogger.CategoryControllerTest do
+  use Microblogger.ConnCase
 
-  # alias Cite.Category
+  # alias Microblogger.Category
   # @valid_attrs %{description: "some_description", name: "some_name"}
 
   setup %{conn: conn} do

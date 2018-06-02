@@ -1,6 +1,6 @@
 const initialState = {
-  currentUserCitations: [],
-  paginatedCitations: [],
+  currentUserPosts: [],
+  paginatedPosts: [],
   reachedEnd: false,
   pagination: {
     total_pages: 0,
@@ -22,59 +22,59 @@ export default function (state = initialState, action) {
         ...state,
         categories: action.response.data
       };
-    case 'FETCH_CITATION_SUCCESS':
+    case 'FETCH_POST_SUCCESS':
       return {
         ...state,
-        citation: action.response.data,
+        post: action.response.data,
       };
-    case 'FETCH_FILTERED_CITATIONS_SUCCESS':
+    case 'FETCH_FILTERED_POSTS_SUCCESS':
       return {
         ...state,
-        paginatedCitations: action.allCitations,
+        paginatedPosts: action.allPosts,
         pagination: action.pagination,
         searchCategories: action.searchCategories,
         reachedEnd: initialState.reachedEnd
       };
-    case 'REFRESH_FILTERED_CITATIONS':
+    case 'REFRESH_FILTERED_POSTS':
       return {
         ...state,
-        paginatedCitations: action.paginatedCitations,
+        paginatedPosts: action.paginatedPosts,
       };
-    case 'END_OF_CITATIONS':
+    case 'END_OF_POSTS':
       return {
         ...state,
         reachedEnd: true
       };
-    case 'CREATE_CITATION_SUCCESS':
+    case 'CREATE_POST_SUCCESS':
       return {
         ...state,
-        currentUserCitations: [
-          ...state.currentUserCitations,
+        currentUserPosts: [
+          ...state.currentUserPosts,
           action.response.data,
         ],
       };
-    case 'CREATE_CITATION_FAILURE':
+    case 'CREATE_POST_FAILURE':
       return {
         ...state,
-        newCitationErrors: action.error.errors,
+        newPostErrors: action.error.errors,
       };
-    case 'EDIT_CITATION_SUCCESS':
+    case 'EDIT_POST_SUCCESS':
       return {
         ...state,
       };
-    case 'EDIT_CITATION_FAILURE':
+    case 'EDIT_POST_FAILURE':
       return {
         ...state,
-        newCitationErrors: action.error.errors,
+        newPostErrors: action.error.errors,
       };
-    case 'DELETE_CITATION':
+    case 'DELETE_POST':
       return {
         ...state
       };
     case 'FAVORITE':
       return {
         ...state,
-        paginatedCitations: action.paginatedCitations,
+        paginatedPosts: action.paginatedPosts,
       };
     default:
       return state;

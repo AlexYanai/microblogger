@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :cite, Cite.Endpoint,
+config :microblogger, Microblogger.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -22,11 +22,11 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :cite, Cite.Repo,
+config :microblogger, Microblogger.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "ay",
   password: "idk",
-  database: "cite_dev",
+  database: "microblogger_dev",
   hostname: "localhost",
   pool_size: 10
 

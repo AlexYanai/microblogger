@@ -1,12 +1,12 @@
-defmodule Cite.Web do
+defmodule Microblogger.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Cite.Web, :controller
-      use Cite.Web, :view
+      use Microblogger.Web, :controller
+      use Microblogger.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -30,14 +30,14 @@ defmodule Cite.Web do
     quote do
       use Phoenix.Controller
 
-      alias Cite.Repo
+      alias Microblogger.Repo
       import Ecto
       import Ecto.Query
 
-      import Cite.Router.Helpers
-      import Cite.Gettext
-      import Cite.CitationQuery
-      import Cite.FavoriteQuery
+      import Microblogger.Router.Helpers
+      import Microblogger.Gettext
+      import Microblogger.PostQuery
+      import Microblogger.FavoriteQuery
     end
   end
 
@@ -51,9 +51,9 @@ defmodule Cite.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Cite.Router.Helpers
-      import Cite.ErrorHelpers
-      import Cite.Gettext
+      import Microblogger.Router.Helpers
+      import Microblogger.ErrorHelpers
+      import Microblogger.Gettext
     end
   end
 
@@ -67,10 +67,10 @@ defmodule Cite.Web do
     quote do
       use Phoenix.Channel
 
-      alias Cite.Repo
+      alias Microblogger.Repo
       import Ecto
       import Ecto.Query
-      import Cite.Gettext
+      import Microblogger.Gettext
     end
   end
 

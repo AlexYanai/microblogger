@@ -1,4 +1,4 @@
-defmodule Cite.PaginationHelpers do
+defmodule Microblogger.PaginationHelpers do
   def pagination(page) do
     %{
       page_number: page.page_number,

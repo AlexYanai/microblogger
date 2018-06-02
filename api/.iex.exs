@@ -1,3 +1,3 @@
-alias Cite.{Repo, User, Category, Citation, CitationCategory, Favorite}
+alias Microblogger.{Repo, User, Category, Post, PostCategory, Favorite}
 import Ecto
 import Ecto.Query

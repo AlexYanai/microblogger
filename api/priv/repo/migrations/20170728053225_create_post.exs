@@ -1,8 +1,8 @@
-defmodule Cite.Repo.Migrations.CreateCitation do
+defmodule Microblogger.Repo.Migrations.CreatePost do
   use Ecto.Migration
 
   def change do
-    create table(:citations) do
+    create table(:posts) do
       add :title, :string, null: false
       add :source, :text, null: false
       add :quote, :text, null: false
@@ -11,6 +11,6 @@ defmodule Cite.Repo.Migrations.CreateCitation do
       timestamps()
     end
 
-    create index(:citations, [:user_id])
+    create index(:posts, [:user_id])
   end
 end

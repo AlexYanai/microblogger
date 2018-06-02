@@ -208,7 +208,7 @@ a, a:visited, a:link, a:hover, a:active {
   border: 1px solid #e8e8e8;
 }
 
-.citations-list-container {
+.posts-list-container {
   max-width: 800px;
   padding: 4rem 4rem;
   margin-right: auto;
@@ -216,7 +216,7 @@ a, a:visited, a:link, a:hover, a:active {
   margin-left: auto;
 }
 
-.citations-button-row {
+.posts-button-row {
   display: flex;
   align-items: center;
   width: 100%;
@@ -224,7 +224,7 @@ a, a:visited, a:link, a:hover, a:active {
   margin-bottom: 20px;
 }
 
-.citations-ask-box {
+.posts-ask-box {
   display: flex;
   background-color: #fff;
   max-width: 800px;
@@ -241,16 +241,16 @@ a, a:visited, a:link, a:hover, a:active {
   vertical-align: middle;
 }
 
-.citations-link-div {
+.posts-link-div {
   margin-left: 15px;
 }
 
-.citations-link-div:hover,
-.citations-link-div:focus {
+.posts-link-div:hover,
+.posts-link-div:focus {
   color: var(--palette-med-blue);
 }
 
-.citation-list-item-card {
+.post-list-item-card {
   display: flex !important;
   flex-direction: column;
   max-width: 800px;
@@ -264,13 +264,13 @@ a, a:visited, a:link, a:hover, a:active {
   border: 1px solid #e8e8e8;
 }
 
-.citation-list-item-source {
+.post-list-item-source {
   padding-left: 30px;
   padding-right: 30px;
   flex-flow: wrap;
 }
 
-.citation-list-item-quote {
+.post-list-item-quote {
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 30px;
@@ -285,18 +285,18 @@ a, a:visited, a:link, a:hover, a:active {
   width: 100%;
 }
 
-.citation-list-item-author {
+.post-list-item-author {
   display: inline-flex;
   width: 25%;
 }
 
-.citation-list-item-author-name {
+.post-list-item-author-name {
   padding-top: 1px;
   color: var(--palette-light-gray);
   font-size: 14px;
 }
 
-.citation-list-item-author-picture {
+.post-list-item-author-picture {
   display: inline-flex;
   height: 28px;
   width: 28px;
@@ -305,7 +305,7 @@ a, a:visited, a:link, a:hover, a:active {
   border-radius: 50%;
 }
 
-.citation-list-item-link {
+.post-list-item-link {
   color: var(--palette-med-gray);
   font-size: 22px;
   font-weight: bold;
@@ -314,7 +314,7 @@ a, a:visited, a:link, a:hover, a:active {
   text-align: center;
 }
 
-.citation-list-item-buttons {
+.post-list-item-buttons {
   width: 25%;
   text-align: right;
   padding: 0;
@@ -323,58 +323,58 @@ a, a:visited, a:link, a:hover, a:active {
   cursor: pointer;
 }
 
-.citation-list-item-link:hover,
-.citation-list-item-link:focus {
+.post-list-item-link:hover,
+.post-list-item-link:focus {
   text-decoration: none;
 }
 
-.citation-list-item-fave,
-.citation-list-item-not-fave {
+.post-list-item-fave,
+.post-list-item-not-fave {
   justify-content: center;
   background: rgba(255,255,255,.2);
   border-radius: 5px;
 }
 
-.citation-list-item-fave {
+.post-list-item-fave {
   color: var(--palette-med-blue);
 }
 
-.citation-list-item-not-fave:hover, 
-.citation-list-item-not-fave:focus {
+.post-list-item-not-fave:hover, 
+.post-list-item-not-fave:focus {
   color: var(--palette-med-blue);
 }
 
-.citation-list-item-not-fave {
+.post-list-item-not-fave {
   color: var(--palette-light-gray);
 }
 
-.citation-list-item-edit,
-.citation-list-item-delete {
+.post-list-item-edit,
+.post-list-item-delete {
   justify-content: center;
   color: var(--palette-light-gray);
   background: rgba(255,255,255,.2);
   border-radius: 5px;
 }
 
-.citation-list-item-edit:hover,
-.citation-list-item-edit:focus,
-.citation-list-item-fave:hover,
-.citation-list-item-fave:focus {
+.post-list-item-edit:hover,
+.post-list-item-edit:focus,
+.post-list-item-fave:hover,
+.post-list-item-fave:focus {
   color: var(--palette-med-blue);
 }
 
-.citation-list-item-logout-button {
+.post-list-item-logout-button {
   background: transparent;
   border: 0;
   cursor: pointer;
 }
 
-.citation-list-item-delete:hover,
-.citation-list-item-delete:focus {
+.post-list-item-delete:hover,
+.post-list-item-delete:focus {
   color: var(--palette-med-red);
 }
 
-.citation-list-item-date {
+.post-list-item-date {
   font-size: 12px;
   color: var(--palette-light-gray);
 }

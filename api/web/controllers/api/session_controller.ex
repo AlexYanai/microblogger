@@ -1,5 +1,5 @@
-defmodule Cite.SessionController do
-  use Cite.Web, :controller
+defmodule Microblogger.SessionController do
+  use Microblogger.Web, :controller
 
   def create(conn, params) do
     case authenticate(params) do
@@ -46,11 +46,11 @@ defmodule Cite.SessionController do
   def unauthenticated(conn, _params) do
     conn
     |> put_status(:forbidden)
-    |> render(Cite.SessionView, "forbidden.json", error: "Not Authenticated")
+    |> render(Microblogger.SessionView, "forbidden.json", error: "Not Authenticated")
   end
 
   defp authenticate(%{"email" => email, "password" => password}) do
-    user = Repo.get_by(Cite.User, email: String.downcase(email))
+    user = Repo.get_by(Microblogger.User, email: String.downcase(email))
 
     case check_password(user, password) do
       true -> {:ok, user}

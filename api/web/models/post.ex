@@ -1,17 +1,17 @@
-defmodule Cite.Citation do
-  use Cite.Web, :model
-  alias Cite.{Citation, Favorite, Repo}
+defmodule Microblogger.Post do
+  use Microblogger.Web, :model
+  alias Microblogger.{Post, Favorite, Repo}
 
-  schema "citations" do
+  schema "posts" do
     field :title, :string
     field :source, :string
     field :quote, :string
     field :author_name, :string
     field :author_email, :string
     field :is_public, :boolean
-    belongs_to :user, Cite.User
-    has_many :favorites, Cite.Favorite, on_delete: :delete_all
-    many_to_many :categories, Cite.Category, join_through: "citation_categories", on_delete: :delete_all
+    belongs_to :user, Microblogger.User
+    has_many :favorites, Microblogger.Favorite, on_delete: :delete_all
+    many_to_many :categories, Microblogger.Category, join_through: "post_categories", on_delete: :delete_all
 
     timestamps()
   end
@@ -34,16 +34,16 @@ defmodule Cite.Citation do
     String.split(cats, ",")
   end 
 
-  def exists?(citation) do
-    !!citation and !!citation.categories
+  def exists?(post) do
+    !!post and !!post.categories
   end
 
-  def category_ids(citation) do
-    get_cat_ids(exists?(citation), citation)
+  def category_ids(post) do
+    get_cat_ids(exists?(post), post)
   end
 
-  def get_cat_ids(true, citation) do
-    Enum.map(citation.categories, fn n -> n.id end)
+  def get_cat_ids(true, post) do
+    Enum.map(post.categories, fn n -> n.id end)
   end
 
   def get_cat_ids(_, _) do

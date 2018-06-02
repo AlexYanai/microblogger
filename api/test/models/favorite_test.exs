@@ -1,9 +1,9 @@
-defmodule Cite.FavoriteTest do
-  use Cite.ModelCase
+defmodule Microblogger.FavoriteTest do
+  use Microblogger.ModelCase
 
-  alias Cite.{Favorite}
+  alias Microblogger.{Favorite}
 
-  @valid_attrs %{citation_id: 1, user_id: 1}
+  @valid_attrs %{post_id: 1, user_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
