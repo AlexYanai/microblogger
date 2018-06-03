@@ -22,11 +22,19 @@ defmodule Microblogger.PostController do
   end
 
   def create(conn, %{"post" => params}) do
+    IO.puts "*********************"
+    IO.puts "IN POSTS CREATE"
+    IO.puts "*********************"
+
     current_user = Guardian.Plug.current_resource(conn)
+    IO.inspect current_user
 
     changeset = current_user
       |> build_assoc(:posts)
       |> Post.changeset(params)
+
+    changeset = Ecto.Changeset.put_change(changeset, :author_name, current_user.username)
+    changeset = Ecto.Changeset.put_change(changeset, :author_email, current_user.email)
 
     case Repo.insert(changeset) do
       {:ok, post} ->
