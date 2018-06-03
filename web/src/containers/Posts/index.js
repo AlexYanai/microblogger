@@ -106,7 +106,10 @@ class Posts extends Component {
           </div>
 
           {this.props.isSearchFormOpen && 
-            <SearchForm onSubmit={this.handleSearch.bind(this, true)} categories={this.props.categories} showSearch={this.props.showSearch} />
+            <SearchForm 
+              onSubmit={this.handleSearch.bind(this, true)} 
+              categories={this.props.categories} 
+              showSearch={this.props.showSearch} />
           }
 
           {!this.props.isSearchFormOpen && 

@@ -47,11 +47,11 @@ defmodule Microblogger.UserController do
     IO.puts "IN USERS POSTS"
     IO.puts "*********************"
     current_user = Guardian.Plug.current_resource(conn)
-    posts    = Post
+    posts        = Post
       |> where([m], m.user_id == ^current_user.id)
       |> order_by([desc: :inserted_at, desc: :id])
       |> Repo.all
-      |> Repo.preload(:categories)
+      |> Repo.preload([:categories, :favorites])
 
     render(conn, Microblogger.PostView, "index.json", %{posts: posts})
   end

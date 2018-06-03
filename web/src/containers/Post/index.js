@@ -4,9 +4,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Navbar from '../../containers/Navbar';
 import { fetchPost } from '../../actions/posts';
+import PostListItem from '../../components/PostListItem';
+import PostForm from '../../components/PostForm';
+import { showModal } from '../../actions/modal';
+import { deletePost, editPost } from '../../actions/posts';
+
 
 type Props = {
   isAuthenticated: boolean,
+  currentUser: Object,
+  isModalOpen: boolean,
+  isSearchFormOpen: boolean,
+  isEditModalOpen: boolean,
+  deletePost: () => void,
+  editPost: () => void,
+  showModal: () => void,
+  editFormData: Post,
+
   post: {
     id: number,
     title: string,
@@ -23,12 +37,17 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    const userId = this.props.match.params.id;
-    const postId = this.props.match.params.post_id;
+    var userId;
+    var postId;
 
-    console.log("here");
-    console.log("userId: ", userId);
-    console.log("postId: ", postId);
+    if (window.location && window.location.pathname) {
+      var strs = window.location.pathname.split("/");
+
+      if (strs && strs.length === 5) {
+        userId = parseInt(strs[2]);
+        postId = parseInt(strs[4]);
+      }
+    }
 
     if (userId && postId) {
       this.props.fetchPost(userId, postId);
@@ -37,24 +56,40 @@ class Post extends Component {
 
   props: Props;
 
-  isCurrentUser = ()   => this.props.currentUser.id === this.props.profileUser.id;
+  handleDeletePost = data => this.props.deletePost(this.context.router, this.props.currentUser, data);
+  handleEditPost   = data => this.props.editPost(this.context.router, this.props.currentUser, data, true, true);
+  showPostModal    =  ()  => this.props.showModal(this.props.isModalOpen);
+  isCurrentUser    =  ()  => this.props.currentUser.id === this.props.profileUser.id;
 
   render() {
-    const { isAuthenticated, currentUser } = this.props;
-    const formProps = { isAuthenticated, currentUser };
-    console.log(isAuthenticated)
-    console.log(currentUser)
+    const { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post } = this.props;
+    const formProps = { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post };
+    console.log(post);
+    console.log(this.props);
     const userId = this.props.match.params.id;
     const postId = this.props.match.params.post_id;
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
-        <Navbar currentUser={currentUser} />
-        <div className="profile-container">
-          <div style={{ flex: '1' }}>
-            <h2>Post</h2>
-            <span>{userId}</span><br/>
-            <span>{postId}</span>
+        <Navbar currentUser={this.props.currentUser} />
+        <div className="posts-list-container">
+          <div className="posts-button-row">
+            {(this.props.isModalOpen || this.props.isEditModalOpen) &&
+              <PostForm 
+                onEditSubmit={this.handleEditPost} 
+                showModal={this.showPostModal} 
+                categories={this.props.post.categories} 
+                post={this.props.editFormData} {...formProps} />
+            }
+
+            {this.props.post &&
+            <PostListItem
+              key={this.props.post.id}
+              post={this.props.post}
+              currentUser={this.props.currentUser}
+              showPostModal={this.showPostModal}
+              handleDeletePost={this.handleDeletePost}
+            />}
           </div>
         </div>
       </div>
@@ -66,7 +101,11 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     currentUser: state.session.currentUser,
+    editFormData: state.modal.editFormData,
+    initialValues: state.modal.initialValues,
+    isModalOpen: state.modal.isModalOpen,
+    isEditModalOpen: state.modal.isEditModalOpen,
     post: state.posts.post
   }),
-  { fetchPost }
+  {  deletePost, editPost, showModal, fetchPost }
 )(Post);

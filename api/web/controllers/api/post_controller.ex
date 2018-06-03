@@ -52,15 +52,22 @@ defmodule Microblogger.PostController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id, "user_id" => _user_id}) do
     IO.puts "*********************"
     IO.puts "IN POSTS SHOW"
     IO.puts "*********************"
-    post = Repo.get!(Post, id)
+
+    post = Post 
+      |> Repo.get!(id) 
+      |> Repo.preload([:categories, :favorites])
+
     render(conn, "show.json", post: post)
   end
 
   def update(conn, %{"id" => id, "post" => params}) do
+    IO.puts "*********************"
+    IO.puts "IN POSTS UPDATE"
+    IO.puts "*********************"
     remote = params["categories"]
     params = params |> Map.drop(["categories"])
     

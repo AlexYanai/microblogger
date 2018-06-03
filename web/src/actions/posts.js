@@ -71,15 +71,20 @@ export function createPost(data, router, currentUser) {
     });
 }
 
-export function editPost(data, router, currentPost, is_public) {
+export function editPost(data, router, currentPost, is_public, single=false) {
   return dispatch => api.patch(`/users/${currentPost.user_id}/posts/${currentPost.id}`, {"post": currentPost})
     .then((response) => {
       dispatch({ type: 'EDIT_POST_SUCCESS', response });
       dispatch(showEditModal(true, response.data));
 
-      // Reload currentPosts if public or currentUserPosts otherwise.
-      const route = is_public ? 'posts' : 'paginated_posts';
-      dispatch(fetchPaginatedPosts({page: 1, id: currentPost.user_id, route: route}));
+      if (single) {
+        dispatch(fetchPost(currentPost.user_id, currentPost.id));
+        
+      } else {
+        // Reload currentPosts if public or currentUserPosts otherwise.
+        const route = is_public ? 'posts' : 'paginated_posts';
+        dispatch(fetchPaginatedPosts({page: 1, id: currentPost.user_id, route: route}));
+      }
 
       router.history.push('/');
     })

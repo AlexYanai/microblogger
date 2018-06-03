@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { showModal, showEditModal } from '../../actions/modal';
 import { favorite, unfavorite } from '../../actions/favorites';
-import { fetchPost, deletePost, editPost } from '../../actions/posts';
+import { deletePost, editPost } from '../../actions/posts';
 import { Post } from '../../types';
 import { Link } from 'react-router-dom';
 
