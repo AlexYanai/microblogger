@@ -28,7 +28,6 @@ class App extends Component {
     const token = localStorage.getItem('token');
 
     if (token) {
-      console.log("IN AUTH");
       this.props.authenticate();
     } else {
       this.props.unauthenticate();
@@ -40,7 +39,7 @@ class App extends Component {
   render() {
     const { isAuthenticated, willAuthenticate } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
-    console.log("IN AUTH RENDER");
+
     return (
       <Router>
         <div style={{ display: 'flex', flex: '1', paddingTop: '4rem', }}>

@@ -1,4 +1,5 @@
 import api from '../api';
+import { fetchPost } from './posts';
 
 export function favorite(router, post, pagPosts) {
   const params = {
@@ -20,21 +21,26 @@ export function unfavorite(router, post, pagPosts) {
 }
 
 function processFavoritesResponse(router, post, pagPosts, dispatch) {
-  const origin = router.history.location.pathname;
+  const origin  = router.history.location.pathname;
+  const pathLen = origin.split("/").length
 
-  var paginatedPosts = pagPosts.filter(function(a) {
-    if (a.data.id !== post.id) {
+  if (pathLen !== 5) {
+    var paginatedPosts = pagPosts.filter(function(a) {
+      if (a.data.id !== post.id) {
+        return a;
+      }
+
+      a.data.is_favorite = !a.data.is_favorite;
       return a;
-    }
+    });
 
-    a.data.is_favorite = !a.data.is_favorite;
-    return a;
-  });
-
-  dispatch({ 
-    type: 'FAVORITE',
-    paginatedPosts: paginatedPosts
-  });
+    dispatch({ 
+      type: 'FAVORITE',
+      paginatedPosts: paginatedPosts
+    });
+  } else {
+    dispatch(fetchPost(post.user_id, post.id));
+  }
 
   router.history.push(origin);
 }

@@ -19,7 +19,7 @@ type Props = {
   deletePost: () => void,
   editPost: () => void,
   showModal: () => void,
-  editFormData: Post,
+  editFormData: Object,
 
   post: {
     id: number,
@@ -39,14 +39,11 @@ class Post extends Component {
   componentDidMount() {
     var userId;
     var postId;
+    var path = window.location.pathname.split("/");
 
-    if (window.location && window.location.pathname) {
-      var strs = window.location.pathname.split("/");
-
-      if (strs && strs.length === 5) {
-        userId = parseInt(strs[2]);
-        postId = parseInt(strs[4]);
-      }
+    if (path && path.length === 5) {
+      userId = parseInt(path[2], 10);
+      postId = parseInt(path[4], 10);
     }
 
     if (userId && postId) {
@@ -56,7 +53,7 @@ class Post extends Component {
 
   props: Props;
 
-  handleDeletePost = data => this.props.deletePost(this.context.router, this.props.currentUser, data);
+  handleDeletePost = data => this.props.deletePost(this.context.router, this.props.currentUser, data, true);
   handleEditPost   = data => this.props.editPost(this.context.router, this.props.currentUser, data, true, true);
   showPostModal    =  ()  => this.props.showModal(this.props.isModalOpen);
   isCurrentUser    =  ()  => this.props.currentUser.id === this.props.profileUser.id;
@@ -64,10 +61,6 @@ class Post extends Component {
   render() {
     const { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post } = this.props;
     const formProps = { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post };
-    console.log(post);
-    console.log(this.props);
-    const userId = this.props.match.params.id;
-    const postId = this.props.match.params.post_id;
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>

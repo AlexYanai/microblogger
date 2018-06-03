@@ -95,7 +95,7 @@ class Home extends Component {
   render() {
     const { isAuthenticated, isModalOpen, isEditModalOpen, currentUser } = this.props;
     const modalProps = { isAuthenticated, isModalOpen, isEditModalOpen, currentUser };
-
+    console.log(this.props);
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />

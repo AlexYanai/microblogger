@@ -48,7 +48,6 @@ export function fetchCategories() {
 }
 
 export function fetchPost(userId, postId) {
-  console.log("IN fetchPost");
   return dispatch => api.fetch(`/users/${userId}/posts/${postId}`)
     .then((response) => {
       dispatch({ type: 'FETCH_POST_SUCCESS', response });
@@ -93,24 +92,28 @@ export function editPost(data, router, currentPost, is_public, single=false) {
     });
 }
 
-export function deletePost(router, userId, postId, pagPosts = []) {
+export function deletePost(router, userId, postId, pagPosts = [], single=false) {
   const origin = router.history.location.pathname;
 
   return dispatch => api.delete(`/users/${userId}/posts/${postId}`, {"id": postId})
     .then(() => {
-      if (origin === '/posts') {
-        dispatch(fetchPaginatedPosts({page: 1, id: userId, route: 'posts'}));
+      if (origin.split("/").length !== 5) {
+        if (origin === '/posts') {
+          dispatch(fetchPaginatedPosts({page: 1, id: userId, route: 'posts'}));
+        } else {
+          const posts = pagPosts.filter(function(a) {
+            return a.data.id !== postId;
+          });
+
+          dispatch({
+            type: 'REFRESH_FILTERED_POSTS',
+            paginatedPosts: posts
+          });
+        }
+
+        router.history.push(origin);
       } else {
-        const cites = pagPosts.filter(function(a) {
-          return a.data.id !== postId;
-        });
-
-        dispatch({ 
-          type: 'REFRESH_FILTERED_POSTS',
-          paginatedPosts: cites
-        });
+        router.history.push("/");
       }
-
-      router.history.push(origin);
     })
 }

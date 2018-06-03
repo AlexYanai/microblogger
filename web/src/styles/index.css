@@ -254,6 +254,7 @@ a, a:visited, a:link, a:hover, a:active {
   display: flex !important;
   flex-direction: column;
   max-width: 800px;
+  width: 100%;
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 0 rgba(0,0,0,.25);
