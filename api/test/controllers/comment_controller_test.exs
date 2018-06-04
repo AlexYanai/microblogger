@@ -86,4 +86,25 @@ defmodule Microblogger.CommentControllerTest do
     assert data["body"] == "new test body"
     refute comment_body == data["body"]
   end
+
+  test "delete comment", %{conn: conn, user: user} do
+    user_comments = user |> Repo.preload(:comments)
+    comment       = user_comments.comments |> Enum.at(0)
+    comment_count = length(user_comments.comments)
+
+    payload = %{
+      "user_id" => user.id,
+      "id" => comment.id
+    }
+
+    conn = conn |> delete(user_comment_path(build_conn(), :delete, user, comment), payload)
+
+    data = json_response(conn, 200)["data"]
+
+    user_comments = user |> Repo.preload(:comments)
+    new_comment_count = length(user_comments.comments)
+
+    assert conn.status == 200
+    assert (comment_count - 1) == new_comment_count
+  end
 end

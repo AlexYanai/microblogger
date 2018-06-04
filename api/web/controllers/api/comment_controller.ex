@@ -57,12 +57,8 @@ defmodule Microblogger.CommentController do
     end
   end
 
-  def delete(conn, %{"id" => id, "user_id" => _user_id}) do
-    user = Guardian.Plug.current_resource(conn)
-    Comment 
-      |> where([post_id: ^id, user_id: ^user.id])
-      |> Repo.one
-      |> Repo.delete!
+  def delete(conn, %{"id" => id, "user_id" => user_id}) do
+    Comment |> Repo.get(id)|> Repo.delete!
 
     conn
       |> put_status(:ok)
