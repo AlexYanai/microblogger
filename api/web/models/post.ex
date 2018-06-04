@@ -11,6 +11,7 @@ defmodule Microblogger.Post do
     field :is_public, :boolean
     belongs_to :user, Microblogger.User
     has_many :favorites, Microblogger.Favorite, on_delete: :delete_all
+    has_many :comments, Microblogger.Comment, on_delete: :delete_all
     many_to_many :categories, Microblogger.Category, join_through: "post_categories", on_delete: :delete_all
 
     timestamps()

@@ -1,7 +1,7 @@
 defmodule Microblogger.CommentControllerTest do
   use Microblogger.ConnCase
 
-  alias Microblogger.{User, Comment}
+  alias Microblogger.{User}
   
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
 
@@ -36,7 +36,7 @@ defmodule Microblogger.CommentControllerTest do
     {:ok, conn: conn, user: current_user}
   end
 
-  test "returns all comments", %{conn: conn, user: user} do
+  test "returns all comments for a given user", %{conn: conn, user: user} do
     conn = get(conn, user_comment_path(build_conn(), :index, user))
     data = json_response(conn, 200)["data"]
     assert length(data) == 2
@@ -46,5 +46,25 @@ defmodule Microblogger.CommentControllerTest do
 
     assert test1["body"] == "test1"
     assert test2["body"] == "test2"
+  end
+
+  test "creates comments and associates it with user and post", %{conn: conn, user: user} do
+    user_posts    = user |> Repo.preload(:posts)
+    user_comments = user |> Repo.preload(:comments)
+
+    posts = user_posts.posts
+    post  = posts |> Enum.at(0)
+
+    params = %{
+      :post_id => post.id, 
+      :user_id => user.id,
+      :body => "test body"
+    }
+
+    conn = conn |> post(user_comment_path(build_conn(), :create, user), %{"post" => params})
+    assert conn.status == 201
+    
+    u_comments = user |> Repo.preload(:comments)
+    assert (length(user_comments.comments) + 1) === length(u_comments.comments)
   end
 end

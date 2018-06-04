@@ -27,7 +27,6 @@ defmodule Microblogger.PostController do
     IO.puts "*********************"
 
     current_user = Guardian.Plug.current_resource(conn)
-    IO.inspect current_user
 
     changeset = current_user
       |> build_assoc(:posts)

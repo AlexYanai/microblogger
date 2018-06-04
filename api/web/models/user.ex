@@ -9,6 +9,7 @@ defmodule Microblogger.User do
     field :password, :string, virtual: true
     has_many :posts, Microblogger.Post
     has_many :favorites, Microblogger.Favorite
+    has_many :comments, Microblogger.Comment
 
     timestamps()
   end
