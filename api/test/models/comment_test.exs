@@ -3,7 +3,7 @@ defmodule Microblogger.CommentTest do
 
   alias Microblogger.Comment
 
-  @valid_attrs %{body: "some body"}
+  @valid_attrs %{body: "some body", user_id: 1, post_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

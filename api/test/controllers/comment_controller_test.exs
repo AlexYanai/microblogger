@@ -61,10 +61,29 @@ defmodule Microblogger.CommentControllerTest do
       :body => "test body"
     }
 
-    conn = conn |> post(user_comment_path(build_conn(), :create, user), %{"post" => params})
+    conn = conn |> post(user_comment_path(build_conn(), :create, user), %{"comment" => params})
     assert conn.status == 201
     
     u_comments = user |> Repo.preload(:comments)
     assert (length(user_comments.comments) + 1) === length(u_comments.comments)
+  end
+
+  test "updates comments", %{conn: conn, user: user} do
+    user_comments = user |> Repo.preload(:comments)
+    comment       = user_comments.comments |> Enum.at(0)
+    comment_body  = comment.body
+
+    params  = %{
+      :body => "new test body",
+      :id => comment.id,
+      :user_id => user_comments.id
+    }
+
+    conn = conn |> patch(user_comment_path(build_conn(), :update, user, comment), %{"comment" => params})
+
+    data = json_response(conn, 200)["data"]
+    assert conn.status == 200
+    assert data["body"] == "new test body"
+    refute comment_body == data["body"]
   end
 end

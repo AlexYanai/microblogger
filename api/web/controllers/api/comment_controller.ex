@@ -13,7 +13,7 @@ defmodule Microblogger.CommentController do
     render(conn, "index.json", %{comments: comments})
   end
 
-  def create(conn, %{"post" => params}) do
+  def create(conn, %{"comment" => params}) do
     current_user   = Guardian.Plug.current_resource(conn)
     comment_params = %{
       body: params["body"], 
@@ -33,6 +33,23 @@ defmodule Microblogger.CommentController do
         conn
           |> put_status(:created)
           |> render("show.json", comment: comment)
+      {:error, changeset} ->
+        conn
+          |> put_status(:unprocessable_entity)
+          |> render(Microblogger.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
+  def update(conn, %{"comment" => params}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    comment      = Comment |> Repo.get!(params["id"])
+    changeset    = Comment.changeset(comment, params)
+    changeset    = Ecto.Changeset.put_change(changeset, :username, current_user.username)
+    changeset    = Ecto.Changeset.put_change(changeset, :email, current_user.email)
+
+    case Repo.update(changeset) do
+      {:ok, comment} ->
+        render(conn, "show.json", comment: comment)
       {:error, changeset} ->
         conn
           |> put_status(:unprocessable_entity)
