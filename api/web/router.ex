@@ -35,6 +35,7 @@ defmodule Microblogger.Router do
     resources "/users", UserController do
       resources "/posts", PostController, except: [:index]
       resources "/favorites", FavoriteController, only: [:create, :delete]
+      resources "/comments", CommentController#, only: [:create, :delete]
     end
 
     resources "/categories", CategoryController do

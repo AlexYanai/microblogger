@@ -31,11 +31,12 @@ categories
   |> Enum.each(&Repo.insert!(&1))
 
 # Get a user and a category
-user_one       = User     |> Ecto.Query.first |> Repo.one
+user_one       = User     |> Repo.get(1)
 user_two       = User     |> Repo.get(2)
 user_three     = User     |> Repo.get(3)
 user_four      = User     |> Repo.get(4)
-category_one   = Category |> Ecto.Query.first |> Repo.one
+
+category_one   = Category |> Repo.get(1)
 category_two   = Category |> Repo.get(4)
 category_three = Category |> Repo.get(5)
 category_four  = Category |> Repo.get(6)
@@ -61,6 +62,7 @@ cs_posts = [
   %{title: "Skip List", source: "https://en.wikipedia.org/wiki/Skip_list", quote: "In computer science, a skip list is a data structure that allows fast search within an ordered sequence of elements. Fast search is made possible by maintaining a linked hierarchy of subsequences, with each successive subsequence skipping over fewer elements than the previous one.", is_public: false}
 ]
 
+# List of Shakespeare posts to be created
 shak_posts = [
   %{title: "As You Like It 1", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.as_you_like_it, is_public: true},
   %{title: "As You Like It 2", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.as_you_like_it, is_public: false},
@@ -76,6 +78,7 @@ shak_posts = [
   %{title: "Romeo And Juliet 3", source: Faker.Internet.url, quote: Faker.Lorem.Shakespeare.romeo_and_juliet, is_public: true}
 ]
 
+# List of Beer posts to be created
 beer_posts = [
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: true},
   %{title: Faker.Beer.name, source: Faker.Internet.url, quote: Enum.join([Faker.Beer.style, "style beer", "\nalcohol:", Faker.Beer.alcohol, Faker.Beer.yeast, "yeast and", Faker.Beer.malt, "malt"], " "), is_public: true},
@@ -123,3 +126,20 @@ Repo.all(assoc(user_three, :posts))
 Repo.all(assoc(user_four, :posts))
   |> Enum.map(&PostCategory.assoc_post_with_category(&1, category_four))
   |> Enum.each(&Repo.insert!(&1))
+
+
+post1 = Post |> Repo.get(1)
+post2 = Post |> Repo.get(2)
+post3 = Post |> Repo.get(3)
+post5 = Post |> Repo.get(5)
+post7 = Post |> Repo.get(7)
+post11 = Post |> Repo.get(11)
+post13 = Post |> Repo.get(13)
+post17 = Post |> Repo.get(17)
+post19 = Post |> Repo.get(19)
+post23 = Post |> Repo.get(23)
+
+# Creating comments on Posts
+comments = [
+
+]
