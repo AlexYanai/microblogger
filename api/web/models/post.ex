@@ -50,4 +50,12 @@ defmodule Microblogger.Post do
   def get_cat_ids(_, _) do
     []
   end
+
+  def authorized_to_view(user, post) do
+    post_id   = post.user_id
+    user_id   = user.id
+    is_public = post.is_public
+
+    (post_id == user_id) || is_public
+  end
 end

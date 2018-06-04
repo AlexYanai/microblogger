@@ -8,7 +8,6 @@ defmodule Microblogger.CommentController do
   def index(conn, %{"user_id" => user_id}) do
     user     = User |> Repo.get(user_id)
     comments = user |> assoc(:comments) |> Repo.all
-    comments = Comment.add_author_name_and_email(comments, user.username, user.email)
 
     render(conn, "index.json", %{comments: comments})
   end
@@ -17,6 +16,8 @@ defmodule Microblogger.CommentController do
     current_user   = Guardian.Plug.current_resource(conn)
     comment_params = %{
       body: params["body"], 
+      author_name: params["author_name"], 
+      author_email: params["author_email"], 
       post_id: params["post_id"], 
       user_id: params["user_id"]
     }
@@ -24,9 +25,6 @@ defmodule Microblogger.CommentController do
     changeset = current_user
       |> build_assoc(:comments)
       |> Comment.changeset(comment_params)
-
-    changeset = Ecto.Changeset.put_change(changeset, :username, current_user.username)
-    changeset = Ecto.Changeset.put_change(changeset, :email, current_user.email)
 
     case Repo.insert(changeset) do
       {:ok, comment} ->
@@ -44,8 +42,6 @@ defmodule Microblogger.CommentController do
     current_user = Guardian.Plug.current_resource(conn)
     comment      = Comment |> Repo.get!(params["id"])
     changeset    = Comment.changeset(comment, params)
-    changeset    = Ecto.Changeset.put_change(changeset, :username, current_user.username)
-    changeset    = Ecto.Changeset.put_change(changeset, :email, current_user.email)
 
     case Repo.update(changeset) do
       {:ok, comment} ->

@@ -1,9 +1,10 @@
 defmodule Microblogger.PostControllerTest do
   use Microblogger.ConnCase
 
-  alias Microblogger.{Post, User, Category, PostCategory}
+  alias Microblogger.{Post, User, Category, PostCategory, Comment}
 
   @user_attrs %{email: "some_email", password: "some_pass", bio: "some_bio", username: "some_user"}
+  @user_attrs1 %{email: "some_email1", password: "some_pass1", bio: "some_bio1", username: "some_user1"}
   @valid_attrs %{quote: "some content", source: "some content", title: "some content", is_public: true}
 
   setup %{conn: _} do
@@ -18,6 +19,29 @@ defmodule Microblogger.PostControllerTest do
     ]
       |> Enum.map(&User.create_post(&1, current_user))
       |> Enum.each(&Repo.insert!(&1))
+
+    user_posts = current_user |> Repo.preload(:posts)
+    posts      = user_posts.posts
+    post       = posts |> Enum.at(0)
+
+    c1 = %{
+      body: "test1", 
+      post_id: post.id, 
+      user_id: current_user.id, 
+      author_name: current_user.username,
+      author_email: current_user.email
+    }
+
+    c2 = %{
+      body: "test2", 
+      post_id: post.id, 
+      user_id: current_user.id, 
+      author_name: current_user.username,
+      author_email: current_user.email
+    }
+
+    Ecto.build_assoc(current_user, :comments, c1) |> Repo.insert
+    Ecto.build_assoc(current_user, :comments, c2) |> Repo.insert
 
     conn = build_conn() 
       |> put_req_header("authorization", "Bearer #{jwt}")
@@ -129,5 +153,42 @@ defmodule Microblogger.PostControllerTest do
 
     assert conn.status == 200
     assert length(new_post.categories) == length(post_params.categories)
+  end
+
+  test "gets all comments associated with post", %{conn: conn, user: user} do
+    user_posts = user |> Repo.preload(:posts)
+    post       = user_posts.posts |> Enum.at(0)
+
+    conn = conn |> get(post_path(build_conn(), :comments, post), %{"id" => post.id})
+    data = json_response(conn, 200)["data"]
+    
+    assert conn.status == 200
+    assert length(data) == 2
+  end
+
+  test "user is forbidden from accessing private posts and comments", %{conn: conn, user: _user} do
+    other_user = User.registration_changeset(%User{}, @user_attrs1) |> Repo.insert!
+    User.create_post(%{title: "t", source: "s", quote: "r.", is_public: false}, other_user)
+      |> Repo.insert!
+
+    user_posts = other_user |> Repo.preload(:posts)
+    posts      = user_posts.posts
+    post       = posts |> Enum.at(0)
+
+    c = %{
+      body: "test1", 
+      post_id: post.id, 
+      user_id: other_user.id, 
+      author_name: other_user.username,
+      author_email: other_user.email
+    }
+
+    other_user
+      |> build_assoc(:comments)
+      |> Comment.changeset(c)
+      |> Repo.insert!
+
+    conn = conn |> get(post_path(build_conn(), :comments, post), %{"id" => post.id})
+    assert conn.status == 403
   end
 end

@@ -1,7 +1,7 @@
 defmodule Microblogger.PostController do
   use Microblogger.Web, :controller
 
-  alias Microblogger.{Post, Category, PostCategory, PostQuery}
+  alias Microblogger.{Post, Category, PostCategory, PostQuery, Comment}
 
   plug Guardian.Plug.EnsureAuthenticated, handler: Microblogger.SessionController
 
@@ -21,11 +21,27 @@ defmodule Microblogger.PostController do
     render(conn, "paginated.json", %{posts: page.entries, pagination: Microblogger.PaginationHelpers.pagination(page)})
   end
 
-  def create(conn, %{"post" => params}) do
-    IO.puts "*********************"
-    IO.puts "IN POSTS CREATE"
-    IO.puts "*********************"
+  def comments(conn, %{"id" => id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    post = Post |> Repo.get(id)
 
+    case Post.authorized_to_view(current_user, post) do
+      true ->
+        comments = Comment 
+          |> where([post_id: ^id])
+          |> Repo.all
+
+        conn
+          |> put_status(:ok)
+          |> render(Microblogger.CommentView, "index.json", %{comments: comments})
+      false ->
+        conn
+          |> put_status(:forbidden)
+          |> render(Microblogger.ErrorView, "403.json")
+    end
+  end
+
+  def create(conn, %{"post" => params}) do
     current_user = Guardian.Plug.current_resource(conn)
 
     changeset = current_user
@@ -60,10 +76,6 @@ defmodule Microblogger.PostController do
   end
 
   def show(conn, %{"id" => id, "user_id" => _user_id}) do
-    IO.puts "*********************"
-    IO.puts "IN POSTS SHOW"
-    IO.puts "*********************"
-
     post = Post 
       |> Repo.get!(id) 
       |> Repo.preload([:categories, :favorites])
@@ -72,9 +84,6 @@ defmodule Microblogger.PostController do
   end
 
   def update(conn, %{"id" => id, "post" => params}) do
-    IO.puts "*********************"
-    IO.puts "IN POSTS UPDATE"
-    IO.puts "*********************"
     remote = params["categories"]
     params = params |> Map.drop(["categories"])
     

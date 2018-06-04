@@ -19,9 +19,8 @@ defmodule Microblogger.CommentView do
   def render("comment.json", %{comment: comment}) do
     %{id: comment.id,
       body: comment.body,
-      username: comment.username,
-      email: comment.email,
-      body: comment.body,
+      username: comment.author_name,
+      email: comment.author_email,
       user_id: comment.user_id,
       post_id: comment.post_id
     }
