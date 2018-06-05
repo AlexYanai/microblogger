@@ -439,6 +439,18 @@ a, a:visited, a:link, a:hover, a:active {
   border-radius: 5px;
 }
 
+.comment-picture-container {
+  height: 30px;
+  max-height: 30px;
+}
+
+.comment-picture {
+  height: 30px;
+  width: 30px;
+  border: 1px #f2f2f2 solid;
+  border-radius: 50%;
+}
+
 .search-delete:hover,
 .search-delete:focus {
   color: var(--palette-med-red);

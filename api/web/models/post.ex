@@ -1,6 +1,5 @@
 defmodule Microblogger.Post do
   use Microblogger.Web, :model
-  alias Microblogger.{Post, Favorite, Repo}
 
   schema "posts" do
     field :title, :string

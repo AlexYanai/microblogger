@@ -22,6 +22,7 @@ defmodule Microblogger.CommentView do
       username: comment.author_name,
       email: comment.author_email,
       user_id: comment.user_id,
+      inserted_at: comment.inserted_at,
       post_id: comment.post_id
     }
   end

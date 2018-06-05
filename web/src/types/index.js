@@ -24,3 +24,12 @@ export type Post = {
   email: string,
   user_id: number
 };
+
+export type Comment = {
+  id: number,
+  body: string,
+  username: string,
+  email: string,
+  user_id: number,
+  post_id: number
+};

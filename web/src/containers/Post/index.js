@@ -3,11 +3,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Navbar from '../../containers/Navbar';
-import { fetchPost } from '../../actions/posts';
+import { fetchPost, deletePost, editPost } from '../../actions/posts';
+import { fetchComments } from '../../actions/comments';
+import { Comment } from '../../types';
 import PostListItem from '../../components/PostListItem';
+import CommentListItem from '../../components/CommentListItem';
 import PostForm from '../../components/PostForm';
+import Comments from '../../components/Comments';
 import { showModal } from '../../actions/modal';
-import { deletePost, editPost } from '../../actions/posts';
 
 
 type Props = {
@@ -20,15 +23,7 @@ type Props = {
   editPost: () => void,
   showModal: () => void,
   editFormData: Object,
-
-  post: {
-    id: number,
-    title: string,
-    source: string,
-    is_public: boolean,
-    quote: string,
-    user_id: number
-  }
+  comments: Array<Comment>
 };
 
 class Post extends Component {
@@ -48,6 +43,7 @@ class Post extends Component {
 
     if (userId && postId) {
       this.props.fetchPost(userId, postId);
+      this.props.fetchComments(postId);
     }
   }
 
@@ -59,14 +55,13 @@ class Post extends Component {
   isCurrentUser    =  ()  => this.props.currentUser.id === this.props.profileUser.id;
 
   render() {
-    const { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post } = this.props;
-    const formProps = { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post };
+    const { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post, comments } = this.props;
+    const formProps = { isModalOpen, isEditModalOpen, isAuthenticated, currentUser, post, comments };
 
     return (
       <div style={{ flex: '1', overflow: 'scroll' }}>
         <Navbar currentUser={this.props.currentUser} />
         <div className="posts-list-container">
-          <div className="posts-button-row">
             {(this.props.isModalOpen || this.props.isEditModalOpen) &&
               <PostForm 
                 onEditSubmit={this.handleEditPost} 
@@ -83,7 +78,13 @@ class Post extends Component {
               showPostModal={this.showPostModal}
               handleDeletePost={this.handleDeletePost}
             />}
-          </div>
+
+            <hr style={{ borderTop: '2px solid var(--palette-gray-blue)', width: '50%' }} />
+
+            {(comments && comments[0]) &&
+            <Comments
+              comments={comments}
+            />}
         </div>
       </div>
     );
@@ -98,7 +99,8 @@ export default connect(
     initialValues: state.modal.initialValues,
     isModalOpen: state.modal.isModalOpen,
     isEditModalOpen: state.modal.isEditModalOpen,
-    post: state.posts.post
+    post: state.posts.post,
+    comments: state.comments.comments
   }),
-  {  deletePost, editPost, showModal, fetchPost }
+  {  deletePost, editPost, showModal, fetchPost, fetchComments }
 )(Post);

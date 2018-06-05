@@ -39,9 +39,8 @@ defmodule Microblogger.CommentController do
   end
 
   def update(conn, %{"comment" => params}) do
-    current_user = Guardian.Plug.current_resource(conn)
-    comment      = Comment |> Repo.get!(params["id"])
-    changeset    = Comment.changeset(comment, params)
+    comment   = Comment |> Repo.get!(params["id"])
+    changeset = Comment.changeset(comment, params)
 
     case Repo.update(changeset) do
       {:ok, comment} ->
@@ -53,7 +52,7 @@ defmodule Microblogger.CommentController do
     end
   end
 
-  def delete(conn, %{"id" => id, "user_id" => user_id}) do
+  def delete(conn, %{"id" => id, "user_id" => _user_id}) do
     Comment |> Repo.get(id)|> Repo.delete!
 
     conn
