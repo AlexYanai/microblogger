@@ -1,5 +1,29 @@
 const lodash = require("lodash");
 
+export function showCommentModal(modalOpen) {
+  return (dispatch) => {
+    const open = !modalOpen;
+
+    dispatch({ 
+      type: 'SHOW_COMMENT_MODAL',
+      isCommentModalOpen: open,
+      editFormData: {}
+    });
+  };
+}
+
+export function showEditCommentModal(modalOpen, editFormData) {
+  return (dispatch) => {
+    const open = !modalOpen;
+
+    dispatch({ 
+      type: 'SHOW_EDIT_COMMENT_MODAL',
+      isEditCommentModalOpen: open,
+      editFormData: editFormData
+    });
+  };
+}
+
 export function showModal(modalOpen) {
   return (dispatch) => {
     const open = !modalOpen;

@@ -42,27 +42,25 @@ class CommentListItem extends Component {
     };
 
     return (
-      <div key={this.props.comment.id} className="post-list-item-card">
-        <div className="button-row">
-          <div className="post-list-item-author">
-            <div className="post-list-item-author-name">
-            <div className="comment-picture-container">
-              <Gravatar className="comment-picture" email={this.props.comment.email} size={30} />
-            </div>
-
-             <Link to={`/profile/${this.props.comment.user_id}`}>
-                <p style={{margin: 'auto'}}>{this.props.comment.username}</p>
-              </Link>
-            </div>
+      <div key={this.props.comment.id} className="comment-list-item-card">
+        <div className="comment-list-item-author">
+          <div className="comment-picture-container">
+            <Gravatar className="comment-picture" email={this.props.comment.email} size={30} />
           </div>
-          
-          <div className="post-list-item-buttons">
 
+         <Link to={`/profile/${this.props.comment.user_id}`}>
+            <div style={{margin: 'auto'}}>{this.props.comment.username}</div>
+          </Link>
+
+          <div className="comment-list-item-quote">
+            {this.props.comment.body}
           </div>
         </div>
+          
 
-        <div className="post-list-item-quote">{this.props.comment.body}</div>
-        <div className="post-list-item-date">{this.formatDateString(dateOptions)}</div>
+        <div className="comment-list-item-date">
+          {this.formatDateString(dateOptions)}
+        </div>
       </div>
     )
   }

@@ -27,18 +27,14 @@ defmodule Microblogger.PostController do
 
     case Post.authorized_to_view(current_user, post) do
       true ->
-        IO.puts "IN TRUE*****"
         comments = Comment 
           |> where([post_id: ^id])
           |> Repo.all
-
-        IO.inspect comments
 
         conn
           |> put_status(:ok)
           |> render(Microblogger.CommentView, "index.json", %{comments: comments})
       false ->
-        IO.puts "IN FALSE*****"
         conn
           |> put_status(:forbidden)
           |> render(Microblogger.ErrorView, "403.json")

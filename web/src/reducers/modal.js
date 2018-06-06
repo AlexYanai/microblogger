@@ -18,6 +18,18 @@ export default function (state = initialState, action) {
         isEditModalOpen: action.isEditModalOpen,
         initialValues: action.editFormData
       }
+    case 'SHOW_COMMENT_MODAL':
+      return {
+        ...state,
+        isCommentModalOpen: action.isCommentModalOpen,
+        initialValues: action.editFormData
+      }
+    case 'SHOW_EDIT_COMMENT_MODAL':
+      return {
+        ...state,
+        isEditCommentModalOpen: action.isEditCommentModalOpen,
+        initialValues: action.editFormData
+      }
     default:
       return state
   }

@@ -451,6 +451,38 @@ a, a:visited, a:link, a:hover, a:active {
   border-radius: 50%;
 }
 
+.comment-list-item-author {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 15px;
+  width: 95%;
+}
+
+.comment-list-item-card {
+  display: flex !important;
+  max-width: 800px;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25);
+  position: relative;
+  margin-bottom: 0.75rem;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  border: 1px solid #e8e8e8;
+}
+
+.comment-list-item-quote {
+  padding-left: 30px;
+  padding-right: 30px;
+  flex-flow: wrap;
+}
+
+.comment-list-item-date {
+  font-size: 12px;
+  color: var(--palette-light-gray);
+}
+
 .search-delete:hover,
 .search-delete:focus {
   color: var(--palette-med-red);

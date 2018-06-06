@@ -16,7 +16,7 @@ defmodule Microblogger.Comment do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:body, :post_id, :user_id])
+    |> cast(params, [:body, :post_id, :user_id, :author_name, :author_email])
     |> validate_required([:body, :post_id, :user_id])
   end
 end

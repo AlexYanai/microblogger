@@ -84,6 +84,7 @@ class Post extends Component {
             {(comments && comments[0]) &&
             <Comments
               comments={comments}
+              post={this.props.post}
             />}
         </div>
       </div>

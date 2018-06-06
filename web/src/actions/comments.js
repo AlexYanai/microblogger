@@ -1,4 +1,5 @@
 import api from '../api';
+import { showCommentModal, showEditCommentModal } from './modal';
 
 export function fetchComments(postId) {
   return dispatch => api.fetch(`/posts/${postId}/comments`)
@@ -17,7 +18,7 @@ export function fetchComments(postId) {
 // }
 
 // export function endOfPosts() {
-//   return dispatch => dispatch({ type: 'END_OF_POSTS' });
+//   return dispatch => dispatch({ type: 'END_OF_COMMENTS' });
 // }
 
 // export function fetchCategories() {
@@ -30,70 +31,53 @@ export function fetchComments(postId) {
 // export function fetchPost(userId, postId) {
 //   return dispatch => api.fetch(`/users/${userId}/posts/${postId}`)
 //     .then((response) => {
-//       dispatch({ type: 'FETCH_POST_SUCCESS', response });
+//       dispatch({ type: 'FETCH_COMMENT_SUCCESS', response });
 //     });
 // }
 
-// export function createPost(data, router, currentUser) {
-//   data["user_id"] = currentUser.id;
+export function createComment(data, router, user, post) {
+  data["user_id"] = user.id;
+  data["post_id"] = post.id;
+  data["author_name"] = user.username;
+  data["author_email"] = user.email;
 
-//   return dispatch => api.post(`/users/${currentUser.id}/posts`, {"post": data})
-//     .then((response) => {
-//       dispatch({ type: 'CREATE_POST_SUCCESS', response });
-//       dispatch(fetchPaginatedPosts({categories: [], page: 1, id: currentUser.id, route: 'paginated_posts'}));
-//       dispatch(showModal(true));
+  console.log("data");
+  console.log(data);
+  console.log("user");
+  console.log(user);
 
-//       router.history.push('/');
-//     })
-//     .catch((error) => {
-//       dispatch({ type: 'CREATE_POST_FAILURE', error });
-//     });
-// }
+  return dispatch => api.post(`/users/${user.id}/comments`, {"comment": data})
+    .then((response) => {
+      dispatch({ type: 'CREATE_COMMENT_SUCCESS', response });
+      dispatch(fetchComments(post.id));
+      dispatch(showCommentModal());
 
-// export function editPost(data, router, currentPost, is_public, single=false) {
-//   return dispatch => api.patch(`/users/${currentPost.user_id}/posts/${currentPost.id}`, {"post": currentPost})
-//     .then((response) => {
-//       dispatch({ type: 'EDIT_POST_SUCCESS', response });
-//       dispatch(showEditModal(true, response.data));
+      router.history.push(`/users/${user.id}/posts/${post.id}`);
+    })
+    .catch((error) => {
+      dispatch({ type: 'CREATE_COMMENT_FAILURE', error });
+    });
+}
 
-//       if (single) {
-//         dispatch(fetchPost(currentPost.user_id, currentPost.id));
-        
-//       } else {
-//         // Reload currentPosts if public or currentUserPosts otherwise.
-//         const route = is_public ? 'posts' : 'paginated_posts';
-//         dispatch(fetchPaginatedPosts({page: 1, id: currentPost.user_id, route: route}));
-//       }
+export function editComment(data, router, currentComment) {
+  const userId = currentComment.user_id;
 
-//       router.history.push('/');
-//     })
-//     .catch((error) => {
-//       dispatch({ type: 'EDIT_POST_FAILURE', error });
-//     });
-// }
+  return dispatch => api.patch(`/users/${userId}/comments/${userId}`, {"comment": currentComment})
+    .then((response) => {
+      dispatch({ type: 'EDIT_COMMENT_SUCCESS', response });
+      // dispatch(fetchPost(currentComment.user_id, currentComment.id));
 
-// export function deletePost(router, userId, postId, pagPosts = [], single=false) {
-//   const origin = router.history.location.pathname;
+      router.history.push('/');
+    })
+    .catch((error) => {
+      dispatch({ type: 'EDIT_COMMENT_FAILURE', error });
+    });
+}
 
-//   return dispatch => api.delete(`/users/${userId}/posts/${postId}`, {"id": postId})
-//     .then(() => {
-//       if (origin.split("/").length !== 5) {
-//         if (origin === '/posts') {
-//           dispatch(fetchPaginatedPosts({page: 1, id: userId, route: 'posts'}));
-//         } else {
-//           const posts = pagPosts.filter(function(a) {
-//             return a.data.id !== postId;
-//           });
-
-//           dispatch({
-//             type: 'REFRESH_FILTERED_POSTS',
-//             paginatedPosts: posts
-//           });
-//         }
-
-//         router.history.push(origin);
-//       } else {
-//         router.history.push("/");
-//       }
-//     })
-// }
+export function deleteComment(router, userId, commentId, postId) {
+  return dispatch => api.delete(`/users/${userId}/comment/${commentId}`, {"id": commentId})
+    .then(() => {
+      fetchComments(postId);
+      router.history.push("/");
+    })
+}
