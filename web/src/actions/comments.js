@@ -8,43 +8,11 @@ export function fetchComments(postId) {
     });
 }
 
-// export function showSearchForm(isSearchFormOpen) {
-//   return (dispatch) => {
-//     dispatch({ 
-//       type: 'OPEN_SEARCH',
-//       isSearchFormOpen: !isSearchFormOpen,
-//     });
-//   };
-// }
-
-// export function endOfPosts() {
-//   return dispatch => dispatch({ type: 'END_OF_COMMENTS' });
-// }
-
-// export function fetchCategories() {
-//   return dispatch => api.fetch(`/categories`)
-//     .then((response) => {
-//       dispatch({ type: 'FETCH_CATEGORIES_SUCCESS', response });
-//     });
-// }
-
-// export function fetchPost(userId, postId) {
-//   return dispatch => api.fetch(`/users/${userId}/posts/${postId}`)
-//     .then((response) => {
-//       dispatch({ type: 'FETCH_COMMENT_SUCCESS', response });
-//     });
-// }
-
 export function createComment(data, router, user, post) {
   data["user_id"] = user.id;
   data["post_id"] = post.id;
   data["author_name"] = user.username;
   data["author_email"] = user.email;
-
-  console.log("data");
-  console.log(data);
-  console.log("user");
-  console.log(user);
 
   return dispatch => api.post(`/users/${user.id}/comments`, {"comment": data})
     .then((response) => {
@@ -62,22 +30,28 @@ export function createComment(data, router, user, post) {
 export function editComment(data, router, currentComment) {
   const userId = currentComment.user_id;
 
-  return dispatch => api.patch(`/users/${userId}/comments/${userId}`, {"comment": currentComment})
+  return dispatch => api.patch(`/users/${userId}/comments/${currentComment.id}`, {"comment": currentComment})
     .then((response) => {
       dispatch({ type: 'EDIT_COMMENT_SUCCESS', response });
-      // dispatch(fetchPost(currentComment.user_id, currentComment.id));
+      dispatch(fetchComments(currentComment.post_id));
+      dispatch(showEditCommentModal(true));
 
-      router.history.push('/');
+      router.history.push(`/users/${userId}/posts/${currentComment.post_id}`);
     })
     .catch((error) => {
       dispatch({ type: 'EDIT_COMMENT_FAILURE', error });
     });
 }
 
-export function deleteComment(router, userId, commentId, postId) {
-  return dispatch => api.delete(`/users/${userId}/comment/${commentId}`, {"id": commentId})
+export function deleteComment(router, comment) {
+  const userId    = comment.user_id;
+  const commentId = comment.id;
+  const postId    = comment.post_id;
+    
+  return dispatch => api.delete(`/users/${userId}/comments/${commentId}`, {"id": commentId})
     .then(() => {
-      fetchComments(postId);
-      router.history.push("/");
+      dispatch({ type: 'DELETE_COMMENT_SUCCESS' });
+      dispatch(fetchComments(postId));
+      router.history.push(`/users/${userId}/posts/${postId}`);
     })
 }

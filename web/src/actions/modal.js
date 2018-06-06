@@ -13,6 +13,9 @@ export function showCommentModal(modalOpen) {
 }
 
 export function showEditCommentModal(modalOpen, editFormData) {
+  console.log("editFormData in action");
+  console.log(editFormData);
+
   return (dispatch) => {
     const open = !modalOpen;
 

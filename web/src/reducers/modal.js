@@ -1,6 +1,8 @@
 const initialState = {
   isModalOpen: false,
   isEditModalOpen: false,
+  isCommentModalOpen: false,
+  isEditCommentModalOpen: false,
   editFormData: {}
 }
 

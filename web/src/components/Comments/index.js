@@ -18,6 +18,7 @@ type Props = {
   deleteComment: () => void,
   editComment: () => void,
   showCommentModal: () => void,
+  showEditCommentModal: () => void,
   editFormData: Comment
 };
 
@@ -28,7 +29,6 @@ class Comments extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      // this.props.fetchPaginatedPosts({page: 1, id: this.props.currentUser.id, route: 'public'});
       this.props.showCommentModal(true);
     }
   }
@@ -40,6 +40,7 @@ class Comments extends Component {
   handleEditComment      = data => this.props.editComment(this.context.router, this.props.currentUser, data, true);
   handleDeleteComment    = data => this.props.deleteComment(this.context.router, this.props.currentUser, data);
   showCommentModal       =  ()  => this.props.showCommentModal(this.props.isCommentModalOpen);
+  showEditCommentModal   =  ()  => this.props.showEditCommentModal(this.props.isCommentModalOpen);
 
   renderComments(comments) {
     if (comments === undefined) {
@@ -60,6 +61,10 @@ class Comments extends Component {
     const modalProps = { isAuthenticated, isCommentModalOpen, isEditCommentModalOpen, currentUser, comments, post };
     console.log(comments);
     console.log(post);
+    console.log("this.props.editFormData");
+    console.log(this.props.editFormData);
+    console.log("this.props.initialValues");
+    console.log(this.props.initialValues);
 
     return (
       <div>
@@ -72,6 +77,7 @@ class Comments extends Component {
             onNewSubmit={this.handleNewCommentSubmit} 
             onEditSubmit={this.handleEditComment} 
             showModal={this.showCommentModal} 
+            showEditModal={this.showEditCommentModal} 
             comment={this.props.editFormData} {...modalProps} 
         />}
 

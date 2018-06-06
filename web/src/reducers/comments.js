@@ -29,6 +29,10 @@ export default function (state = initialState, action) {
         ...state,
         newCommentErrors: action.error.errors,
       };
+    case 'DELETE_COMMENT_SUCCESS':
+      return {
+        ...state,
+      };
     default:
       return state;
   }

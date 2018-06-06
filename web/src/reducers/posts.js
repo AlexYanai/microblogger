@@ -2,6 +2,7 @@ const initialState = {
   currentUserPosts: [],
   paginatedPosts: [],
   reachedEnd: false,
+  comments: [],
   pagination: {
     total_pages: 0,
     total_entries: 0,
