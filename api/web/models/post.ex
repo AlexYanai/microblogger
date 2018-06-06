@@ -18,7 +18,7 @@ defmodule Microblogger.Post do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :source, :quote, :is_public])
+    |> cast(params, [:title, :source, :quote, :is_public, :author_name, :author_email])
     |> validate_required([:title, :source, :quote])
   end
 

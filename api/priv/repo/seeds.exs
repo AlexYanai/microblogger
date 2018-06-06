@@ -128,18 +128,68 @@ Repo.all(assoc(user_four, :posts))
   |> Enum.each(&Repo.insert!(&1))
 
 
-post1 = Post |> Repo.get(1)
-post2 = Post |> Repo.get(2)
-post3 = Post |> Repo.get(3)
-post5 = Post |> Repo.get(5)
-post7 = Post |> Repo.get(7)
-post11 = Post |> Repo.get(11)
-post13 = Post |> Repo.get(13)
-post17 = Post |> Repo.get(17)
-post19 = Post |> Repo.get(19)
-post23 = Post |> Repo.get(23)
+post1 = Post |> Repo.get(1) |> Repo.preload(:user)
+post2 = Post |> Repo.get(2) |> Repo.preload(:user)
+post3 = Post |> Repo.get(3) |> Repo.preload(:user)
+post5 = Post |> Repo.get(5) |> Repo.preload(:user)
+post7 = Post |> Repo.get(7) |> Repo.preload(:user)
+post11 = Post |> Repo.get(11) |> Repo.preload(:user)
+post13 = Post |> Repo.get(13) |> Repo.preload(:user)
+post17 = Post |> Repo.get(17) |> Repo.preload(:user)
+post19 = Post |> Repo.get(19) |> Repo.preload(:user)
 
 # Creating comments on Posts
-comments = [
-
-]
+c11 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post1.id, user_id: post1.user_id, author_name: post1.user.username, author_email: post1.user.email}
+Ecto.build_assoc(post1.user, :comments, c11) |> Repo.insert!
+c12 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post1.id, user_id: post1.user_id, author_name: post1.user.username, author_email: post1.user.email}
+Ecto.build_assoc(post1.user, :comments, c12) |> Repo.insert!
+c13 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post1.id, user_id: post1.user_id, author_name: post1.user.username, author_email: post1.user.email}
+Ecto.build_assoc(post1.user, :comments, c13) |> Repo.insert!
+c21 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post2.id, user_id: post2.user_id, author_name: post2.user.username, author_email: post2.user.email}
+Ecto.build_assoc(post2.user, :comments, c21) |> Repo.insert!
+c22 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post2.id, user_id: post2.user_id, author_name: post2.user.username, author_email: post2.user.email}
+Ecto.build_assoc(post2.user, :comments, c22) |> Repo.insert!
+c23 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post2.id, user_id: post2.user_id, author_name: post2.user.username, author_email: post2.user.email}
+Ecto.build_assoc(post2.user, :comments, c23) |> Repo.insert!
+c31 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post3.id, user_id: post3.user_id, author_name: post3.user.username, author_email: post3.user.email}
+Ecto.build_assoc(post3.user, :comments, c31) |> Repo.insert!
+c32 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post3.id, user_id: post3.user_id, author_name: post3.user.username, author_email: post3.user.email}
+Ecto.build_assoc(post3.user, :comments, c32) |> Repo.insert!
+c33 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post3.id, user_id: post3.user_id, author_name: post3.user.username, author_email: post3.user.email}
+Ecto.build_assoc(post3.user, :comments, c33) |> Repo.insert!
+c51 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post5.id, user_id: post5.user_id, author_name: post5.user.username, author_email: post5.user.email}
+Ecto.build_assoc(post5.user, :comments, c51) |> Repo.insert!
+c52 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post5.id, user_id: post5.user_id, author_name: post5.user.username, author_email: post5.user.email}
+Ecto.build_assoc(post5.user, :comments, c52) |> Repo.insert!
+c53 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post5.id, user_id: post5.user_id, author_name: post5.user.username, author_email: post5.user.email}
+Ecto.build_assoc(post5.user, :comments, c53) |> Repo.insert!
+c71 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post7.id, user_id: post7.user_id, author_name: post7.user.username, author_email: post7.user.email}
+Ecto.build_assoc(post7.user, :comments, c71) |> Repo.insert!
+c72 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post7.id, user_id: post7.user_id, author_name: post7.user.username, author_email: post7.user.email}
+Ecto.build_assoc(post7.user, :comments, c72) |> Repo.insert!
+c73 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post7.id, user_id: post7.user_id, author_name: post7.user.username, author_email: post7.user.email}
+Ecto.build_assoc(post7.user, :comments, c73) |> Repo.insert!
+c111 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post11.id, user_id: post11.user_id, author_name: post11.user.username, author_email: post11.user.email}
+Ecto.build_assoc(post11.user, :comments, c111) |> Repo.insert!
+c112 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post11.id, user_id: post11.user_id, author_name: post11.user.username, author_email: post11.user.email}
+Ecto.build_assoc(post11.user, :comments, c112) |> Repo.insert!
+c113 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post11.id, user_id: post11.user_id, author_name: post11.user.username, author_email: post11.user.email}
+Ecto.build_assoc(post11.user, :comments, c113) |> Repo.insert!
+c131 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post13.id, user_id: post13.user_id, author_name: post13.user.username, author_email: post13.user.email}
+Ecto.build_assoc(post13.user, :comments, c131) |> Repo.insert!
+c132 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post13.id, user_id: post13.user_id, author_name: post13.user.username, author_email: post13.user.email}
+Ecto.build_assoc(post13.user, :comments, c132) |> Repo.insert!
+c133 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post13.id, user_id: post13.user_id, author_name: post13.user.username, author_email: post13.user.email}
+Ecto.build_assoc(post13.user, :comments, c133) |> Repo.insert!
+c171 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post17.id, user_id: post17.user_id, author_name: post17.user.username, author_email: post17.user.email}
+Ecto.build_assoc(post17.user, :comments, c171) |> Repo.insert!
+c172 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post17.id, user_id: post17.user_id, author_name: post17.user.username, author_email: post17.user.email}
+Ecto.build_assoc(post17.user, :comments, c172) |> Repo.insert!
+c173 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post17.id, user_id: post17.user_id, author_name: post17.user.username, author_email: post17.user.email}
+Ecto.build_assoc(post17.user, :comments, c173) |> Repo.insert!
+c191 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post19.id, user_id: post19.user_id, author_name: post19.user.username, author_email: post19.user.email}
+Ecto.build_assoc(post19.user, :comments, c191) |> Repo.insert!
+c192 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post19.id, user_id: post19.user_id, author_name: post19.user.username, author_email: post19.user.email}
+Ecto.build_assoc(post19.user, :comments, c192) |> Repo.insert!
+c193 = %{body: Faker.Lorem.paragraph(%Range{first: 1, last: 2}), post_id: post19.id, user_id: post19.user_id, author_name: post19.user.username, author_email: post19.user.email}
+Ecto.build_assoc(post19.user, :comments, c193) |> Repo.insert!

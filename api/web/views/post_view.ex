@@ -18,7 +18,6 @@ defmodule Microblogger.PostView do
 
   def render("post.json", %{post: post}) do
     is_favorite = post.favorites |> Enum.any?
-
     %{id: post.id,
       title: post.title,
       source: post.source,

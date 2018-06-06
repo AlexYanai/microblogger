@@ -31,10 +31,12 @@ defmodule Microblogger.User do
   end
 
   def create_post(post, user) do
-    post = Map.put(post, :author_name, user.username)
-    post = Map.put(post, :author_emai, user.email)
-    
-    Ecto.build_assoc(user, :posts, post)
+    # post = Map.put(post, :author_name, user.username)
+    # post = Map.put(post, :author_emai, user.email)
+    changeset = user |> Ecto.build_assoc(:posts) |> Microblogger.Post.changeset(post)
+    changeset = Ecto.Changeset.put_change(changeset, :author_name, user.username)
+    changeset = Ecto.Changeset.put_change(changeset, :author_email, user.email)
+    changeset
   end
 
   def favorites(user) do

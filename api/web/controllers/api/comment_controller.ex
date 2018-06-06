@@ -16,9 +16,9 @@ defmodule Microblogger.CommentController do
     current_user   = Guardian.Plug.current_resource(conn)
     comment_params = %{
       body: params["body"], 
-      author_name: params["author_name"], 
-      author_email: params["author_email"], 
-      post_id: params["post_id"], 
+      author_name: current_user.username,
+      author_email: current_user.email,
+      post_id: params["post_id"],
       user_id: params["user_id"]
     }
 
