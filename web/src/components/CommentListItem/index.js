@@ -50,34 +50,38 @@ class CommentListItem extends Component {
 
     return (
       <div key={this.props.comment.id} className="comment-list-item-card">
-        <div className="comment-list-item-author">
-          <div className="comment-picture-container">
-            <Gravatar className="comment-picture" email={this.props.comment.email} size={30} />
-          </div>
 
-         <Link to={`/profile/${this.props.comment.user_id}`}>
-            <div style={{margin: 'auto'}}>{this.props.comment.username}</div>
-          </Link>
+        <div className="comment-list-item-row">
 
-          {this.ownedByCurrentUser() &&
-            <div style={{display: 'inline-flex'}}>
-              <button type="button" className="btn btn-link" onClick={this.showEditCommentModal}>
-                <div className="post-list-item-edit">
-                  <span className="fa fa-pencil" />
-                </div>
-              </button>
-              
-              <button type="button" className="post-list-item-logout-button" onClick={this.handleDeleteComment}>
-                <div className="post-list-item-delete">
-                  <span className="fa fa-times" />
-                </div>
-              </button>
+          <div className="comment-list-item-author">
+            <div className="comment-picture-container">
+              <Gravatar className="comment-picture" email={this.props.comment.email} size={30} />
             </div>
-          }
 
-          <div className="comment-list-item-quote">
-            {this.props.comment.body}
+           <Link to={`/profile/${this.props.comment.user_id}`}>
+              <div style={{margin: 'auto'}}>{this.props.comment.username}</div>
+            </Link>
           </div>
+            
+            <div className="comment-list-item-quote">
+              {this.props.comment.body}
+            </div>
+
+            {this.ownedByCurrentUser() &&
+              <div className="comment-list-buttons">
+                <button type="button" className="btn btn-link" onClick={this.showEditCommentModal}>
+                  <div className="post-list-item-edit">
+                    <span className="fa fa-pencil" />
+                  </div>
+                </button>
+                
+                <button type="button" className="post-list-item-logout-button" onClick={this.handleDeleteComment}>
+                  <div className="post-list-item-delete">
+                    <span className="fa fa-times" />
+                  </div>
+                </button>
+              </div>
+            }
         </div>
           
         <div className="comment-list-item-date">

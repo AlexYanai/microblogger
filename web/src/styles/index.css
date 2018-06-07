@@ -455,7 +455,8 @@ a, a:visited, a:link, a:hover, a:active {
   display: inline-flex;
   align-items: center;
   padding-top: 15px;
-  width: 95%;
+  padding-left: 20px;
+  width: 20%;
 }
 
 .comment-list-item-card {
@@ -474,13 +475,22 @@ a, a:visited, a:link, a:hover, a:active {
 
 .comment-list-item-quote {
   padding-left: 30px;
-  padding-right: 30px;
   flex-flow: wrap;
+  display: inline-flex;
+  width: 68%;
 }
 
 .comment-list-item-date {
   font-size: 12px;
   color: var(--palette-light-gray);
+}
+
+.comment-list-buttons {
+  display: inline-flex;
+}
+
+.comment-list-item-row {
+  width: 100%;
 }
 
 .search-delete:hover,

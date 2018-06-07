@@ -61,10 +61,6 @@ class Comments extends Component {
     const modalProps = { isAuthenticated, isCommentModalOpen, isEditCommentModalOpen, currentUser, comments, post };
     console.log(comments);
     console.log(post);
-    console.log("this.props.editFormData");
-    console.log(this.props.editFormData);
-    console.log("this.props.initialValues");
-    console.log(this.props.initialValues);
 
     return (
       <div>
