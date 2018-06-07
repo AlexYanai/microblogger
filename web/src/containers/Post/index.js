@@ -7,7 +7,6 @@ import { fetchPost, deletePost, editPost } from '../../actions/posts';
 import { fetchComments } from '../../actions/comments';
 import { Comment } from '../../types';
 import PostListItem from '../../components/PostListItem';
-import CommentListItem from '../../components/CommentListItem';
 import PostForm from '../../components/PostForm';
 import Comments from '../../components/Comments';
 import { showModal } from '../../actions/modal';

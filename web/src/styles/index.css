@@ -439,6 +439,38 @@ a, a:visited, a:link, a:hover, a:active {
   border-radius: 5px;
 }
 
+.comments {
+
+}
+
+.comment-modal {
+  height: 35%;
+  margin: 13rem auto;
+}
+
+.comments-link-div {
+  margin-left: 15px;
+}
+
+.comments-ask-box {
+  display: flex;
+  background-color: #fff;
+  font-size: 18px;
+  max-width: 800px;
+  height: 40px;
+  margin: auto;
+  margin-bottom: 15px;
+  text-align: left;
+  align-items: center;
+  width: 100%;
+  font-weight: 300;
+  opacity: 0.9;
+  box-shadow: 0 1px 0 var(--palette-gray-blue);
+  border: 1px solid var(--palette-gray-blue);
+  color: var(--palette-light-gray);
+  vertical-align: middle;
+}
+
 .comment-picture-container {
   height: 30px;
   max-height: 30px;

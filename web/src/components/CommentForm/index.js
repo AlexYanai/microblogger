@@ -2,11 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import Input from '../Input';
-import InputCheckbox from '../InputCheckbox';
 import { connect } from 'react-redux';
 import { showCommentModal, showEditCommentModal } from '../../actions/modal';
-import MultiSelectField  from '../MultiSelectField';
 
 type Props = {
   initialValues: Object,
@@ -42,7 +39,7 @@ class CommentForm extends Component {
     return (
       <div className="modal" onClick={this.handleModal.bind(this)}>
         <div className="modal-overlay"></div>
-        <form className="modal-form" onClick={this.dontClose} onSubmit={handleSubmit(this.handleAllSubmit.bind(this))}>
+        <form className="modal-form comment-modal" onClick={this.dontClose} onSubmit={handleSubmit(this.handleAllSubmit.bind(this))}>
           <div className="input-group">
             <Field
               style={{marginBottom: '5px'}}

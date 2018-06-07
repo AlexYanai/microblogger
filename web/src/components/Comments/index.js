@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Category, Post, Comment } from '../../types';
+import { Comment } from '../../types';
 import { logout } from '../../actions/session';
 import { showCommentModal, showEditCommentModal } from '../../actions/modal';
 import { createComment, editComment, deleteComment } from '../../actions/comments';
@@ -59,13 +59,11 @@ class Comments extends Component {
   render() {
     const { isAuthenticated, isCommentModalOpen, isEditCommentModalOpen, currentUser, comments, post } = this.props;
     const modalProps = { isAuthenticated, isCommentModalOpen, isEditCommentModalOpen, currentUser, comments, post };
-    console.log(comments);
-    console.log(post);
 
     return (
-      <div>
-        <div className="posts-ask-box" onClick={this.showCommentModal} >
-          <div className="posts-link-div"><a>Save Something New...</a></div>
+      <div className="comments">
+        <div className="comments-ask-box" onClick={this.showCommentModal} >
+          <div className="comments-link-div"><a>Write a comment...</a></div>
         </div>
 
         {(this.props.isCommentModalOpen || this.props.isEditCommentModalOpen) &&
