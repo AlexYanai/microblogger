@@ -8,7 +8,7 @@ import { fetchComments } from '../../actions/comments';
 import { Comment } from '../../types';
 import PostListItem from '../../components/PostListItem';
 import PostForm from '../../components/PostForm';
-import Comments from '../../components/Comments';
+import Comments from '../../containers/Comments';
 import { showModal } from '../../actions/modal';
 
 
